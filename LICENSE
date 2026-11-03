@@ -1,0 +1,27 @@
+SCA PREFLIGHT BENCHMARK & EVALUATION LICENSE
+
+Copyright (c) 2026 Emil Walter "Pete" Jalajas (pjalajas@gmail.com).
+All rights reserved.
+
+1. FREE INTERNAL BENCHMARKING & EVALUATION (`benchmark/` & `examples/`):
+   Permission is hereby granted, free of charge, to any individual or enterprise
+   engineering/security team to clone this `sca-preflight` repository, unpack
+   `benchmark/sca_preflight_reference_capsule.b64`, run internal SCA scanners
+   against the unpacked test tree, and feed `examples/LLM_INGESTION_REPORT.md`
+   into internal AI assistants for internal scanner calibration and evaluation.
+   You may not resell, rebrand, or redistribute these materials as part of a
+   commercial product or competing consulting offering.
+
+2. SEPARATE COMMERCIAL LICENSE FOR `sca-ops-toolkit` ENGINE:
+   The `sca-ops-toolkit` Python CLI suite (`sca-prescan`, `sca-bom-ifttt`,
+   `sca-tealeaves`, `sca-log-sanitize`, `sca-mcp`) that generated the sample
+   reports in `examples/` lives in a separate, private repository and is the
+   proprietary commercial property of Emil Walter "Pete" Jalajas. Production,
+   internal enterprise, or CI/CD use of the `sca-ops-toolkit` software requires
+   a separate commercial license or consulting agreement with Emil Walter "Pete"
+   Jalajas (`pjalajas@gmail.com`).
+
+THE BENCHMARK CAPSULE, SAMPLE OUTPUTS, AND DOCUMENTATION ARE PROVIDED "AS IS",
+WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY,
+COMPLETENESS, AND NONINFRINGEMENT.

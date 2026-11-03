@@ -1,0 +1,55 @@
+{
+  "schema": "sca-ops-reference-ground-truth/v1",
+  "scale_factor": 1,
+  "multilayer_codebase_signature": "sca-sig:v2:L0=35a527e1d2b5:L1=9c52bea95b81:L2=9c52bea95b81:CFG=2adcf6e44988@d3(100.0%)",
+  "topology_skeleton_sha256": "35a527e1d2b54db1e3a43418804fe3f054719595c872cf95ac5ddce52e26e9d1",
+  "workspace_tree_merkle_sha256": "9c52bea95b81847932784ff9acf167f17929077c9d47992f2ea0eb04f3788cc7",
+  "dependency_inputs_merkle_sha256": "9c52bea95b81847932784ff9acf167f17929077c9d47992f2ea0eb04f3788cc7",
+  "effective_detect_config_sha256": "2adcf6e44988ff2a5c42cefade661dd8c321d5c11369e759349879c0ad4647a0",
+  "expected_cves": [
+    "CVE-2020-14343",
+    "CVE-2020-28052",
+    "CVE-2021-23337",
+    "CVE-2021-44228",
+    "CVE-2022-1471",
+    "CVE-2022-21724",
+    "CVE-2022-2274",
+    "CVE-2022-22965",
+    "CVE-2022-3602",
+    "CVE-2022-37434",
+    "CVE-2022-42889",
+    "CVE-2023-38545",
+    "CVE-2023-39325",
+    "CVE-2023-45288",
+    "CVE-2023-45803",
+    "CVE-2023-46604",
+    "CVE-2023-49083",
+    "CVE-2024-21538",
+    "CVE-2024-21907",
+    "CVE-2024-24786",
+    "CVE-2024-45490"
+  ],
+  "expected_license_rules": [
+    "LIC-COPYLEFT-GNU-READLINE-GPL3",
+    "LIC-COPYLEFT-MYSQL-CONNECTOR-GPL2",
+    "LIC-DPI-AGPL-3_0",
+    "LIC-DPI-GPL-3_0",
+    "LIC-RUGPULL-HASHICORP-BSL",
+    "LIC-RUGPULL-ITEXT-AGPL",
+    "LIC-RUGPULL-MINIO-AGPL",
+    "LIC-RUGPULL-REDIS-RSAL-SSPL"
+  ],
+  "expected_blind_spot_traps": [
+    "CVE-2021-44228",
+    "CVE-2022-21724",
+    "CVE-2022-22965",
+    "CVE-2022-42889"
+  ],
+  "recommended_detect_arguments": [
+    "--detect.detector.search.depth=3",
+    "--detect.blackduck.signature.scanner.memory=6144",
+    "--detect.blackduck.signature.scanner.parallel.processors=1",
+    "--detect.binary.scan.search.depth=3",
+    "--detect.blackduck.signature.scanner.individual.file.matching=BINARY"
+  ]
+}

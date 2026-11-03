@@ -1,0 +1,29 @@
+# ==============================================================================
+# SAMPLE OUTPUT: sca-bom-ifttt (Default --dry-run Preview Mode)
+# Command:
+#   sca-bom-ifttt \
+#     --rules examples/sample_bom_ifttt_rules.toml \
+#     --offline-codelocations-file codelocations.json \
+#     --offline-bom-file bom_components.json \
+#     --prescan-report prescan_report.json \
+#     --verify-bdio scan_output.bdio
+# ==============================================================================
+
+=== SCA BOM IFTTT Engine [DRY-RUN PREVIEW (no mutations applied)] ===
+Evaluated Rules: 5
+Actions Matched: 5
+[SIMULATED_UNMAP] Rule 'codeloc-hygiene-ephemeral-ci-unmap' -> codelocation 'storage-platform-ci-runner-build-98412-scan': unmap
+   Comment: Codelocation Hygiene: Unmapping stale ephemeral CI build scan older than 30 days.
+[SIMULATED_IGNORE] Rule 'enterprise-prob-a-jackson-rollup' -> bom_component 'jackson-core@2.13.3': ignore
+   Comment: Problem A: Subcomponent rolled up into parent jackson-databind framework entry.
+[SIMULATED_IGNORE] Rule 'enterprise-prob-c-n-minus-1-aliasing' -> bom_component 'Apache Log4j@2.13.3': ignore
+   Comment: Problem C: Prioritizing exact package manager dependency version over signature match.
+[SIMULATED_COMMENT] Rule 'enterprise-prob-c-filename-version-truth' -> bom_component 'activemq-client@5.18.1': comment
+   Comment: Problem C: Prescan filename inspection detected version difference against signature match; confirm in SCA Server.
+[SIMULATED_REVIEW] Rule 'enterprise-prob-d-dual-license-cpe-errata' -> bom_component 'MySQL-Connector-Java@8.0.33': mark_reviewed
+   Comment: Problem D: Resolved dual-license ambiguity under enterprise commercial exception per compliance policy.
+
+BDIO vs. Server BOM Verification [ZERO_DAY_COMPONENTS_DROPPED]:
+  BDIO Total: 1, BOM Total: 6, Matched: 0, Dropped: 1
+  ! [PROBLEM B ADVISORY] Newly released component versions awaiting KnowledgeBase matching on SCA Server:
+    - postgresql @ 42.7.99-ZERODAY (org.postgresql:postgresql:42.7.99-ZERODAY)

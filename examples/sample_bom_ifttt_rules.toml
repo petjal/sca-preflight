@@ -1,0 +1,66 @@
+# Enterprise BOM & Codelocation Accuracy Playbook (Sample Ruleset)
+# Evaluated by `sca-bom-ifttt` in default `--dry-run` preview mode.
+# Every mutating rule requires a mandatory non-empty `comment` written to the server audit trail.
+
+[[rules]]
+id = "codeloc-hygiene-ephemeral-ci-unmap"
+description = "Unmap stale ephemeral CI runner scans older than 30 days to prevent PostgreSQL scan bloat."
+phase = "codelocation"
+
+[rules.if]
+name_pattern = "*-ci-runner-build-*"
+days_stale = 30
+
+[rules.then]
+action = "unmap"
+comment = "Codelocation Hygiene: Unmapping stale ephemeral CI build scan older than 30 days."
+
+[[rules]]
+id = "enterprise-prob-a-jackson-rollup"
+description = "Roll up jackson-core and jackson-annotations into parent jackson-databind framework component."
+phase = "bom_component"
+
+[rules.if]
+component_name_regex = "^jackson-(core|annotations)$"
+require_parent_component_regex = "^jackson-databind$"
+
+[rules.then]
+action = "ignore"
+comment = "Problem A: Subcomponent rolled up into parent jackson-databind framework entry."
+
+[[rules]]
+id = "enterprise-prob-c-n-minus-1-aliasing"
+description = "Ignore stale N-1 signature scan component when exact dependency match exists at a newer/different version."
+phase = "bom_component"
+
+[rules.if]
+require_newer_exact_dependency_present = true
+
+[rules.then]
+action = "ignore"
+comment = "Problem C: Prioritizing exact package manager dependency version over signature match."
+
+[[rules]]
+id = "enterprise-prob-c-filename-version-truth"
+description = "Comment on fuzzy signature match when prescan proves local archive/directory filename has a different version."
+phase = "bom_component"
+
+[rules.if]
+require_prescan_version_mismatch = true
+
+[rules.then]
+action = "comment"
+comment = "Problem C: Prescan filename inspection detected version difference against signature match; confirm in SCA Server."
+
+[[rules]]
+id = "enterprise-prob-d-dual-license-cpe-errata"
+description = "Resolve GPL dual-license ambiguity for enterprise commercial dual-licensed components."
+phase = "bom_component"
+
+[rules.if]
+component_name_regex = "^(OpenSSL|cURL|MySQL-Connector-Java)$"
+license_name_regex = ".*GPL.*"
+
+[rules.then]
+action = "mark_reviewed"
+comment = "Problem D: Resolved dual-license ambiguity under enterprise commercial exception per compliance policy."
