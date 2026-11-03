@@ -44,22 +44,28 @@ To test how an off-the-shelf LLM reads the report with zero extra coaching, we p
 
 ---
 
-## 3. Three Practical Takeaways From That Gemini Run
+## 3. Four Practical Takeaways From That Gemini Run
 
-Looking closely at the `madler/zlib` report and Gemini's summary highlights three questions that come up in real DevSecOps pipelines:
+Looking closely at the `madler/zlib` report and Gemini's summary highlights four questions that come up in real DevSecOps pipelines:
 
-### Takeaway A: "Doesn't Detect Come With Its Own Java?"
+### Takeaway A: How Did `sca-prescan` Map Those Two CVEs to `zlib` Without a Package Manager or Internet Connection?
+- Pure C repositories like `madler/zlib` have no `package-lock.json`, `pom.xml`, or `Cargo.lock`. Standard package-manager detectors return `0` components on them.
+- `sca-prescan` caught both CVEs in two **100% offline** steps:
+  - **Step 1 (C Version Header Extraction on Disk)**: While walking the file tree (`dpi.py`), whenever `sca-prescan` sees a C/C++ version header (`zlib.h`, `opensslv.h`, `curlver.h`, `expat.h`, `sqlite3.h`, or OpenSSL 3.x `VERSION.dat`), it parses the version macros directly from the file bytes (`_parse_c_version_header_bytes`). In `zlib.h`, it extracted `#define ZLIB_VERSION "1.2.11"`, mapped the `ZLIB_` macro prefix to component `"zlib"`, and recorded `internal_manifest:zlib.h` (`zlib 1.2.11`).
+  - **Step 2 (Offline Version-Range Match Against `pareto_vuln_kb.json`)**: Next, `vuln_matcher.py` compares every discovered `(component, version)` pair (`("zlib", "1.2.11")`) against `sca-prescan`'s built-in offline JSON catalog (`pareto_vuln_kb.json`, which holds 44 curated CVSS 9.8-10.0 / CISA-KEV rules). Because `1.2.11` falls inside `>=1.2.0,<=1.2.12` (`CVE-2022-37434`, CISA-KEV) and `>=1.0.0,<=1.3` (`CVE-2023-45853`), both rules matched immediately with **zero outbound network queries**. (We sync `pareto_vuln_kb.json` offline against the CISA KEV catalog via `update_pareto_vuln_kb.py`.)
+
+### Takeaway B: "Doesn't Detect Come With Its Own Java?"
 - **Why this trips people up**: Black Duck has **two separate Java processes** during a scan, and only one of them bundles Java:
   - **The Signature Scanner (`scan.cli.zip` / `scan.cli.sh`) DOES bundle its own Java (`jre/` folder)**: Once Detect is running, it downloads `scan.cli-<version>.zip` from your Black Duck server into `~/blackduck/tools/Black_Duck_Scan_Installation/`. Inside that zip is a private `jre/` directory that the Signature Scanner uses.
   - **The Detect Bootstrapper (`detect10.sh` / `detect11.sh` / `detect.jar`) does NOT bundle Java**: `detect.jar` is a standalone Spring Boot `.jar` file. The `detect10.sh` shell script looks for a host `java` binary (Java 11, 17, or 21) on `DETECT_JAVA_PATH`, `JAVA_HOME`, or `PATH` just to launch `java -jar detect.jar`.
 - **What happens in C/C++, Go, Rust, or Python CI containers**: Engineers know `scan.cli.zip` has an embedded JRE, so they run `detect10.sh` inside a minimal C/C++ or Go build container that has `gcc` or `go` installed but no host Java. `detect10.sh` immediately fails before it can even download `scan.cli.zip`.
 
-### Takeaway B: Why Did the Report Flag `512 MB RAM` and `Missing Java`? (CI Runner Mode vs. `--repo-only` Mode)
+### Takeaway C: Why Did the Report Flag `512 MB RAM` and `Missing Java`? (CI Runner Mode vs. `--repo-only` Mode)
 - By default, `sca-prescan` is designed to run **inside your actual CI build container** right before `detect.jar` runs. So it inspects both the **repository files** and the **host container environment** (`/sys/fs/cgroup/memory.max` RAM limits and host `java` availability).
 - Because we ran this blind challenge inside our own locked-down **512 MB RAM quarantine sandbox** on a Linux machine without Java installed, `sca-prescan` faithfully reported that the 512 MB sandbox container was too small to run the Detect JVM (`2,560 MB` minimum required) and lacked a host Java runtime. When we pasted that report into Gemini UI, Gemini naturally assumed those warnings described `zlib`'s CI runner rather than our test sandbox.
 - **How we fixed this**: `sca-prescan` now includes a `--repo-only` flag for external repo audits. When `--repo-only` is passed, `sca-prescan` skips local host RAM/Java checks and assumes a standard CI runner, while default mode keeps full host container RAM and Java checks active for real CI pipelines.
 
-### Takeaway C: Why Did a Pure C Library Trigger `unpinned_manifests_count: 1` and `--detect.detector.search.depth=3`?
+### Takeaway D: Why Did a Pure C Library Trigger `unpinned_manifests_count: 1` and `--detect.detector.search.depth=3`?
 - At first glance, `zlib` is a classic C library with a `Makefile` and `CMakeLists.txt` - why did `sca-prescan` count `1` unpinned package manifest at depth `3` and warn about `--detect.accuracy.required=ALL`?
 - Because buried three folders deep inside `madler/zlib` is `contrib/dotzlib/DotZLib/DotZLib.csproj` (a legacy C# wrapper for `zlib1.dll`).
 - If you run Detect with `--detect.detector.search.depth=3`, Detect's NuGet detector discovers `DotZLib.csproj`, tries to run the `.NET` build inspector, fails on a C build machine without the `.NET` SDK installed, and aborts the entire pipeline with **Exit Code 5 (`FAILURE_DETECTOR`)** or **Exit Code 15 (`FAILURE_ACCURACY_NOT_MET`)** unless you either scope your detector exclusions or pass `--detect.accuracy.required=NONE`.
@@ -68,7 +74,15 @@ Looking closely at the `madler/zlib` report and Gemini's summary highlights thre
 
 ## 4. Field-by-Field Legend: How Every Line Is Calculated & What Values to Expect
 
-### 4.1 YAML Header Legend (Top of `LLM_INGESTION_REPORT.md`)
+### 4.1 What "Scanned" Means (`total_dirs_scanned`, `total_files_scanned`, `total_workspace_mb`)
+
+When the report header says `total_dirs_scanned: 40`, `total_files_scanned: 254`, and `total_workspace_mb: 2.85`, `sca-prescan` did **not** just run `find . | wc -l`. Across those 254 files, it executed **four distinct offline passes**:
+- **Pass 1 (Directory, Manifest & Encoding Walk)**: Walked all 40 non-excluded directories and 254 files (`2.85 MB`), classified lockfiles vs. unpinned manifests (`DotZLib.csproj`), checked manifest byte encodings (`UTF-8` vs `UTF-16LE/BE` BOMs that break standard UTF-8 parsers), and measured the exact directory depths needed for `--detect.detector.search.depth`, `--detect.binary.scan.search.depth`, and `--detect.excluded.directories.search.depth`.
+- **Pass 2 (In-Memory Archive, Binary & Header Inspection)**: Opened archives (`.jar`, `.war`, `.whl`, `.tar.gz`, `.zip`, `.deb`, `.rpm`) and compiled binaries (`.so`, `.dll`, `.exe`) in memory without extracting files to disk, scanned class paths for shaded uber-JAR blind spots (`JndiLookup.class`), extracted ELF/PE/Mach-O binary version strings, parsed C/C++ version headers (`zlib.h`, `opensslv.h`, `VERSION.dat`, `curlver.h`), and inventoried legal/SPDX attribution files (`LICENSE`, `README`, `NOTICE`).
+- **Pass 3 (3-Layer Cryptographic Provenance Hashing)**: Hashed all 40 directory skeletons (`L0`, zero file reads), 100% of the 8 dependency-bearing inputs (`L1`), and all 254/254 source files (`L2`, `100.0%` coverage).
+- **Pass 4 (Offline Version-Range & Rugpull Matching)**: Checked all discovered `(component, version)` pairs offline against `pareto_vuln_kb.json` and `pareto_license_kb.json` (`0` outbound network calls).
+
+### 4.2 YAML Header Legend (Top of `LLM_INGESTION_REPORT.md`)
 
 Every `LLM_INGESTION_REPORT.md` starts with a flat YAML block so scripts, CI gates, and LLMs can read exact integer counts without guessing or counting Markdown rows.
 
@@ -85,8 +99,10 @@ Every `LLM_INGESTION_REPORT.md` starts with a flat YAML block so scripts, CI gat
 | `effective_detect_config_sha256` (`CFG`) | `98b04404b51e...` (64 hex chars) | **Scanner Flag Fingerprint**: SHA-256 of the sorted, canonical Detect CLI flags (`--detect.*`), excluding timestamp/notes flags. | Compare `CFG_current == CFG_baseline` in CI to verify nobody quietly injected a "silencer" flag (like `--detect.excluded.directories=vendor` or `--detect.detector.search.depth=0`) to hide alerts. |
 | `coverage_pct` | `100.0` | `(files_hashed_in_L2 / files_discovered) * 100`. Note: `L0` and `L1` always cover 100% of discovered folders and dependency inputs regardless of this number. | `== 100.0` for repos with `<= 5,000` files. For monorepos `> 5,000` files, `coverage_pct < 100.0` is normal and expected (`early_stop_triggered: true`). |
 | `early_stop_triggered` | `false` | `true` if `L2` source-file hashing hit the `5,000`-file or `5.0`-second time cap; `false` if every source file was hashed. | `false` for small/medium repos; `true` for large monorepos (prevents pre-scan from slowing down CI). |
-| `total_dirs_scanned` | `40` | Total directories visited (excluding `.git`, `.venv`, `__pycache__`, etc.). | Informational folder count. |
-| `total_files_scanned` | `254` | Total files inspected across the workspace. | **Best Practice Threshold**: Keep a single Signature Scan `<= 10,000` files and `<= 1 GB`. Above `10,000` files, `sca-prescan` emits `MONOREPO_SCAN_SPLIT_RECOMMENDATION`. |
+| `total_dirs_scanned` | `40` | Total directories visited across the 4 passes above (excluding `.git`, `.venv`, `__pycache__`, etc.). | Informational folder count. |
+| `total_files_scanned` | `254` | Total files inspected across the 4 passes above. | **Best Practice Threshold**: Keep a single Signature Scan `<= 10,000` files and `<= 1 GB`. Above `10,000` files, `sca-prescan` emits `MONOREPO_SCAN_SPLIT_RECOMMENDATION`. |
+| `total_workspace_mb` | `2.85` | Total size in megabytes (`round(total_workspace_bytes / (1024 * 1024), 2)`) of all inspected files on disk. | **Best Practice Threshold**: `<= 1024.0` MB (`1 GB`) per Signature Scan invocation. |
+| `dependency_inputs_hashed_count` | `8` | Total count of dependency-bearing files (lockfiles, manifests, build files, C headers, archives, binaries) hashed into Layer 1 (`L1`). | Shows how many distinct files control the BOM for this workspace. |
 | `lockfiles_count` | `0` | Number of pinned lockfiles found (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `go.sum`, `Cargo.lock`, `poetry.lock`, `uv.lock`, `gradle.lockfile`, etc.). | Ideally `>= unpinned_manifests_count`. Lockfiles let buildless scans resolve exact transitive dependency trees without running a compiler. |
 | `unpinned_manifests_count` | `1` | Number of unpinned project manifests found (`pom.xml`, `build.gradle`, `package.json`, `requirements.txt`, `pyproject.toml`, `.csproj`, `conanfile.py`, etc.). In `zlib`, this was `contrib/dotzlib/DotZLib/DotZLib.csproj`. | If `> 0` without matching lockfiles, your CI runner must either have the matching build tool installed (`mvn`, `gradle`, `dotnet`, `pip`) or pass `--detect.accuracy.required=NONE`. |
 | `expected_min_bom_components` | `0` | **Pre-Scan BOM Floor**: Sum of unique direct dependencies declared in manifests plus locked entries in lockfiles across all subprojects (`0` for `zlib` because `DotZLib.csproj` declares zero external NuGet packages and C code has no package lockfile). | **Post-Scan Completeness Check**: After your scanner finishes, check that `actual_bom_components >= expected_min_bom_components`. If your scanner reports `0` components when `expected_min_bom_components` is `350`, a detector failed silently. |
