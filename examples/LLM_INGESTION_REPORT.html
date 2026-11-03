@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCA Pre-Flight &amp; File Disposition Report (sca_preflight_reference_scan)</title>
+  <script type="application/ld+json" id="sca-ops-ai-brief-json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "schema": "sca-ops-ai-brief/v1",
+  "workspace_name": "sca_preflight_reference_scan",
+  "dlp_sanitized": true,
+  "host_paths_stripped": true,
+  "scan_input_provenance": {
+    "multilayer_codebase_signature": "sca-sig:v2:L0=35a527e1d2b5:L1=9c52bea95b81:L2=9c52bea95b81:CFG=2adcf6e44988@d3(100.0%)",
+    "topology_skeleton_sha256": "35a527e1d2b54db1e3a43418804fe3f054719595c872cf95ac5ddce52e26e9d1",
+    "workspace_tree_merkle_sha256": "9c52bea95b81847932784ff9acf167f17929077c9d47992f2ea0eb04f3788cc7",
+    "dependency_inputs_merkle_sha256": "9c52bea95b81847932784ff9acf167f17929077c9d47992f2ea0eb04f3788cc7",
+    "effective_detect_config_sha256": "2adcf6e44988ff2a5c42cefade661dd8c321d5c11369e759349879c0ad4647a0",
+    "files_discovered_count": 24,
+    "files_hashed_count": 24,
+    "dependency_inputs_hashed_count": 24,
+    "dependency_input_paths": [
+      "mode_1_knowns/lib/activemq-client-5.18.2.jar",
+      "mode_1_knowns/lib/bcprov-jdk15on-1.66.jar",
+      "mode_1_knowns/lib/commons-text-1.9.jar",
+      "mode_1_knowns/lib/itextpdf-5.5.13.3.jar",
+      "mode_1_knowns/lib/log4j-core-2.14.1.jar",
+      "mode_1_knowns/lib/mysql-connector-j-8.0.33.jar",
+      "mode_1_knowns/lib/postgresql-42.2.18.jar",
+      "mode_1_knowns/lib/snakeyaml-1.33.jar",
+      "mode_1_knowns/lib/spring-beans-5.3.17.jar",
+      "mode_1_knowns/services/ingress_proxy/go.mod",
+      "mode_2_unknowns/services/auth_worker/requirements.txt",
+      "mode_2_unknowns/services/ingress_proxy/go.mod",
+      "mode_2_unknowns/vendor/archives/PyYAML-5.3.1.tar.gz",
+      "mode_2_unknowns/vendor/archives/curl-8.3.0.tar.gz",
+      "mode_2_unknowns/vendor/archives/expat-2.6.2.tar.gz",
+      "mode_2_unknowns/vendor/archives/openssl-3.0.4.tar.gz",
+      "mode_2_unknowns/vendor/archives/readline-8.2.tar.gz",
+      "mode_2_unknowns/vendor/archives/zlib-1.2.11.tar.gz",
+      "mode_2_unknowns/vendor/native/libdb_storage_kv.so",
+      "mode_2_unknowns/vendor/native/libstorage_compress.so",
+      "mode_2_unknowns/vendor/npm_cache/cross-spawn-7.0.4.tgz",
+      "mode_2_unknowns/vendor/npm_cache/lodash-4.17.19.tgz",
+      "mode_2_unknowns/vendor/nuget_feed/newtonsoft.json.12.0.3.nupkg",
+      "mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar"
+    ],
+    "dependency_inputs_bytes": 10076,
+    "total_bytes_hashed": 10076,
+    "coverage_pct": 100.0,
+    "early_stop_triggered": false,
+    "max_depth_reached": 3,
+    "threads_used": 16,
+    "effective_detect_arguments": [
+      "--detect.binary.scan.search.depth=3",
+      "--detect.blackduck.signature.scanner.individual.file.matching=BINARY",
+      "--detect.blackduck.signature.scanner.memory=4096",
+      "--detect.blackduck.signature.scanner.parallel.processors=1",
+      "--detect.detector.search.depth=3"
+    ],
+    "bd_ui_version_notes_arg": "--detect.project.version.notes=sca-ops-provenance:sca-sig:v2:L0=35a527e1d2b5:L1=9c52bea95b81:L2=9c52bea95b81:CFG=2adcf6e44988@d3(100.0%);tree_merkle=sha256:9c52bea95b818479;dep_merkle=sha256:9c52bea95b818479;cfg_sha256=2adcf6e44988ff2a;files=24/24;dep_inputs=24"
+  },
+  "file_accounting": {
+    "total_dirs_scanned": 15,
+    "total_files_scanned": 24,
+    "total_workspace_mb": 0.01,
+    "bucket_1_excluded_dirs": {
+      "count": 0,
+      "directories": [],
+      "prescan_action": "Saw 0 non-shipping folder(s) (none), skipped traversal, and added to --detect.excluded.directories.",
+      "default_detect_action": "Skips .git by default, but traverses .venv, venv, or unlocked node_modules unless explicitly excluded."
+    },
+    "bucket_2a_actionable_l1_files": {
+      "count": 24,
+      "size_mb": 0.01,
+      "prescan_action": "Hashed 100% into Layer 1 (L1) and extracted BOM baselines, C/C++ header versions, archive/binary metadata, and 27 CVE / 8 license hit(s).",
+      "default_detect_action": "DETECTOR only processes root (depth=0) package manifests; SILENTLY IGNORES depth>=1 manifests, UTF-16 manifests, C/C++ version headers, CMake/Makefiles, and standalone binaries (--individualFileMatching=NONE)."
+    },
+    "bucket_2b_provenance_only_l2_files": {
+      "count": 0,
+      "size_mb": 0.0,
+      "prescan_action": "Hashed 0 first-party source/doc files into Layer 2 (L2) and scanned for embedded private keys (0 third-party BOM declarations).",
+      "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole."
+    },
+    "bucket_3_early_stop_unhashed_files": {
+      "count": 0,
+      "prescan_action": "0 files skipped (100% hashed).",
+      "default_detect_action": "Signature Scanner hashes all files; >10,000 files or >1 GB in one scan risks server queue timeouts."
+    },
+    "actionable_files_ledger": [
+      {
+        "path": "mode_1_knowns/lib/activemq-client-5.18.2.jar",
+        "depth": 2,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2023-46604 (CVSS 10.0, CISA-KEV).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_1_knowns/lib/bcprov-jdk15on-1.66.jar",
+        "depth": 2,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2020-28052 (CVSS 9.8).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_1_knowns/lib/commons-text-1.9.jar",
+        "depth": 2,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-42889 (CVSS 9.8, CISA-KEV). Flagged blind-spot trap: CVE-2022-42889.",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_1_knowns/lib/itextpdf-5.5.13.3.jar",
+        "depth": 2,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-DPI-AGPL-3_0 (AGPL-3.0), LIC-RUGPULL-ITEXT-AGPL (AGPL-3.0-only).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_1_knowns/lib/log4j-core-2.14.1.jar",
+        "depth": 2,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-44228 (CVSS 10.0, CISA-KEV). Flagged blind-spot trap: CVE-2021-44228.",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_1_knowns/lib/mysql-connector-j-8.0.33.jar",
+        "depth": 2,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-COPYLEFT-MYSQL-CONNECTOR-GPL2 (GPL-2.0-only (Universal FOSS Exception)).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_1_knowns/lib/postgresql-42.2.18.jar",
+        "depth": 2,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-21724 (CVSS 9.8). Flagged blind-spot trap: CVE-2022-21724.",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_1_knowns/lib/snakeyaml-1.33.jar",
+        "depth": 2,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-1471 (CVSS 9.8).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_1_knowns/lib/spring-beans-5.3.17.jar",
+        "depth": 2,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-22965 (CVSS 9.8, CISA-KEV). Flagged blind-spot trap: CVE-2022-22965.",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_1_knowns/services/ingress_proxy/go.mod",
+        "depth": 3,
+        "bucket": "2a-i Unpinned Manifest",
+        "prescan_action": "Unpinned manifest (2 direct dep(s), encoding=utf-8, depth=3); hashed into L1. Matched license risk: LIC-RUGPULL-MINIO-AGPL (AGPL-3.0-only), LIC-RUGPULL-HASHICORP-BSL (BSL-1.1).",
+        "default_detect_action": "SILENTLY IGNORED by DETECTOR at default --detect.detector.search.depth=0 (located at depth 3); if depth>=3 is set without build tools installed, risks Exit Code 5/15 (FAILURE_ACCURACY_NOT_MET)."
+      },
+      {
+        "path": "mode_2_unknowns/services/auth_worker/requirements.txt",
+        "depth": 3,
+        "bucket": "2a-i Unpinned Manifest",
+        "prescan_action": "Unpinned manifest (3 direct dep(s), encoding=utf-16-le, depth=3); hashed into L1. Matched vulnerability: CVE-2020-14343 (CVSS 9.8), CVE-2023-45803 (CVSS 7.5), CVE-2023-49083 (CVSS 7.5).",
+        "default_detect_action": "SILENTLY CORRUPTED / 0% BOM MATCH (utf-16-le encoding breaks default UTF-8 parser)."
+      },
+      {
+        "path": "mode_2_unknowns/services/ingress_proxy/go.mod",
+        "depth": 3,
+        "bucket": "2a-i Unpinned Manifest",
+        "prescan_action": "Unpinned manifest (3 direct dep(s), encoding=utf-8, depth=3); hashed into L1. Matched vulnerability: CVE-2023-39325 (CVSS 7.5, CISA-KEV), CVE-2023-45288 (CVSS 7.5), CVE-2024-24786 (CVSS 7.5).",
+        "default_detect_action": "SILENTLY IGNORED by DETECTOR at default --detect.detector.search.depth=0 (located at depth 3); if depth>=3 is set without build tools installed, risks Exit Code 5/15 (FAILURE_ACCURACY_NOT_MET)."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/archives/PyYAML-5.3.1.tar.gz",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2020-14343 (CVSS 9.8).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/archives/curl-8.3.0.tar.gz",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2023-38545 (CVSS 9.8, CISA-KEV).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/archives/expat-2.6.2.tar.gz",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2024-45490 (CVSS 9.8).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/archives/openssl-3.0.4.tar.gz",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-2274 (CVSS 9.8), CVE-2022-3602 (CVSS 7.5).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/archives/readline-8.2.tar.gz",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-COPYLEFT-GNU-READLINE-GPL3 (GPL-3.0-only), LIC-DPI-GPL-3_0 (GPL-3.0).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/archives/zlib-1.2.11.tar.gz",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-37434 (CVSS 9.8, CISA-KEV), CVE-2023-45853 (CVSS 9.8).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/native/libdb_storage_kv.so",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-RUGPULL-REDIS-RSAL-SSPL (RSALv2 / SSPL-1.0).",
+        "default_detect_action": "SILENTLY IGNORED by Signature Scanner default --individualFileMatching=NONE (omits single-file SHA-1 checksums)."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/native/libstorage_compress.so",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-37434 (CVSS 9.8, CISA-KEV), CVE-2023-45853 (CVSS 9.8).",
+        "default_detect_action": "SILENTLY IGNORED by Signature Scanner default --individualFileMatching=NONE (omits single-file SHA-1 checksums)."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/npm_cache/cross-spawn-7.0.4.tgz",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2024-21538 (CVSS 9.8).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/npm_cache/lodash-4.17.19.tgz",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-23337 (CVSS 9.8).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/nuget_feed/newtonsoft.json.12.0.3.nupkg",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Extracted `Newtonsoft.Json 12.0.3` (nuspec). Matched vulnerability: CVE-2024-21907 (CVSS 7.5).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      },
+      {
+        "path": "mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar",
+        "depth": 3,
+        "bucket": "2a-iii Archive / Binary",
+        "prescan_action": "Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-44228 (CVSS 10.0, CISA-KEV), CVE-2022-42889 (CVSS 9.8, CISA-KEV).",
+        "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA."
+      }
+    ]
+  },
+  "detect_argument_plan": {
+    "effective_recommended_arguments": [
+      "--detect.detector.search.depth=3",
+      "--detect.blackduck.signature.scanner.memory=4096",
+      "--detect.blackduck.signature.scanner.parallel.processors=1",
+      "--detect.binary.scan.search.depth=3",
+      "--detect.blackduck.signature.scanner.individual.file.matching=BINARY"
+    ],
+    "baseline_safe_arguments": [
+      "--detect.blackduck.signature.scanner.memory=4096",
+      "--detect.blackduck.signature.scanner.parallel.processors=1"
+    ],
+    "optional_coverage_tweaks": [
+      {
+        "argument": "--detect.detector.search.depth=3",
+        "property": "--detect.detector.search.depth",
+        "unlocks": "Discovers nested manifests/lockfiles down to directory depth 3 (default is 0, which silently ignores subdirectories).",
+        "tradeoff": "Increases detector filesystem walk and subproject inspector invocations across nested folders."
+      },
+      {
+        "argument": "--detect.binary.scan.search.depth=3",
+        "property": "--detect.binary.scan.search.depth",
+        "unlocks": "Discovers binary/archive artifacts down to directory depth 3 for BINARY_SCAN (default is 0).",
+        "tradeoff": "Uploads all matching nested archives when BINARY_SCAN is enabled."
+      },
+      {
+        "argument": "--detect.blackduck.signature.scanner.individual.file.matching=BINARY",
+        "property": "--detect.blackduck.signature.scanner.individual.file.matching",
+        "unlocks": "Computes single-file SHA-1 checksums for standalone binaries (.so, .dll, .exe, .o) omitted by default NONE.",
+        "tradeoff": "Adds per-file SHA-1 matching overhead during Signature Scanning."
+      }
+    ],
+    "already_configured_by_customer": [],
+    "additive_merge_notes": []
+  },
+  "expected_bom_baseline": {
+    "expected_code_locations": 3,
+    "total_locked_components": 0,
+    "total_unpinned_direct_dependencies": 8,
+    "expected_min_total_components": 8,
+    "subprojects": [
+      {
+        "directory": "mode_1_knowns/services/ingress_proxy",
+        "ecosystem": "GO",
+        "lockfiles": [],
+        "manifests": [
+          "mode_1_knowns/services/ingress_proxy/go.mod"
+        ],
+        "locked_count": 0,
+        "direct_manifest_count": 2,
+        "expected_min_components": 2,
+        "reason": "mode_1_knowns/services/ingress_proxy/go.mod declares 2 direct dependency(s); no lockfile"
+      },
+      {
+        "directory": "mode_2_unknowns/services/auth_worker",
+        "ecosystem": "PYTHON",
+        "lockfiles": [],
+        "manifests": [
+          "mode_2_unknowns/services/auth_worker/requirements.txt"
+        ],
+        "locked_count": 0,
+        "direct_manifest_count": 3,
+        "expected_min_components": 3,
+        "reason": "mode_2_unknowns/services/auth_worker/requirements.txt declares 3 direct dependency(s); no lockfile"
+      },
+      {
+        "directory": "mode_2_unknowns/services/ingress_proxy",
+        "ecosystem": "GO",
+        "lockfiles": [],
+        "manifests": [
+          "mode_2_unknowns/services/ingress_proxy/go.mod"
+        ],
+        "locked_count": 0,
+        "direct_manifest_count": 3,
+        "expected_min_components": 3,
+        "reason": "mode_2_unknowns/services/ingress_proxy/go.mod declares 3 direct dependency(s); no lockfile"
+      }
+    ],
+    "summary_statement": "You should expect a BOM of at least 8 component version(s) across 3 code location(s) (0 locked + 8 direct unpinned), and here is why:"
+  },
+  "actionable_vulnerabilities": [
+    {
+      "cve_id": "CVE-2020-14343",
+      "component": "pyyaml",
+      "installed_version": "5.3.1",
+      "fixed_in_version": "5.4",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-502",
+      "evidence_source": "assertion+tarball:mode_2_unknowns/vendor/archives/PyYAML-5.3.1.tar.gz",
+      "actionable_remedy": "Upgrade PyYAML to 5.4 or higher and use yaml.safe_load.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2020-14343",
+      "component": "pyyaml",
+      "installed_version": "5.3.1",
+      "fixed_in_version": "5.4",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-502",
+      "evidence_source": "manifest:mode_2_unknowns/services/auth_worker/requirements.txt",
+      "actionable_remedy": "Upgrade PyYAML to 5.4 or higher and use yaml.safe_load.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2020-28052",
+      "component": "bcprov-jdk15on",
+      "installed_version": "1.66",
+      "fixed_in_version": "1.67",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-287",
+      "evidence_source": "archive+archive_maven+assertion:mode_1_knowns/lib/bcprov-jdk15on-1.66.jar",
+      "actionable_remedy": "Upgrade BouncyCastle bcprov-jdk15on to 1.67 or bcprov-jdk18on 1.78+.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2021-23337",
+      "component": "lodash",
+      "installed_version": "4.17.19",
+      "fixed_in_version": "4.17.21",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-77",
+      "evidence_source": "assertion:mode_2_unknowns/vendor/npm_cache/lodash-4.17.19.tgz",
+      "actionable_remedy": "Upgrade lodash to 4.17.21 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2021-44228",
+      "component": "log4j-core",
+      "installed_version": "2.14.1",
+      "fixed_in_version": "2.17.1",
+      "cvss": 10.0,
+      "cisa_kev": true,
+      "cwe": "CWE-502",
+      "evidence_source": "archive+archive_maven+assertion:mode_1_knowns/lib/log4j-core-2.14.1.jar",
+      "actionable_remedy": "Upgrade log4j-core to 2.17.1 or higher (or 2.12.4 for Java 7).",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2021-44228",
+      "component": "log4j-core",
+      "installed_version": "2.14.1",
+      "fixed_in_version": "2.17.1",
+      "cvss": 10.0,
+      "cisa_kev": true,
+      "cwe": "CWE-502",
+      "evidence_source": "archive_maven:mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar",
+      "actionable_remedy": "Upgrade log4j-core to 2.17.1 or higher (or 2.12.4 for Java 7).",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2022-1471",
+      "component": "snakeyaml",
+      "installed_version": "1.33",
+      "fixed_in_version": "2.0",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-502",
+      "evidence_source": "archive+archive_maven+assertion:mode_1_knowns/lib/snakeyaml-1.33.jar",
+      "actionable_remedy": "Upgrade SnakeYAML to 2.0 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2022-21724",
+      "component": "postgresql",
+      "installed_version": "42.2.18",
+      "fixed_in_version": "42.2.25",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-Unknown",
+      "evidence_source": "archive+archive_maven+assertion:mode_1_knowns/lib/postgresql-42.2.18.jar",
+      "actionable_remedy": "Upgrade postgresql to 42.2.25 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2022-2274",
+      "component": "openssl",
+      "installed_version": "3.0.4",
+      "fixed_in_version": "3.0.5",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-787",
+      "evidence_source": "assertion+tarball:mode_2_unknowns/vendor/archives/openssl-3.0.4.tar.gz",
+      "actionable_remedy": "Upgrade OpenSSL to 3.0.5 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2022-22965",
+      "component": "spring-beans",
+      "installed_version": "5.3.17",
+      "fixed_in_version": "5.3.18",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-94",
+      "evidence_source": "archive+archive_maven+assertion:mode_1_knowns/lib/spring-beans-5.3.17.jar",
+      "actionable_remedy": "Upgrade spring-beans/spring-webmvc to 5.3.18 or 5.2.20 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2022-3602",
+      "component": "openssl",
+      "installed_version": "3.0.4",
+      "fixed_in_version": "3.0.7",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-122",
+      "evidence_source": "assertion+tarball:mode_2_unknowns/vendor/archives/openssl-3.0.4.tar.gz",
+      "actionable_remedy": "Upgrade OpenSSL to 3.0.7 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2022-37434",
+      "component": "zlib",
+      "installed_version": "1.2.11",
+      "fixed_in_version": "1.2.12.1",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-122",
+      "evidence_source": "assertion+tarball:mode_2_unknowns/vendor/archives/zlib-1.2.11.tar.gz",
+      "actionable_remedy": "Upgrade zlib to 1.2.12.1, 1.2.13, or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2022-37434",
+      "component": "zlib",
+      "installed_version": "1.2.11",
+      "fixed_in_version": "1.2.12.1",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-122",
+      "evidence_source": "binary_catalog:mode_2_unknowns/vendor/native/libstorage_compress.so",
+      "actionable_remedy": "Upgrade zlib to 1.2.12.1, 1.2.13, or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2022-42889",
+      "component": "commons-text",
+      "installed_version": "1.9",
+      "fixed_in_version": "1.10.0",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-94",
+      "evidence_source": "archive+archive_maven+assertion:mode_1_knowns/lib/commons-text-1.9.jar",
+      "actionable_remedy": "Upgrade commons-text to 1.10.0 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2022-42889",
+      "component": "commons-text",
+      "installed_version": "1.9",
+      "fixed_in_version": "1.10.0",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-94",
+      "evidence_source": "archive_maven:mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar",
+      "actionable_remedy": "Upgrade commons-text to 1.10.0 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2023-38545",
+      "component": "curl",
+      "installed_version": "8.3.0",
+      "fixed_in_version": "8.4.0",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-122",
+      "evidence_source": "assertion+tarball:mode_2_unknowns/vendor/archives/curl-8.3.0.tar.gz",
+      "actionable_remedy": "Upgrade curl / libcurl to 8.4.0 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2023-39325",
+      "component": "golang.org/x/net",
+      "installed_version": "v0.16.0",
+      "fixed_in_version": "v0.17.0",
+      "cvss": 7.5,
+      "cisa_kev": true,
+      "cwe": "CWE-400",
+      "evidence_source": "manifest:mode_2_unknowns/services/ingress_proxy/go.mod",
+      "actionable_remedy": "Upgrade golang.org/x/net to v0.17.0 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2023-45288",
+      "component": "golang.org/x/net",
+      "installed_version": "v0.16.0",
+      "fixed_in_version": "v0.23.0",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-400",
+      "evidence_source": "manifest:mode_2_unknowns/services/ingress_proxy/go.mod",
+      "actionable_remedy": "Upgrade golang.org/x/net to v0.23.0 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2023-45803",
+      "component": "urllib3",
+      "installed_version": "1.26.4",
+      "fixed_in_version": "2.0.7",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-200",
+      "evidence_source": "manifest:mode_2_unknowns/services/auth_worker/requirements.txt",
+      "actionable_remedy": "Upgrade urllib3 to 1.26.18, 2.0.7, or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2023-45853",
+      "component": "zlib",
+      "installed_version": "1.2.11",
+      "fixed_in_version": "1.3.1",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-190",
+      "evidence_source": "assertion+tarball:mode_2_unknowns/vendor/archives/zlib-1.2.11.tar.gz",
+      "actionable_remedy": "Upgrade zlib / MiniZip to 1.3.1 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2023-45853",
+      "component": "zlib",
+      "installed_version": "1.2.11",
+      "fixed_in_version": "1.3.1",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-190",
+      "evidence_source": "binary_catalog:mode_2_unknowns/vendor/native/libstorage_compress.so",
+      "actionable_remedy": "Upgrade zlib / MiniZip to 1.3.1 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2023-46604",
+      "component": "activemq-client",
+      "installed_version": "5.18.2",
+      "fixed_in_version": "5.18.3",
+      "cvss": 10.0,
+      "cisa_kev": true,
+      "cwe": "CWE-502",
+      "evidence_source": "archive+archive_maven+assertion:mode_1_knowns/lib/activemq-client-5.18.2.jar",
+      "actionable_remedy": "Upgrade ActiveMQ client and broker to 5.18.3, 5.17.6, or 5.16.7 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2023-49083",
+      "component": "cryptography",
+      "installed_version": "41.0.5",
+      "fixed_in_version": "41.0.6",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-476",
+      "evidence_source": "manifest:mode_2_unknowns/services/auth_worker/requirements.txt",
+      "actionable_remedy": "Upgrade cryptography to 41.0.6 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2024-21538",
+      "component": "cross-spawn",
+      "installed_version": "7.0.4",
+      "fixed_in_version": "7.0.5",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-78",
+      "evidence_source": "assertion:mode_2_unknowns/vendor/npm_cache/cross-spawn-7.0.4.tgz",
+      "actionable_remedy": "Upgrade cross-spawn to 7.0.5 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2024-21907",
+      "component": "newtonsoft.json",
+      "installed_version": "12.0.3",
+      "fixed_in_version": "13.0.1",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-755",
+      "evidence_source": "internal_manifest:mode_2_unknowns/vendor/nuget_feed/newtonsoft.json.12.0.3.nupkg!/Newtonsoft.Json.nuspec",
+      "actionable_remedy": "Upgrade Newtonsoft.Json to 13.0.1 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2024-24786",
+      "component": "google.golang.org/protobuf",
+      "installed_version": "v1.31.0",
+      "fixed_in_version": "v1.33.0",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-835",
+      "evidence_source": "manifest:mode_2_unknowns/services/ingress_proxy/go.mod",
+      "actionable_remedy": "Upgrade google.golang.org/protobuf to v1.33.0 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "cve_id": "CVE-2024-45490",
+      "component": "expat",
+      "installed_version": "2.6.2",
+      "fixed_in_version": "2.6.3",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-190",
+      "evidence_source": "assertion+tarball:mode_2_unknowns/vendor/archives/expat-2.6.2.tar.gz",
+      "actionable_remedy": "Upgrade libexpat to 2.6.3 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed Black Duck SCA Server and KnowledgeBase."
+    }
+  ],
+  "actionable_license_risks": [
+    {
+      "rule_id": "LIC-DPI-AGPL-3_0",
+      "component": "itextpdf-5.5.13.3.jar",
+      "installed_version": "detected_in_text",
+      "license_id": "AGPL-3.0",
+      "previous_license": "",
+      "severity": "CRITICAL",
+      "safe_version_hint": "Review reciprocal license obligations with legal counsel or isolate/replace component.",
+      "summary": "Network copyleft (AGPL-3.0) detected; embedding or modifying in commercial appliances/services triggers full source-code disclosure obligations.",
+      "evidence_source": "license_text:mode_1_knowns/lib/itextpdf-5.5.13.3.jar!/META-INF/LICENSE.txt",
+      "confirmation_guidance": "Confirm license text match and obligation scope using your licensed Black Duck SCA Server."
+    },
+    {
+      "rule_id": "LIC-RUGPULL-ITEXT-AGPL",
+      "component": "itextpdf",
+      "installed_version": "5.5.13.3",
+      "license_id": "AGPL-3.0-only",
+      "previous_license": "MPL-1.1 / LGPL-2.0 (iText 2.1.7)",
+      "severity": "CRITICAL",
+      "safe_version_hint": "OpenPDF (LGPL/MPL fork of iText 2.1.7) or Apache PDFBox (Apache-2.0)",
+      "summary": "iText 5.x/7.x/8.x is licensed under AGPL-3.0-only unless a paid commercial iText license is held.",
+      "evidence_source": "archive+archive_maven+assertion:mode_1_knowns/lib/itextpdf-5.5.13.3.jar",
+      "confirmation_guidance": "Confirm component license terms, commercial exceptions, and policy status using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "rule_id": "LIC-RUGPULL-MINIO-AGPL",
+      "component": "minio",
+      "installed_version": "v0.0.0-20240310000000-111111111111",
+      "license_id": "AGPL-3.0-only",
+      "previous_license": "Apache-2.0",
+      "severity": "CRITICAL",
+      "safe_version_hint": "Verify commercial license agreement or isolate via strict out-of-process network boundary per legal review",
+      "summary": "MinIO relicensed from Apache-2.0 to AGPL-3.0-only; embedding or modifying in commercial storage appliances carries strict network copyleft obligations.",
+      "evidence_source": "manifest:mode_1_knowns/services/ingress_proxy/go.mod",
+      "confirmation_guidance": "Confirm component license terms, commercial exceptions, and policy status using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "rule_id": "LIC-RUGPULL-REDIS-RSAL-SSPL",
+      "component": "redis",
+      "installed_version": "7.4.0",
+      "license_id": "RSALv2 / SSPL-1.0",
+      "previous_license": "BSD-3-Clause",
+      "severity": "CRITICAL",
+      "safe_version_hint": "Redis <= 7.2.x (BSD-3-Clause) or Valkey (BSD-3-Clause)",
+      "summary": "Redis 7.4.0+ relicensed from BSD-3-Clause to dual RSALv2 / SSPL-1.0; restricts commercial managed/embedded distribution.",
+      "evidence_source": "binary_banner:mode_2_unknowns/vendor/native/libdb_storage_kv.so",
+      "confirmation_guidance": "Confirm component license terms, commercial exceptions, and policy status using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "rule_id": "LIC-COPYLEFT-GNU-READLINE-GPL3",
+      "component": "readline",
+      "installed_version": "8.2",
+      "license_id": "GPL-3.0-only",
+      "previous_license": "GPL-3.0-only (not LGPL)",
+      "severity": "HIGH",
+      "safe_version_hint": "Replace libreadline with BSD-licensed libedit (editline) or linenoise",
+      "summary": "GNU Readline is licensed under full GPL-3.0 (NOT LGPL); linking libreadline.so into a proprietary CLI binary requires full source disclosure.",
+      "evidence_source": "assertion+tarball:mode_2_unknowns/vendor/archives/readline-8.2.tar.gz",
+      "confirmation_guidance": "Confirm component license terms, commercial exceptions, and policy status using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "rule_id": "LIC-COPYLEFT-MYSQL-CONNECTOR-GPL2",
+      "component": "mysql-connector-java",
+      "installed_version": "8.0.33",
+      "license_id": "GPL-2.0-only (Universal FOSS Exception)",
+      "previous_license": "GPL-2.0-only",
+      "severity": "HIGH",
+      "safe_version_hint": "Replace with MariaDB Connector/J (LGPL-2.1) or verify Oracle commercial/FOSS exception eligibility",
+      "summary": "MySQL Connector/J is licensed under GPL-2.0-only; shipping in a closed-source commercial product without an Oracle commercial license or qualifying FOSS exception violates GPL-2.0.",
+      "evidence_source": "archive+archive_maven+assertion:mode_1_knowns/lib/mysql-connector-j-8.0.33.jar",
+      "confirmation_guidance": "Confirm component license terms, commercial exceptions, and policy status using your licensed Black Duck SCA Server and KnowledgeBase."
+    },
+    {
+      "rule_id": "LIC-DPI-GPL-3_0",
+      "component": "readline-8.2.tar.gz",
+      "installed_version": "detected_in_text",
+      "license_id": "GPL-3.0",
+      "previous_license": "",
+      "severity": "HIGH",
+      "safe_version_hint": "Review reciprocal license obligations with legal counsel or isolate/replace component.",
+      "summary": "Strong reciprocal copyleft (GPL-3.0) with anti-tivoization (installation information) clauses detected.",
+      "evidence_source": "license_text:mode_2_unknowns/vendor/archives/readline-8.2.tar.gz!/readline-8.2/COPYING",
+      "confirmation_guidance": "Confirm license text match and obligation scope using your licensed Black Duck SCA Server."
+    },
+    {
+      "rule_id": "LIC-RUGPULL-HASHICORP-BSL",
+      "component": "vault",
+      "installed_version": "v1.16.0",
+      "license_id": "BSL-1.1",
+      "previous_license": "MPL-2.0",
+      "severity": "HIGH",
+      "safe_version_hint": "OpenBao (MPL-2.0 fork of Vault) or pre-BSL MPL-2.0 releases",
+      "summary": "HashiCorp Vault/Consul/Nomad 1.15+ relicensed from MPL-2.0 to Business Source License (BSL-1.1).",
+      "evidence_source": "manifest:mode_1_knowns/services/ingress_proxy/go.mod",
+      "confirmation_guidance": "Confirm component license terms, commercial exceptions, and policy status using your licensed Black Duck SCA Server and KnowledgeBase."
+    }
+  ],
+  "operational_warnings": [
+    "NON_UTF8_MANIFEST_WARNING: Manifest 'mode_2_unknowns/services/auth_worker/requirements.txt' is encoded in utf-16-le instead of UTF-8 (common with Windows PowerShell 'pip freeze > requirements.txt'). Default UTF-8 manifest parsers emit null-byte-corrupted BDIO identifiers ('\\u0000') when reading UTF-16 files, causing 0% of dependencies in 'mode_2_unknowns/services/auth_worker/requirements.txt' to match in the BOM unless converted to UTF-8.",
+    "Unpinned package manifests detected (mode_1_knowns/services/ingress_proxy/go.mod, mode_2_unknowns/services/auth_worker/requirements.txt, mode_2_unknowns/services/ingress_proxy/go.mod). Detect 10 defaults to --detect.accuracy.required=ALL (HIGH), which will exit with Code 5 (FAILURE_DETECTOR: Accuracy Not Met) or Exit Code 15 (FAILURE_ACCURACY_NOT_MET) if package manager executables (pip, npm, go, mvn, gradle, cargo, dotnet, bazel, conan, bundle) or installed environments are missing unless --detect.accuracy.required=NONE is passed for buildless/unbuilt runs.",
+    "Binary/archive artifacts found at depth 3. Detect defaults --detect.binary.scan.search.depth=0; added --detect.binary.scan.search.depth=3 to recommended arguments for BINARY_SCAN.",
+    "Standalone binary files (.so, .dll, .exe, .bin, .o) detected. Since 2020.2.0 (Scanning Best Practices), Signature Scanner defaults --individualFileMatching=NONE and omits single-file SHA-1 checksums in generated BDIO archives for standalone binaries. Added --detect.blackduck.signature.scanner.individual.file.matching=BINARY so standard SCA servers match unmodified binaries by file checksum.",
+    "BLIND-SPOT TRAP [CRITICAL]: CVE-2022-42889 (Text4Shell) detected in mode_1_knowns/lib/commons-text-1.9.jar!/org/apache/commons/text/StringSubstitutor.class - Text4Shell vulnerable Commons Text StringSubstitutor class present in archive.",
+    "BLIND-SPOT TRAP [CRITICAL]: CVE-2021-44228 (Log4Shell) detected in mode_1_knowns/lib/log4j-core-2.14.1.jar!/org/apache/logging/log4j/core/lookup/JndiLookup.class - Log4Shell vulnerable JndiLookup class present in archive.",
+    "BLIND-SPOT TRAP [CRITICAL]: CVE-2022-21724 (PgJDBC SocketFactory RCE) detected in mode_1_knowns/lib/postgresql-42.2.18.jar!/org/postgresql/Driver.class - PgJDBC unauthenticated arbitrary class instantiation RCE via AuthenticationPluginClassName / SocketFactory",
+    "BLIND-SPOT TRAP [CRITICAL]: CVE-2022-22965 (Spring4Shell) detected in mode_1_knowns/lib/spring-beans-5.3.17.jar!/org/springframework/beans/CachedIntrospectionResults.class - Spring4Shell vulnerable CachedIntrospectionResults class present in archive."
+  ]
+}
+  </script>
+  <style>
+    :root {
+      --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #475569;
+      --border: #e2e8f0; --accent: #1d4ed8; --danger-bg: #fee2e2; --danger-fg: #991b1b;
+      --warn-bg: #fef3c7; --warn-fg: #92400e; --info-bg: #e0f2fe; --info-fg: #075985;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.55;
+      display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
+    }
+    nav.toc {
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+      background: #0f172a; color: #f8fafc; padding: 1.5rem 1rem; border-right: 1px solid var(--border);
+    }
+    nav.toc h2 { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-top: 0; }
+    nav.toc ul { list-style: none; padding: 0; margin: 0; }
+    nav.toc li { margin-bottom: 0.6rem; }
+    nav.toc a { color: #e2e8f0; text-decoration: none; font-size: 0.9rem; }
+    nav.toc a:hover { color: #60a5fa; text-decoration: underline; }
+    main { max-width: 1400px; padding: 2rem 2.5rem; }
+    article section {
+      background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+    h1 { margin-top: 0; font-size: 1.7rem; }
+    h2 { margin-top: 0; font-size: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: #f1f5f9; font-weight: 600; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.86rem; }
+    pre { background: #0f172a; color: #f8fafc; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.8rem; }
+    .badge-danger { background: var(--danger-bg); color: var(--danger-fg); }
+    .badge-warn { background: var(--warn-bg); color: var(--warn-fg); }
+    .badge-info { background: var(--info-bg); color: var(--info-fg); }
+    .muted { color: var(--muted); font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <nav class="toc" aria-label="Table of Contents">
+    <h2>SCA Pre-Flight TOC</h2>
+    <ul>
+      <li><a href="#provenance">1. Codebase Signature (L0/L1/L2)</a></li>
+      <li><a href="#accounting">2. 4-Bucket File &amp; Byte Accounting</a></li>
+      <li><a href="#ledger">3. Actionable Bucket 2a File Ledger</a></li>
+      <li><a href="#cli-calibration">4. Baseline vs. Optional Detect CLI</a></li>
+      <li><a href="#vulnerabilities">5. High-Severity Vulnerabilities (27)</a></li>
+      <li><a href="#licenses">6. License &amp; Rugpull Risks (8)</a></li>
+      <li><a href="#embedded-json">7. Embedded JSON-LD (For LLMs)</a></li>
+    </ul>
+  </nav>
+  <main>
+    <article>
+      <header>
+        <h1>SCA Pre-Flight, File Disposition &amp; Risk Brief (<code>sca_preflight_reference_scan</code>)</h1>
+        <p class="muted">Generated by <code>sca-prescan</code> | Scanned: <strong>15</strong> dirs, <strong>24</strong> files (<strong>0.01 MB</strong>) | Embedded JSON-LD included in <code>#sca-ops-ai-brief-json</code> for 100% LLM ingestion parity.</p>
+      </header>
+
+      <section id="provenance">
+        <h2>1. Stratified Multilayer Codebase Signature (<code>L0 / L1 / L2 / CFG</code>)</h2>
+        <table>
+          <thead><tr><th>Layer</th><th>Digest / Signature</th><th>Operational Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Compact Signature</strong></td><td><code>sca-sig:v2:L0=35a527e1d2b5:L1=9c52bea95b81:L2=9c52bea95b81:CFG=2adcf6e44988@d3(100.0%)</code></td><td>Composite fingerprint stamped into Project Version Notes UI.</td></tr>
+            <tr><td><strong>Layer 0 (<code>L0</code>)</strong></td><td><code>35a527e1d2b54db1e3a43418804fe3f054719595c872cf95ac5ddce52e26e9d1</code></td><td>Zero-file-read folder skeleton (15 dirs).</td></tr>
+            <tr><td><strong>Layer 1 (<code>L1</code>)</strong></td><td><code>9c52bea95b81847932784ff9acf167f17929077c9d47992f2ea0eb04f3788cc7</code></td><td>100% of 24 Bucket 2a dependency-bearing files (0.01 MB).</td></tr>
+            <tr><td><strong>Layer 2 (<code>L2</code>)</strong></td><td><code>9c52bea95b81847932784ff9acf167f17929077c9d47992f2ea0eb04f3788cc7</code></td><td>Top-down source tree (24/24 files, 100.0%).</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="accounting">
+        <h2>2. 4-Bucket File &amp; Byte Disposition Accounting (<code>24 + 0 + 0 = 24</code> files)</h2>
+        <table>
+          <thead><tr><th>Bucket</th><th>Count / Size</th><th>What <code>sca-prescan</code> Did With These Objects</th><th>What Default Detect (<code>depth=0</code>) Does With Them</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Bucket 1: Excluded Dirs</strong></td><td>0 dir(s)</td><td>Saw 0 non-shipping folder(s) (none), skipped traversal, and added to --detect.excluded.directories.</td><td>Skips .git by default, but traverses .venv, venv, or unlocked node_modules unless explicitly excluded.</td></tr>
+            <tr><td><strong>Bucket 2a: Actionable BOM / Vuln / Calibration Files (<code>L1</code>)</strong></td><td><strong>24 file(s)</strong> (0.01 MB)</td><td>Hashed 100% into Layer 1 (L1) and extracted BOM baselines, C/C++ header versions, archive/binary metadata, and 27 CVE / 8 license hit(s).</td><td>DETECTOR only processes root (depth=0) package manifests; SILENTLY IGNORES depth&gt;=1 manifests, UTF-16 manifests, C/C++ version headers, CMake/Makefiles, and standalone binaries (--individualFileMatching=NONE).</td></tr>
+            <tr><td><strong>Bucket 2b: Source &amp; Doc Provenance Only (<code>L2 - L1</code>)</strong></td><td>0 file(s) (0.0 MB)</td><td>Hashed 0 first-party source/doc files into Layer 2 (L2) and scanned for embedded private keys (0 third-party BOM declarations).</td><td>Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole.</td></tr>
+            <tr><td><strong>Bucket 3: Monorepo Early-Stop Cap</strong></td><td>0 file(s)</td><td>0 files skipped (100% hashed).</td><td>Signature Scanner hashes all files; &gt;10,000 files or &gt;1 GB in one scan risks server queue timeouts.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="ledger">
+        <h2>3. Actionable Files Processed in Bucket 2a (24 file(s): <code>sca-prescan</code> vs. Default Detect)</h2>
+        <table>
+          <thead><tr><th>File Path (Depth)</th><th>Bucket Sub-Type</th><th>What <code>sca-prescan</code> Extracted &amp; Did</th><th>What Default Detect (<code>depth=0</code>) Does</th></tr></thead>
+          <tbody>
+            <tr><td><code>mode_1_knowns/lib/activemq-client-5.18.2.jar</code> <span class="muted">(d=2)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2023-46604 (CVSS 10.0, CISA-KEV).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_1_knowns/lib/bcprov-jdk15on-1.66.jar</code> <span class="muted">(d=2)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2020-28052 (CVSS 9.8).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_1_knowns/lib/commons-text-1.9.jar</code> <span class="muted">(d=2)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-42889 (CVSS 9.8, CISA-KEV). Flagged blind-spot trap: CVE-2022-42889.</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_1_knowns/lib/itextpdf-5.5.13.3.jar</code> <span class="muted">(d=2)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-DPI-AGPL-3_0 (AGPL-3.0), LIC-RUGPULL-ITEXT-AGPL (AGPL-3.0-only).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_1_knowns/lib/log4j-core-2.14.1.jar</code> <span class="muted">(d=2)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-44228 (CVSS 10.0, CISA-KEV). Flagged blind-spot trap: CVE-2021-44228.</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_1_knowns/lib/mysql-connector-j-8.0.33.jar</code> <span class="muted">(d=2)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-COPYLEFT-MYSQL-CONNECTOR-GPL2 (GPL-2.0-only (Universal FOSS Exception)).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_1_knowns/lib/postgresql-42.2.18.jar</code> <span class="muted">(d=2)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-21724 (CVSS 9.8). Flagged blind-spot trap: CVE-2022-21724.</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_1_knowns/lib/snakeyaml-1.33.jar</code> <span class="muted">(d=2)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-1471 (CVSS 9.8).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_1_knowns/lib/spring-beans-5.3.17.jar</code> <span class="muted">(d=2)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-22965 (CVSS 9.8, CISA-KEV). Flagged blind-spot trap: CVE-2022-22965.</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_1_knowns/services/ingress_proxy/go.mod</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-i Unpinned Manifest</span></td><td>Unpinned manifest (2 direct dep(s), encoding=utf-8, depth=3); hashed into L1. Matched license risk: LIC-RUGPULL-MINIO-AGPL (AGPL-3.0-only), LIC-RUGPULL-HASHICORP-BSL (BSL-1.1).</td><td><span class="badge badge-danger">SILENTLY IGNORED by DETECTOR at default --detect.detector.search.depth=0 (located at depth 3); if depth&gt;=3 is set without build tools installed, risks Exit Code 5/15 (FAILURE_ACCURACY_NOT_MET).</span></td></tr><tr><td><code>mode_2_unknowns/services/auth_worker/requirements.txt</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-i Unpinned Manifest</span></td><td>Unpinned manifest (3 direct dep(s), encoding=utf-16-le, depth=3); hashed into L1. Matched vulnerability: CVE-2020-14343 (CVSS 9.8), CVE-2023-45803 (CVSS 7.5), CVE-2023-49083 (CVSS 7.5).</td><td><span class="badge badge-danger">SILENTLY CORRUPTED / 0% BOM MATCH (utf-16-le encoding breaks default UTF-8 parser).</span></td></tr><tr><td><code>mode_2_unknowns/services/ingress_proxy/go.mod</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-i Unpinned Manifest</span></td><td>Unpinned manifest (3 direct dep(s), encoding=utf-8, depth=3); hashed into L1. Matched vulnerability: CVE-2023-39325 (CVSS 7.5, CISA-KEV), CVE-2023-45288 (CVSS 7.5), CVE-2024-24786 (CVSS 7.5).</td><td><span class="badge badge-danger">SILENTLY IGNORED by DETECTOR at default --detect.detector.search.depth=0 (located at depth 3); if depth&gt;=3 is set without build tools installed, risks Exit Code 5/15 (FAILURE_ACCURACY_NOT_MET).</span></td></tr><tr><td><code>mode_2_unknowns/vendor/archives/PyYAML-5.3.1.tar.gz</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2020-14343 (CVSS 9.8).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_2_unknowns/vendor/archives/curl-8.3.0.tar.gz</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2023-38545 (CVSS 9.8, CISA-KEV).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_2_unknowns/vendor/archives/expat-2.6.2.tar.gz</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2024-45490 (CVSS 9.8).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_2_unknowns/vendor/archives/openssl-3.0.4.tar.gz</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-2274 (CVSS 9.8), CVE-2022-3602 (CVSS 7.5).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_2_unknowns/vendor/archives/readline-8.2.tar.gz</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-COPYLEFT-GNU-READLINE-GPL3 (GPL-3.0-only), LIC-DPI-GPL-3_0 (GPL-3.0).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_2_unknowns/vendor/archives/zlib-1.2.11.tar.gz</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-37434 (CVSS 9.8, CISA-KEV), CVE-2023-45853 (CVSS 9.8).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_2_unknowns/vendor/native/libdb_storage_kv.so</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-RUGPULL-REDIS-RSAL-SSPL (RSALv2 / SSPL-1.0).</td><td><span class="badge badge-danger">SILENTLY IGNORED by Signature Scanner default --individualFileMatching=NONE (omits single-file SHA-1 checksums).</span></td></tr><tr><td><code>mode_2_unknowns/vendor/native/libstorage_compress.so</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-37434 (CVSS 9.8, CISA-KEV), CVE-2023-45853 (CVSS 9.8).</td><td><span class="badge badge-danger">SILENTLY IGNORED by Signature Scanner default --individualFileMatching=NONE (omits single-file SHA-1 checksums).</span></td></tr><tr><td><code>mode_2_unknowns/vendor/npm_cache/cross-spawn-7.0.4.tgz</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2024-21538 (CVSS 9.8).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_2_unknowns/vendor/npm_cache/lodash-4.17.19.tgz</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-23337 (CVSS 9.8).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_2_unknowns/vendor/nuget_feed/newtonsoft.json.12.0.3.nupkg</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Extracted `Newtonsoft.Json 12.0.3` (nuspec). Matched vulnerability: CVE-2024-21907 (CVSS 7.5).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr><tr><td><code>mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iii Archive / Binary</span></td><td>Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-44228 (CVSS 10.0, CISA-KEV), CVE-2022-42889 (CVSS 9.8, CISA-KEV).</td><td>Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="cli-calibration">
+        <h2>4. Baseline Safe Invocation vs. Optional Fuller-BOM Tweaks</h2>
+        <p><strong>4.1 Baseline Safe Invocation (Follows Stated Vendor Default-Settings Policy)</strong>: Keeps Detect at default <code>--detect.tools=ALL</code> and <code>--detect.detector.search.depth=0</code> for predictable scan performance, adding only runner RAM sizing, safe directory exclusions, and the provenance stamp. Always <strong>additively concatenate</strong> comma-separated flags (<code>--detect.excluded.directories</code>) with existing pipeline settings.</p>
+        <pre><code>java -jar detect.jar \
+  --detect.blackduck.signature.scanner.memory=4096 \
+  --detect.blackduck.signature.scanner.parallel.processors=1 \
+  &#x27;--detect.project.version.notes=sca-ops-provenance:sca-sig:v2:L0=35a527e1d2b5:L1=9c52bea95b81:L2=9c52bea95b81:CFG=2adcf6e44988@d3(100.0%);tree_merkle=sha256:9c52bea95b818479;dep_merkle=sha256:9c52bea95b818479;cfg_sha256=2adcf6e44988ff2a;files=24/24;dep_inputs=24&#x27;</code></pre>
+        <h3>4.2 Optional Fuller-BOM &amp; Buildless Tweaks (Trade-Offs Explained)</h3>
+        <table>
+          <thead><tr><th>Optional Flag</th><th>What Hidden Files / Failures It Unlocks</th><th>Performance &amp; BOM Trade-Off</th></tr></thead>
+          <tbody>
+            <tr><td><code>--detect.detector.search.depth=3</code></td><td>Discovers nested manifests/lockfiles down to directory depth 3 (default is 0, which silently ignores subdirectories).</td><td>Increases detector filesystem walk and subproject inspector invocations across nested folders.</td></tr><tr><td><code>--detect.binary.scan.search.depth=3</code></td><td>Discovers binary/archive artifacts down to directory depth 3 for BINARY_SCAN (default is 0).</td><td>Uploads all matching nested archives when BINARY_SCAN is enabled.</td></tr><tr><td><code>--detect.blackduck.signature.scanner.individual.file.matching=BINARY</code></td><td>Computes single-file SHA-1 checksums for standalone binaries (.so, .dll, .exe, .o) omitted by default NONE.</td><td>Adds per-file SHA-1 matching overhead during Signature Scanning.</td></tr>
+          </tbody>
+        </table>
+        <h3>4.3 Operational &amp; Calibration Warnings</h3>
+        <ul><li>NON_UTF8_MANIFEST_WARNING: Manifest &#x27;mode_2_unknowns/services/auth_worker/requirements.txt&#x27; is encoded in utf-16-le instead of UTF-8 (common with Windows PowerShell &#x27;pip freeze &gt; requirements.txt&#x27;). Default UTF-8 manifest parsers emit null-byte-corrupted BDIO identifiers (&#x27;\u0000&#x27;) when reading UTF-16 files, causing 0% of dependencies in &#x27;mode_2_unknowns/services/auth_worker/requirements.txt&#x27; to match in the BOM unless converted to UTF-8.</li>
+<li>Unpinned package manifests detected (mode_1_knowns/services/ingress_proxy/go.mod, mode_2_unknowns/services/auth_worker/requirements.txt, mode_2_unknowns/services/ingress_proxy/go.mod). Detect 10 defaults to --detect.accuracy.required=ALL (HIGH), which will exit with Code 5 (FAILURE_DETECTOR: Accuracy Not Met) or Exit Code 15 (FAILURE_ACCURACY_NOT_MET) if package manager executables (pip, npm, go, mvn, gradle, cargo, dotnet, bazel, conan, bundle) or installed environments are missing unless --detect.accuracy.required=NONE is passed for buildless/unbuilt runs.</li>
+<li>Binary/archive artifacts found at depth 3. Detect defaults --detect.binary.scan.search.depth=0; added --detect.binary.scan.search.depth=3 to recommended arguments for BINARY_SCAN.</li>
+<li>Standalone binary files (.so, .dll, .exe, .bin, .o) detected. Since 2020.2.0 (Scanning Best Practices), Signature Scanner defaults --individualFileMatching=NONE and omits single-file SHA-1 checksums in generated BDIO archives for standalone binaries. Added --detect.blackduck.signature.scanner.individual.file.matching=BINARY so standard SCA servers match unmodified binaries by file checksum.</li>
+<li>BLIND-SPOT TRAP [CRITICAL]: CVE-2022-42889 (Text4Shell) detected in mode_1_knowns/lib/commons-text-1.9.jar!/org/apache/commons/text/StringSubstitutor.class - Text4Shell vulnerable Commons Text StringSubstitutor class present in archive.</li>
+<li>BLIND-SPOT TRAP [CRITICAL]: CVE-2021-44228 (Log4Shell) detected in mode_1_knowns/lib/log4j-core-2.14.1.jar!/org/apache/logging/log4j/core/lookup/JndiLookup.class - Log4Shell vulnerable JndiLookup class present in archive.</li>
+<li>BLIND-SPOT TRAP [CRITICAL]: CVE-2022-21724 (PgJDBC SocketFactory RCE) detected in mode_1_knowns/lib/postgresql-42.2.18.jar!/org/postgresql/Driver.class - PgJDBC unauthenticated arbitrary class instantiation RCE via AuthenticationPluginClassName / SocketFactory</li>
+<li>BLIND-SPOT TRAP [CRITICAL]: CVE-2022-22965 (Spring4Shell) detected in mode_1_knowns/lib/spring-beans-5.3.17.jar!/org/springframework/beans/CachedIntrospectionResults.class - Spring4Shell vulnerable CachedIntrospectionResults class present in archive.</li></ul>
+      </section>
+
+      <section id="vulnerabilities">
+        <h2>5. Actionable High-Severity Vulnerabilities (27)</h2>
+        <table>
+          <thead><tr><th>CVE ID</th><th>CVSS</th><th>KEV</th><th>Component &amp; Version</th><th>Evidence Source</th><th>Actionable Remedy</th></tr></thead>
+          <tbody>
+            <tr><td><code>CVE-2020-14343</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>pyyaml 5.3.1</code></td><td><code>assertion+tarball:mode_2_unknowns/vendor/archives/PyYAML-5.3.1.tar.gz</code></td><td>Upgrade PyYAML to 5.4 or higher and use yaml.safe_load.</td></tr><tr><td><code>CVE-2020-14343</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>pyyaml 5.3.1</code></td><td><code>manifest:mode_2_unknowns/services/auth_worker/requirements.txt</code></td><td>Upgrade PyYAML to 5.4 or higher and use yaml.safe_load.</td></tr><tr><td><code>CVE-2020-28052</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>bcprov-jdk15on 1.66</code></td><td><code>archive+archive_maven+assertion:mode_1_knowns/lib/bcprov-jdk15on-1.66.jar</code></td><td>Upgrade BouncyCastle bcprov-jdk15on to 1.67 or bcprov-jdk18on 1.78+.</td></tr><tr><td><code>CVE-2021-23337</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>lodash 4.17.19</code></td><td><code>assertion:mode_2_unknowns/vendor/npm_cache/lodash-4.17.19.tgz</code></td><td>Upgrade lodash to 4.17.21 or higher.</td></tr><tr><td><code>CVE-2021-44228</code></td><td><strong>10.0</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>log4j-core 2.14.1</code></td><td><code>archive+archive_maven+assertion:mode_1_knowns/lib/log4j-core-2.14.1.jar</code></td><td>Upgrade log4j-core to 2.17.1 or higher (or 2.12.4 for Java 7).</td></tr><tr><td><code>CVE-2021-44228</code></td><td><strong>10.0</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>log4j-core 2.14.1</code></td><td><code>archive_maven:mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar</code></td><td>Upgrade log4j-core to 2.17.1 or higher (or 2.12.4 for Java 7).</td></tr><tr><td><code>CVE-2022-1471</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>snakeyaml 1.33</code></td><td><code>archive+archive_maven+assertion:mode_1_knowns/lib/snakeyaml-1.33.jar</code></td><td>Upgrade SnakeYAML to 2.0 or higher.</td></tr><tr><td><code>CVE-2022-21724</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>postgresql 42.2.18</code></td><td><code>archive+archive_maven+assertion:mode_1_knowns/lib/postgresql-42.2.18.jar</code></td><td>Upgrade postgresql to 42.2.25 or higher.</td></tr><tr><td><code>CVE-2022-2274</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>openssl 3.0.4</code></td><td><code>assertion+tarball:mode_2_unknowns/vendor/archives/openssl-3.0.4.tar.gz</code></td><td>Upgrade OpenSSL to 3.0.5 or higher.</td></tr><tr><td><code>CVE-2022-22965</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>spring-beans 5.3.17</code></td><td><code>archive+archive_maven+assertion:mode_1_knowns/lib/spring-beans-5.3.17.jar</code></td><td>Upgrade spring-beans/spring-webmvc to 5.3.18 or 5.2.20 or higher.</td></tr><tr><td><code>CVE-2022-3602</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>openssl 3.0.4</code></td><td><code>assertion+tarball:mode_2_unknowns/vendor/archives/openssl-3.0.4.tar.gz</code></td><td>Upgrade OpenSSL to 3.0.7 or higher.</td></tr><tr><td><code>CVE-2022-37434</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>zlib 1.2.11</code></td><td><code>assertion+tarball:mode_2_unknowns/vendor/archives/zlib-1.2.11.tar.gz</code></td><td>Upgrade zlib to 1.2.12.1, 1.2.13, or higher.</td></tr><tr><td><code>CVE-2022-37434</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>zlib 1.2.11</code></td><td><code>binary_catalog:mode_2_unknowns/vendor/native/libstorage_compress.so</code></td><td>Upgrade zlib to 1.2.12.1, 1.2.13, or higher.</td></tr><tr><td><code>CVE-2022-42889</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>commons-text 1.9</code></td><td><code>archive+archive_maven+assertion:mode_1_knowns/lib/commons-text-1.9.jar</code></td><td>Upgrade commons-text to 1.10.0 or higher.</td></tr><tr><td><code>CVE-2022-42889</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>commons-text 1.9</code></td><td><code>archive_maven:mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar</code></td><td>Upgrade commons-text to 1.10.0 or higher.</td></tr><tr><td><code>CVE-2023-38545</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>curl 8.3.0</code></td><td><code>assertion+tarball:mode_2_unknowns/vendor/archives/curl-8.3.0.tar.gz</code></td><td>Upgrade curl / libcurl to 8.4.0 or higher.</td></tr><tr><td><code>CVE-2023-39325</code></td><td><strong>7.5</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>golang.org/x/net v0.16.0</code></td><td><code>manifest:mode_2_unknowns/services/ingress_proxy/go.mod</code></td><td>Upgrade golang.org/x/net to v0.17.0 or higher.</td></tr><tr><td><code>CVE-2023-45288</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>golang.org/x/net v0.16.0</code></td><td><code>manifest:mode_2_unknowns/services/ingress_proxy/go.mod</code></td><td>Upgrade golang.org/x/net to v0.23.0 or higher.</td></tr><tr><td><code>CVE-2023-45803</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>urllib3 1.26.4</code></td><td><code>manifest:mode_2_unknowns/services/auth_worker/requirements.txt</code></td><td>Upgrade urllib3 to 1.26.18, 2.0.7, or higher.</td></tr><tr><td><code>CVE-2023-45853</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>zlib 1.2.11</code></td><td><code>assertion+tarball:mode_2_unknowns/vendor/archives/zlib-1.2.11.tar.gz</code></td><td>Upgrade zlib / MiniZip to 1.3.1 or higher.</td></tr><tr><td><code>CVE-2023-45853</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>zlib 1.2.11</code></td><td><code>binary_catalog:mode_2_unknowns/vendor/native/libstorage_compress.so</code></td><td>Upgrade zlib / MiniZip to 1.3.1 or higher.</td></tr><tr><td><code>CVE-2023-46604</code></td><td><strong>10.0</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>activemq-client 5.18.2</code></td><td><code>archive+archive_maven+assertion:mode_1_knowns/lib/activemq-client-5.18.2.jar</code></td><td>Upgrade ActiveMQ client and broker to 5.18.3, 5.17.6, or 5.16.7 or higher.</td></tr><tr><td><code>CVE-2023-49083</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>cryptography 41.0.5</code></td><td><code>manifest:mode_2_unknowns/services/auth_worker/requirements.txt</code></td><td>Upgrade cryptography to 41.0.6 or higher.</td></tr><tr><td><code>CVE-2024-21538</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>cross-spawn 7.0.4</code></td><td><code>assertion:mode_2_unknowns/vendor/npm_cache/cross-spawn-7.0.4.tgz</code></td><td>Upgrade cross-spawn to 7.0.5 or higher.</td></tr><tr><td><code>CVE-2024-21907</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>newtonsoft.json 12.0.3</code></td><td><code>internal_manifest:mode_2_unknowns/vendor/nuget_feed/newtonsoft.json.12.0.3.nupkg!/Newtonsoft.Json.nuspec</code></td><td>Upgrade Newtonsoft.Json to 13.0.1 or higher.</td></tr><tr><td><code>CVE-2024-24786</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>google.golang.org/protobuf v1.31.0</code></td><td><code>manifest:mode_2_unknowns/services/ingress_proxy/go.mod</code></td><td>Upgrade google.golang.org/protobuf to v1.33.0 or higher.</td></tr><tr><td><code>CVE-2024-45490</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>expat 2.6.2</code></td><td><code>assertion+tarball:mode_2_unknowns/vendor/archives/expat-2.6.2.tar.gz</code></td><td>Upgrade libexpat to 2.6.3 or higher.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="licenses">
+        <h2>6. High-Severity License &amp; Rugpull Risks (8)</h2>
+        <table>
+          <thead><tr><th>Rule ID</th><th>Severity</th><th>Component &amp; Version</th><th>License</th><th>Evidence Source</th><th>Safe Version / Remedy</th></tr></thead>
+          <tbody>
+            <tr><td><code>LIC-DPI-AGPL-3_0</code></td><td><span class="badge badge-warn">CRITICAL</span></td><td><code>itextpdf-5.5.13.3.jar detected_in_text</code></td><td><code>AGPL-3.0</code></td><td><code>license_text:mode_1_knowns/lib/itextpdf-5.5.13.3.jar!/META-INF/LICENSE.txt</code></td><td>Review reciprocal license obligations with legal counsel or isolate/replace component.</td></tr><tr><td><code>LIC-RUGPULL-ITEXT-AGPL</code></td><td><span class="badge badge-warn">CRITICAL</span></td><td><code>itextpdf 5.5.13.3</code></td><td><code>AGPL-3.0-only</code></td><td><code>archive+archive_maven+assertion:mode_1_knowns/lib/itextpdf-5.5.13.3.jar</code></td><td>OpenPDF (LGPL/MPL fork of iText 2.1.7) or Apache PDFBox (Apache-2.0)</td></tr><tr><td><code>LIC-RUGPULL-MINIO-AGPL</code></td><td><span class="badge badge-warn">CRITICAL</span></td><td><code>minio v0.0.0-20240310000000-111111111111</code></td><td><code>AGPL-3.0-only</code></td><td><code>manifest:mode_1_knowns/services/ingress_proxy/go.mod</code></td><td>Verify commercial license agreement or isolate via strict out-of-process network boundary per legal review</td></tr><tr><td><code>LIC-RUGPULL-REDIS-RSAL-SSPL</code></td><td><span class="badge badge-warn">CRITICAL</span></td><td><code>redis 7.4.0</code></td><td><code>RSALv2 / SSPL-1.0</code></td><td><code>binary_banner:mode_2_unknowns/vendor/native/libdb_storage_kv.so</code></td><td>Redis &lt;= 7.2.x (BSD-3-Clause) or Valkey (BSD-3-Clause)</td></tr><tr><td><code>LIC-COPYLEFT-GNU-READLINE-GPL3</code></td><td><span class="badge badge-warn">HIGH</span></td><td><code>readline 8.2</code></td><td><code>GPL-3.0-only</code></td><td><code>assertion+tarball:mode_2_unknowns/vendor/archives/readline-8.2.tar.gz</code></td><td>Replace libreadline with BSD-licensed libedit (editline) or linenoise</td></tr><tr><td><code>LIC-COPYLEFT-MYSQL-CONNECTOR-GPL2</code></td><td><span class="badge badge-warn">HIGH</span></td><td><code>mysql-connector-java 8.0.33</code></td><td><code>GPL-2.0-only (Universal FOSS Exception)</code></td><td><code>archive+archive_maven+assertion:mode_1_knowns/lib/mysql-connector-j-8.0.33.jar</code></td><td>Replace with MariaDB Connector/J (LGPL-2.1) or verify Oracle commercial/FOSS exception eligibility</td></tr><tr><td><code>LIC-DPI-GPL-3_0</code></td><td><span class="badge badge-warn">HIGH</span></td><td><code>readline-8.2.tar.gz detected_in_text</code></td><td><code>GPL-3.0</code></td><td><code>license_text:mode_2_unknowns/vendor/archives/readline-8.2.tar.gz!/readline-8.2/COPYING</code></td><td>Review reciprocal license obligations with legal counsel or isolate/replace component.</td></tr><tr><td><code>LIC-RUGPULL-HASHICORP-BSL</code></td><td><span class="badge badge-warn">HIGH</span></td><td><code>vault v1.16.0</code></td><td><code>BSL-1.1</code></td><td><code>manifest:mode_1_knowns/services/ingress_proxy/go.mod</code></td><td>OpenBao (MPL-2.0 fork of Vault) or pre-BSL MPL-2.0 releases</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="embedded-json">
+        <h2>7. Embedded Machine-Readable JSON Copy (<code>#sca-ops-ai-brief-json</code>)</h2>
+        <p>This HTML file contains a complete, DLP-sanitized JSON copy inside <code>&lt;script type="application/ld+json" id="sca-ops-ai-brief-json"&gt;</code> in the document <code>&lt;head&gt;</code> so enterprise LLMs and automation scripts can parse exact counts and SHA-256 digests directly from this single HTML file.</p>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

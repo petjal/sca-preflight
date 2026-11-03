@@ -55,11 +55,11 @@ Run your current SCA scanner against `/dev/shm/sca_preflight_reference_scan` and
 
 ## 3. Sample Output Reports in `examples/`
 
-- **[`examples/REPORT_WALKTHROUGH_ZLIB.md`](examples/REPORT_WALKTHROUGH_ZLIB.md)** - **Line-by-Line Report Legend & Real-World Walkthrough (`madler/zlib` @ `v1.2.11`)**:
-  - Explains what every YAML field and report section means, how each metric and `L0/L1/L2/CFG` hash is calculated, what values to look for (`==`, `>=`, `<=`), and what happened when we pasted a blind-challenge `zlib` report straight into Google Gemini UI.
-- **[`examples/LLM_INGESTION_REPORT.md`](examples/LLM_INGESTION_REPORT.md)** - **Pre-Scan Summary & AI Brief (`sca-prescan --ai-brief`)**:
-  - A single Markdown report with workstation paths stripped out so you can paste it straight into your internal company AI (Copilot, Claude, ChatGPT Enterprise, Gemini).
-  - Shows the `sca-sig:v2` workspace fingerprint, recommended Detect CLI flags, expected component counts (Section 3), CVE and license tables (Sections 4-5), and copy-paste AI prompts (Section 6).
+- **[`examples/REPORT_WALKTHROUGH_ZLIB.md`](examples/REPORT_WALKTHROUGH_ZLIB.md)** (and HTML+JSON-LD edition **[`examples/REPORT_WALKTHROUGH_ZLIB.html`](examples/REPORT_WALKTHROUGH_ZLIB.html)**) - **Line-by-Line Report Legend, 12-File Toy Example & Real-World Walkthrough (`madler/zlib` @ `v1.2.11`)**:
+  - Explains what happens to every folder, file, and byte on disk (`Bucket 1`, `Bucket 2a`, `Bucket 2b`, `Bucket 3`) in `sca-prescan` vs. Default Detect (`depth=0`, `individualFileMatching=NONE`), how every YAML field and `L0/L1/L2/CFG` hash is calculated, how Section 2 separates default vendor policy from optional tweaks (with additive comma-separated merging), and what happened when we pasted a blind-challenge `zlib` report straight into Google Gemini UI.
+- **[`examples/LLM_INGESTION_REPORT.md`](examples/LLM_INGESTION_REPORT.md)** (and HTML+JSON-LD edition **[`examples/LLM_INGESTION_REPORT.html`](examples/LLM_INGESTION_REPORT.html)**) - **Pre-Scan Summary & AI Brief (`sca-prescan --ai-brief` / `--html-report`)**:
+  - A single Markdown (or semantic HTML5 + embedded JSON-LD) report with workstation paths stripped out so you can open it in a browser or paste it straight into your internal company AI (Copilot, Claude, ChatGPT Enterprise, Gemini).
+  - Shows the `sca-sig:v2` workspace fingerprint, 4-Bucket File & Byte Disposition Accounting table, row-by-row `Bucket 2a` Actionable File Ledger, Baseline vs. Optional Detect CLI flags, expected component counts (Section 3), CVE and license tables (Sections 4-5), and copy-paste AI prompts (Section 6).
 - **[`examples/bom_ifttt_dry_run_preview.txt`](examples/bom_ifttt_dry_run_preview.txt)** - **Rule-Based BOM Cleanup Preview (`sca-bom-ifttt`)**:
   - Shows how [`examples/sample_bom_ifttt_rules.toml`](examples/sample_bom_ifttt_rules.toml) cleans up noisy BOMs via the REST API (defaults to safe `--dry-run` preview mode with audit comments):
     - **Phase 1 (Scan Cleanup)**: Unmapping old, stale CI build scans before touching components.

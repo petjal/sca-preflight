@@ -12,13 +12,19 @@ coverage_pct: 100.0
 early_stop_triggered: false
 total_dirs_scanned: 15
 total_files_scanned: 24
+total_workspace_mb: 0.01
+bucket_1_excluded_dirs_count: 0
+bucket_2a_actionable_l1_files_count: 24
+bucket_2b_provenance_only_l2_files_count: 0
+bucket_3_early_stop_unhashed_files_count: 0
+dependency_inputs_hashed_count: 24
 lockfiles_count: 0
 unpinned_manifests_count: 3
 expected_min_bom_components: 8
-actionable_vulnerabilities_count: 25
+actionable_vulnerabilities_count: 27
 actionable_license_risks_count: 8
 blind_spot_traps_count: 4
-operational_warnings_count: 9
+operational_warnings_count: 8
 ---
 
 # AI-First SCA Pre-Flight, Provenance & Risk Brief (`sca_preflight_reference_scan`)
@@ -36,22 +42,73 @@ operational_warnings_count: 9
 | **Effective Detect Config (`CFG`)** | `2adcf6e44988ff2a5c42cefade661dd8c321d5c11369e759349879c0ad4647a0` | Canonical digest of the sorted recommended Detect CLI properties. |
 | **SCA Web UI Provenance Flag** | `--detect.project.version.notes=sca-ops-provenance:sca-sig:v2:L0=35a527e1d2b5:L1=9c52bea95b81:L2=9c52bea95b81:CFG=2adcf6e44988@d3(100.0%);tree_merkle=sha256:9c52bea95b818479;dep_merkle=sha256:9c52bea95b818479;cfg_sha256=2adcf6e44988ff2a;files=24/24;dep_inputs=24` | Pass this flag to Detect to stamp exact input/config provenance into the Project Version Notes UI. |
 
+### What `sca-prescan` Actually Inspected (`15` dirs, `24` files, `0.01` MB)
+- **Pass 1 (Directory, Manifest & Encoding Walk)**: Traversed `15` directories and `24` files (`0.01` MB), classified `0` lockfile(s) and `3` unpinned manifest(s), verified manifest character encodings (`UTF-8` vs `UTF-16LE/BE`), and measured max directory depths for detectors, binaries, and exclusions.
+- **Pass 2 (In-Memory Archive, Binary & Header Inspection)**: Inspected `19` archive(s) and `2` compiled binary file(s) in memory without disk extraction, parsed `1` internal version headers/manifests (`META-INF/maven`, `MANIFEST.MF`, `PKG-INFO`, C `zlib.h`/`opensslv.h`/`VERSION.dat`), and checked `0` legal/SPDX attribution file(s).
+- **Pass 3 (3-Layer Cryptographic Provenance Hashing)**: Hashed `15` directory skeletons (`L0`, 0 file reads), 100% of `24` dependency-bearing inputs (`L1`), and `24/24` source files (`L2`, `100.0%` coverage).
+- **Pass 4 (100% Offline Version-Range & Rugpull Matching)**: Evaluated all discovered `(component, version)` pairs offline against the built-in Pareto CVE (`pareto_vuln_kb.json`) and license-rugpull (`pareto_license_kb.json`) catalogs (`0` outbound network calls).
+
+### File & Byte Disposition Accounting (`24 + 0 + 0 = 24` files)
+
+| Bucket | Count / Size | What `sca-prescan` Did With These Objects | What Default Detect (`depth=0`) Does With Them |
+| :--- | :---: | :--- | :--- |
+| **Bucket 1: Excluded Non-Shipping Dirs** | `0` dir(s) | Saw 0 non-shipping folder(s) (none), skipped traversal, and added to --detect.excluded.directories. | Skips .git by default, but traverses .venv, venv, or unlocked node_modules unless explicitly excluded. |
+| **Bucket 2a: Actionable BOM, Vuln & Calibration Files (`L1`)** | `24` file(s) (`0.01` MB) | Hashed 100% into Layer 1 (L1) and extracted BOM baselines, C/C++ header versions, archive/binary metadata, and 27 CVE / 8 license hit(s). | DETECTOR only processes root (depth=0) package manifests; SILENTLY IGNORES depth>=1 manifests, UTF-16 manifests, C/C++ version headers, CMake/Makefiles, and standalone binaries (--individualFileMatching=NONE). |
+| **Bucket 2b: Source & Doc Provenance Only (`L2 - L1`)** | `0` file(s) (`0.0` MB) | Hashed 0 first-party source/doc files into Layer 2 (L2) and scanned for embedded private keys (0 third-party BOM declarations). | Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole. |
+| **Bucket 3: Unhashed Beyond Monorepo Early-Stop Cap** | `0` file(s) | 0 files skipped (100% hashed). | Signature Scanner hashes all files; >10,000 files or >1 GB in one scan risks server queue timeouts. |
+
+### Actionable Files Processed in Bucket 2a (`24` file(s): `sca-prescan` vs. Default Detect)
+
+| File Path (Depth) | Bucket Sub-Type | What `sca-prescan` Extracted & Did | What Default Detect (`depth=0`) Does |
+| :--- | :--- | :--- | :--- |
+| `mode_1_knowns/lib/activemq-client-5.18.2.jar` (`d=2`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2023-46604 (CVSS 10.0, CISA-KEV). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_1_knowns/lib/bcprov-jdk15on-1.66.jar` (`d=2`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2020-28052 (CVSS 9.8). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_1_knowns/lib/commons-text-1.9.jar` (`d=2`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-42889 (CVSS 9.8, CISA-KEV). Flagged blind-spot trap: CVE-2022-42889. | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_1_knowns/lib/itextpdf-5.5.13.3.jar` (`d=2`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-DPI-AGPL-3_0 (AGPL-3.0), LIC-RUGPULL-ITEXT-AGPL (AGPL-3.0-only). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_1_knowns/lib/log4j-core-2.14.1.jar` (`d=2`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-44228 (CVSS 10.0, CISA-KEV). Flagged blind-spot trap: CVE-2021-44228. | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_1_knowns/lib/mysql-connector-j-8.0.33.jar` (`d=2`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-COPYLEFT-MYSQL-CONNECTOR-GPL2 (GPL-2.0-only (Universal FOSS Exception)). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_1_knowns/lib/postgresql-42.2.18.jar` (`d=2`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-21724 (CVSS 9.8). Flagged blind-spot trap: CVE-2022-21724. | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_1_knowns/lib/snakeyaml-1.33.jar` (`d=2`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-1471 (CVSS 9.8). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_1_knowns/lib/spring-beans-5.3.17.jar` (`d=2`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-22965 (CVSS 9.8, CISA-KEV). Flagged blind-spot trap: CVE-2022-22965. | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_1_knowns/services/ingress_proxy/go.mod` (`d=3`) | `2a-i Unpinned Manifest` | Unpinned manifest (2 direct dep(s), encoding=utf-8, depth=3); hashed into L1. Matched license risk: LIC-RUGPULL-MINIO-AGPL (AGPL-3.0-only), LIC-RUGPULL-HASHICORP-BSL (BSL-1.1). | SILENTLY IGNORED by DETECTOR at default --detect.detector.search.depth=0 (located at depth 3); if depth>=3 is set without build tools installed, risks Exit Code 5/15 (FAILURE_ACCURACY_NOT_MET). |
+| `mode_2_unknowns/services/auth_worker/requirements.txt` (`d=3`) | `2a-i Unpinned Manifest` | Unpinned manifest (3 direct dep(s), encoding=utf-16-le, depth=3); hashed into L1. Matched vulnerability: CVE-2020-14343 (CVSS 9.8), CVE-2023-45803 (CVSS 7.5), CVE-2023-49083 (CVSS 7.5). | SILENTLY CORRUPTED / 0% BOM MATCH (utf-16-le encoding breaks default UTF-8 parser). |
+| `mode_2_unknowns/services/ingress_proxy/go.mod` (`d=3`) | `2a-i Unpinned Manifest` | Unpinned manifest (3 direct dep(s), encoding=utf-8, depth=3); hashed into L1. Matched vulnerability: CVE-2023-39325 (CVSS 7.5, CISA-KEV), CVE-2023-45288 (CVSS 7.5), CVE-2024-24786 (CVSS 7.5). | SILENTLY IGNORED by DETECTOR at default --detect.detector.search.depth=0 (located at depth 3); if depth>=3 is set without build tools installed, risks Exit Code 5/15 (FAILURE_ACCURACY_NOT_MET). |
+| `mode_2_unknowns/vendor/archives/PyYAML-5.3.1.tar.gz` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2020-14343 (CVSS 9.8). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_2_unknowns/vendor/archives/curl-8.3.0.tar.gz` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2023-38545 (CVSS 9.8, CISA-KEV). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_2_unknowns/vendor/archives/expat-2.6.2.tar.gz` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2024-45490 (CVSS 9.8). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_2_unknowns/vendor/archives/openssl-3.0.4.tar.gz` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-2274 (CVSS 9.8), CVE-2022-3602 (CVSS 7.5). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_2_unknowns/vendor/archives/readline-8.2.tar.gz` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-COPYLEFT-GNU-READLINE-GPL3 (GPL-3.0-only), LIC-DPI-GPL-3_0 (GPL-3.0). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_2_unknowns/vendor/archives/zlib-1.2.11.tar.gz` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-37434 (CVSS 9.8, CISA-KEV), CVE-2023-45853 (CVSS 9.8). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_2_unknowns/vendor/native/libdb_storage_kv.so` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched license risk: LIC-RUGPULL-REDIS-RSAL-SSPL (RSALv2 / SSPL-1.0). | SILENTLY IGNORED by Signature Scanner default --individualFileMatching=NONE (omits single-file SHA-1 checksums). |
+| `mode_2_unknowns/vendor/native/libstorage_compress.so` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2022-37434 (CVSS 9.8, CISA-KEV), CVE-2023-45853 (CVSS 9.8). | SILENTLY IGNORED by Signature Scanner default --individualFileMatching=NONE (omits single-file SHA-1 checksums). |
+| `mode_2_unknowns/vendor/npm_cache/cross-spawn-7.0.4.tgz` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2024-21538 (CVSS 9.8). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_2_unknowns/vendor/npm_cache/lodash-4.17.19.tgz` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-23337 (CVSS 9.8). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_2_unknowns/vendor/nuget_feed/newtonsoft.json.12.0.3.nupkg` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Extracted `Newtonsoft.Json 12.0.3` (nuspec). Matched vulnerability: CVE-2024-21907 (CVSS 7.5). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-44228 (CVSS 10.0, CISA-KEV), CVE-2022-42889 (CVSS 9.8, CISA-KEV). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+
 ## 2. Tuned Detect CLI Invocation & Configuration Calibration
+
+### 2.1 Baseline Safe Invocation (Default Detect Policy + Safe Runner Hygiene)
+> **Stated Vendor Policy**: Run Detect with default settings (`--detect.tools=ALL`, `--detect.detector.search.depth=0`) first for predictable scan speed, adding only safe runner memory sizing, `.git`/`.venv` directory exclusions, and the Project Version Notes provenance stamp below. Comma-separated properties (`--detect.excluded.directories`, `--detect.tools`) should always be **additively concatenated** to any existing pipeline values.
 
 ```bash
 java -jar detect.jar \
-  --detect.detector.search.depth=3 \
-  --detect.blackduck.signature.scanner.memory=6144 \
+  --detect.blackduck.signature.scanner.memory=4096 \
   --detect.blackduck.signature.scanner.parallel.processors=1 \
-  --detect.binary.scan.search.depth=3 \
-  --detect.blackduck.signature.scanner.individual.file.matching=BINARY \
   '--detect.project.version.notes=sca-ops-provenance:sca-sig:v2:L0=35a527e1d2b5:L1=9c52bea95b81:L2=9c52bea95b81:CFG=2adcf6e44988@d3(100.0%);tree_merkle=sha256:9c52bea95b818479;dep_merkle=sha256:9c52bea95b818479;cfg_sha256=2adcf6e44988ff2a;files=24/24;dep_inputs=24'
 ```
 
+### 2.2 Optional Fuller-BOM & Buildless Tweaks (Trade-Offs Explained)
+
+| Optional Detect Flag | What Hidden Files / Failures It Unlocks in This Repo | Performance & BOM Trade-Off |
+| :--- | :--- | :--- |
+| `--detect.detector.search.depth=3` | Discovers nested manifests/lockfiles down to directory depth 3 (default is 0, which silently ignores subdirectories). | Increases detector filesystem walk and subproject inspector invocations across nested folders. |
+| `--detect.binary.scan.search.depth=3` | Discovers binary/archive artifacts down to directory depth 3 for BINARY_SCAN (default is 0). | Uploads all matching nested archives when BINARY_SCAN is enabled. |
+| `--detect.blackduck.signature.scanner.individual.file.matching=BINARY` | Computes single-file SHA-1 checksums for standalone binaries (.so, .dll, .exe, .o) omitted by default NONE. | Adds per-file SHA-1 matching overhead during Signature Scanning. |
+
 ### Operational & Calibration Signals
 - NON_UTF8_MANIFEST_WARNING: Manifest 'mode_2_unknowns/services/auth_worker/requirements.txt' is encoded in utf-16-le instead of UTF-8 (common with Windows PowerShell 'pip freeze > requirements.txt'). Default UTF-8 manifest parsers emit null-byte-corrupted BDIO identifiers ('\u0000') when reading UTF-16 files, causing 0% of dependencies in 'mode_2_unknowns/services/auth_worker/requirements.txt' to match in the BOM unless converted to UTF-8.
-- Unpinned package manifests detected. Detect 10 defaults to --detect.accuracy.required=ALL (HIGH), which will exit with Code 5 (FAILURE_DETECTOR: Accuracy Not Met) if package manager executables (pip, npm, go, mvn, gradle) or installed environments are missing unless --detect.accuracy.required=NONE is passed for buildless/unbuilt runs.
-- No local Java runtime found (checked DETECT_JAVA_PATH, JAVA_HOME, and PATH). Detect requires Java 11, 17, or 21 to execute.
+- Unpinned package manifests detected (mode_1_knowns/services/ingress_proxy/go.mod, mode_2_unknowns/services/auth_worker/requirements.txt, mode_2_unknowns/services/ingress_proxy/go.mod). Detect 10 defaults to --detect.accuracy.required=ALL (HIGH), which will exit with Code 5 (FAILURE_DETECTOR: Accuracy Not Met) or Exit Code 15 (FAILURE_ACCURACY_NOT_MET) if package manager executables (pip, npm, go, mvn, gradle, cargo, dotnet, bazel, conan, bundle) or installed environments are missing unless --detect.accuracy.required=NONE is passed for buildless/unbuilt runs.
 - Binary/archive artifacts found at depth 3. Detect defaults --detect.binary.scan.search.depth=0; added --detect.binary.scan.search.depth=3 to recommended arguments for BINARY_SCAN.
 - Standalone binary files (.so, .dll, .exe, .bin, .o) detected. Since 2020.2.0 (Scanning Best Practices), Signature Scanner defaults --individualFileMatching=NONE and omits single-file SHA-1 checksums in generated BDIO archives for standalone binaries. Added --detect.blackduck.signature.scanner.individual.file.matching=BINARY so standard SCA servers match unmodified binaries by file checksum.
 - BLIND-SPOT TRAP [CRITICAL]: CVE-2022-42889 (Text4Shell) detected in mode_1_knowns/lib/commons-text-1.9.jar!/org/apache/commons/text/StringSubstitutor.class - Text4Shell vulnerable Commons Text StringSubstitutor class present in archive.
@@ -67,7 +124,7 @@ java -jar detect.jar \
   - `[PYTHON] mode_2_unknowns/services/auth_worker`: `>= 3` component(s) (mode_2_unknowns/services/auth_worker/requirements.txt declares 3 direct dependency(s); no lockfile)
   - `[GO] mode_2_unknowns/services/ingress_proxy`: `>= 3` component(s) (mode_2_unknowns/services/ingress_proxy/go.mod declares 3 direct dependency(s); no lockfile)
 
-## 4. Actionable High-Severity Vulnerabilities (25)
+## 4. Actionable High-Severity Vulnerabilities (27)
 
 > **Honest Scope (Small Hit-List, Zero Promises)**: `sca-prescan`'s built-in check is **not** a full SCA vulnerability database and **promises nothing** when it comes to comprehensive CVE coverage. Its built-in catalog is intentionally tiny - just a curated hit-list of well-known CVSS 9.8-10.0 / CISA-KEV disasters (like Log4Shell, Spring4Shell, Text4Shell, OpenSSL, zlib, curl, pgjdbc) and notorious open-source license rugpulls (`AGPL-3.0`, `SSPL-1.0`, `RSALv2`, `BSL-1.1`). Its job is to flag obvious worst-of-the-worst blind spots in seconds *before* your main SCA scanner runs, while tuning your main scanner's CLI flags so your real vulnerability database does its job properly.
 
@@ -92,6 +149,8 @@ java -jar detect.jar \
 | `CVE-2023-39325` | 7.5 | YES | `golang.org/x/net v0.16.0` | `manifest:mode_2_unknowns/services/ingress_proxy/go.mod` | Upgrade golang.org/x/net to v0.17.0 or higher. |
 | `CVE-2023-45288` | 7.5 | NO | `golang.org/x/net v0.16.0` | `manifest:mode_2_unknowns/services/ingress_proxy/go.mod` | Upgrade golang.org/x/net to v0.23.0 or higher. |
 | `CVE-2023-45803` | 7.5 | NO | `urllib3 1.26.4` | `manifest:mode_2_unknowns/services/auth_worker/requirements.txt` | Upgrade urllib3 to 1.26.18, 2.0.7, or higher. |
+| `CVE-2023-45853` | 9.8 | NO | `zlib 1.2.11` | `assertion+tarball:mode_2_unknowns/vendor/archives/zlib-1.2.11.tar.gz` | Upgrade zlib / MiniZip to 1.3.1 or higher. |
+| `CVE-2023-45853` | 9.8 | NO | `zlib 1.2.11` | `binary_catalog:mode_2_unknowns/vendor/native/libstorage_compress.so` | Upgrade zlib / MiniZip to 1.3.1 or higher. |
 | `CVE-2023-46604` | 10.0 | YES | `activemq-client 5.18.2` | `archive+archive_maven+assertion:mode_1_knowns/lib/activemq-client-5.18.2.jar` | Upgrade ActiveMQ client and broker to 5.18.3, 5.17.6, or 5.16.7 or higher. |
 | `CVE-2023-49083` | 7.5 | NO | `cryptography 41.0.5` | `manifest:mode_2_unknowns/services/auth_worker/requirements.txt` | Upgrade cryptography to 41.0.6 or higher. |
 | `CVE-2024-21538` | 9.8 | NO | `cross-spawn 7.0.4` | `assertion:mode_2_unknowns/vendor/npm_cache/cross-spawn-7.0.4.tgz` | Upgrade cross-spawn to 7.0.5 or higher. |
