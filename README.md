@@ -55,6 +55,8 @@ Run your current SCA scanner against `/dev/shm/sca_preflight_reference_scan` and
 
 ## 3. Sample Output Reports in `examples/`
 
+- **[`examples/REPORT_WALKTHROUGH_ZLIB.md`](examples/REPORT_WALKTHROUGH_ZLIB.md)** - **Line-by-Line Report Legend & Real-World Walkthrough (`madler/zlib` @ `v1.2.11`)**:
+  - Explains what every YAML field and report section means, how each metric and `L0/L1/L2/CFG` hash is calculated, what values to look for (`==`, `>=`, `<=`), and what happened when we pasted a blind-challenge `zlib` report straight into Google Gemini UI.
 - **[`examples/LLM_INGESTION_REPORT.md`](examples/LLM_INGESTION_REPORT.md)** - **Pre-Scan Summary & AI Brief (`sca-prescan --ai-brief`)**:
   - A single Markdown report with workstation paths stripped out so you can paste it straight into your internal company AI (Copilot, Claude, ChatGPT Enterprise, Gemini).
   - Shows the `sca-sig:v2` workspace fingerprint, recommended Detect CLI flags, expected component counts (Section 3), CVE and license tables (Sections 4-5), and copy-paste AI prompts (Section 6).
