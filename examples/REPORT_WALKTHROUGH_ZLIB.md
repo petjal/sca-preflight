@@ -142,7 +142,7 @@ Attached (and inline below) is the cold sca-prescan report (LLM_INGESTION_REPORT
 
 Take care, Pete
 Emil Walter "Pete" Jalajas
-pjalajas@gmail.com
+pjalajas+sca-preflight@gmail.com
 978-225-0525
 https://linkedin.com/in/ewpj
 https://github.com/petjal

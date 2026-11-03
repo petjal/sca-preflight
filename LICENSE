@@ -1,6 +1,6 @@
 SCA PREFLIGHT BENCHMARK & EVALUATION LICENSE
 
-Copyright (c) 2026 Emil Walter "Pete" Jalajas (pjalajas@gmail.com).
+Copyright (c) 2026 Emil Walter "Pete" Jalajas (pjalajas+sca-preflight@gmail.com).
 All rights reserved.
 
 1. FREE INTERNAL BENCHMARKING & EVALUATION (`benchmark/` & `examples/`):
@@ -19,7 +19,7 @@ All rights reserved.
    proprietary commercial property of Emil Walter "Pete" Jalajas. Production,
    internal enterprise, or CI/CD use of the `sca-ops-toolkit` software requires
    a separate commercial license or consulting agreement with Emil Walter "Pete"
-   Jalajas (`pjalajas@gmail.com`).
+   Jalajas (`pjalajas+sca-preflight@gmail.com`).
 
 THE BENCHMARK CAPSULE, SAMPLE OUTPUTS, AND DOCUMENTATION ARE PROVIDED "AS IS",
 WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO

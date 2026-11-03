@@ -82,7 +82,7 @@ Run your current SCA scanner against `/dev/shm/sca_preflight_reference_scan` and
     - **`sca-bom-ifttt` runs *after* your scan** to unmap stale CI build scans, roll up noisy subcomponents, suppress duplicate `N-1` signature-scan noise, and flag brand-new component versions dropped by the server KB.
   - The toolkit is written in plain, readable Python 3.11+ (using only the Python standard library, with no compiled binaries, no extra pip packages to install, and no background network calls) so your security team can easily read the code and run the InfoSec review prompts in Section 6.2 of [`examples/LLM_INGESTION_REPORT.md`](examples/LLM_INGESTION_REPORT.md).
 - **Blind Public-Repo A/B Challenge & Feedback Intake (Optional PGP Encryption)**:
-  - Any benchmark published by a tool author can be accused of "teaching to the test." To keep the test 100% blind, pick **any public open-source repo and version tag on GitHub** (a multi-module Java/Spring build, a Go/Rust daemon, an OpenEmbedded/Yocto layer, or a C/C++ project) and email the repo URL and tag (or any scanner feedback / tricky manifest edge cases) to **`pjalajas+sca-preflight@gmail.com`** (or `pjalajas@gmail.com`).
+  - Any benchmark published by a tool author can be accused of "teaching to the test." To keep the test 100% blind, pick **any public open-source repo and version tag on GitHub** (a multi-module Java/Spring build, a Go/Rust daemon, an OpenEmbedded/Yocto layer, or a C/C++ project) and email the repo URL and tag (or any scanner feedback / tricky manifest edge cases) to **`pjalajas+sca-preflight@gmail.com`**.
   - We will run `sca-prescan` cold against that exact tag inside a 512 MB RAM sandbox and send back the generated `LLM_INGESTION_REPORT.md` (with the tuned Detect CLI flags, `sca-sig:v2` provenance signature, expected minimum BOM baseline, and pre-scan findings) so your team can run an A/B scan on your own scanner - default flags vs. tuned flags - and see the difference for yourselves.
   - **Optional PGP Encryption**: If you want to encrypt your feedback or sanitized scan snippets, use [`PGP_PUBLIC_KEY.asc`](PGP_PUBLIC_KEY.asc) (Ed25519/Cv25519 fingerprint `474FEEF93A03F2DC623FD664E0E1BC3DA4E43BDB`):
     ```bash
@@ -116,7 +116,7 @@ Run your current SCA scanner against `/dev/shm/sca_preflight_reference_scan` and
 - **Licensing & Consulting Contact**:
   - If your team wants to license **`sca-ops-toolkit`** for your internal pipelines, or bring Pete in to help tune your SCA scans, automate BOM cleanup, or troubleshoot server/database bottlenecks, reach out directly:
   - **Emil Walter "Pete" Jalajas**
-  - Email: `pjalajas@gmail.com`
+  - Email: `pjalajas+sca-preflight@gmail.com`
   - Phone: `978-225-0525`
   - LinkedIn: https://linkedin.com/in/ewpj
   - GitHub: https://github.com/petjal

@@ -108,7 +108,7 @@ That is what the separate, private **`sca-ops-toolkit`** repository is built for
 If your team wants to license **`sca-ops-toolkit`** for your internal CI/CD pipelines, or bring Pete in for a focused consulting engagement to tune your SCA scans, automate BOM cleanup, or troubleshoot server/database bottlenecks:
 
 - **Emil Walter "Pete" Jalajas**
-- Email: `pjalajas@gmail.com`
+- Email: `pjalajas+sca-preflight@gmail.com`
 - Phone: `978-225-0525`
 - LinkedIn: https://linkedin.com/in/ewpj
 - GitHub: https://github.com/petjal
