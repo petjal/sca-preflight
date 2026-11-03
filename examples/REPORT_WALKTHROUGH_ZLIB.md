@@ -51,6 +51,23 @@ To test how an off-the-shelf LLM reads the report with zero extra coaching, we p
 > - **Pinpointed the unpinned manifest location**: Instead of a generic alert about unpinned manifests, the warning explicitly identifies `contrib/dotzlib/DotZLib/DotZLib.csproj`. This tells the build engineer exactly which file will trigger Detect's strict accuracy check (`--detect.accuracy.required=ALL`).
 > - **Expanded machine-readable YAML metadata**: Added `total_workspace_mb: 2.85` and `dependency_inputs_hashed_count` to the frontmatter, giving automated CI/CD evaluation scripts concrete thresholds to verify against silent drops.
 
+> ### Gemini UI Output #3 (Final Version: 4-Bucket Accounting, Bucket 2a Ledger & Baseline/Optional Split)
+> Yes, this version is significantly better. It transitions the report from a basic pre-scan summary into an auditable gap analysis that directly contrasts what was found against what standard enterprise scanners miss.
+> - **Mathematical file accounting (`11 + 243 + 0 = 254`)**: The new disposition accounting table accounts for every file in the workspace across four distinct buckets. This guarantees that nothing was dropped during analysis:
+>   - **Bucket 1**: 1 excluded folder (`.git`).
+>   - **Bucket 2a**: 11 actionable BOM/vulnerability inputs hashed into Layer 1 (`L1`).
+>   - **Bucket 2b**: 243 first-party source/documentation files hashed into Layer 2 (`L2`).
+>   - **Bucket 3**: 0 skipped files (100% traversal coverage).
+> - **Granular gap analysis in Bucket 2a**: The new 11-file inventory table details exactly what `sca-prescan` extracted from each file and contrasts it with what default Detect (`depth=0`) does. For example, it clearly documents that:
+>   - `zlib.h` at depth 0 is silently ignored by standard package detectors because there is no Conan or vcpkg lockfile.
+>   - `DotZLib.csproj` at depth 3 is completely missed by default scans because search depth defaults to 0.
+>   - Native build scripts (`CMakeLists.txt`, `Makefile`) and license notices are cataloged rather than bypassed.
+> - **Separation of baseline vs. optional flags**: Splitting Section 2 into a vendor-safe baseline (Section 2.1) and optional deeper tweaks (Section 2.2) is a strong operational improvement:
+>   - **Section 2.1 (Safe Baseline)**: Sticks to vendor-recommended defaults (`depth=0`, 4,096 MB RAM, `.git` exclusions, provenance stamp) to keep CI build times fast and prevent unexpected exit code failures.
+>   - **Section 2.2 (Trade-Off Table)**: Explains the exact trade-offs of deeper inspection (e.g., passing `--detect.detector.search.depth=3` to reach `DotZLib.csproj` vs. incurring slower scans and potential build tool prerequisites).
+> - **Synchronized cryptographic provenance**: The Layer 1 hash (`L1`) and `--detect.project.version.notes` CLI string were updated to reflect the full 11-file dependency control plane (`dep_inputs=11`).
+> - **The Takeaway**: This format makes the report much more compelling for security engineers. Instead of merely presenting raw scanner flags, it explicitly proves where blind spots exist in default configurations and gives pipeline owners clear, low-risk options for closing them.
+
 ---
 
 ## 3. Four Practical Takeaways From That Gemini Run
