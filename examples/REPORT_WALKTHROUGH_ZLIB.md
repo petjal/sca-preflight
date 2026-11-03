@@ -163,6 +163,8 @@ coverage_pct: 100.0
 early_stop_triggered: false
 total_dirs_scanned: 40
 total_files_scanned: 254
+total_workspace_mb: 2.85
+dependency_inputs_hashed_count: 8
 lockfiles_count: 0
 unpinned_manifests_count: 1
 expected_min_bom_components: 0
@@ -186,6 +188,12 @@ operational_warnings_count: 4
 | **Layer 2: Top-Down Source Tree (`L2`)** | `067c3d506457baf7fadf2adcf631ff2fc81289e4a81be6da2f9ca12ec0eb78df` | Breadth-first multithreaded source digest covering 254/254 files (100.0%, max depth 3). |
 | **Effective Detect Config (`CFG`)** | `98b04404b51ee40a97ac14dbddbc6221cabe8da5040235cda6f6517b1217679c` | Canonical digest of the sorted recommended Detect CLI properties. |
 | **SCA Web UI Provenance Flag** | `--detect.project.version.notes=sca-ops-provenance:sca-sig:v2:L0=40f8b280f9ff:L1=417e14f3af62:L2=067c3d506457:CFG=98b04404b51e@d3(100.0%);tree_merkle=sha256:067c3d506457baf7;dep_merkle=sha256:417e14f3af62d3b5;cfg_sha256=98b04404b51ee40a;files=254/254;dep_inputs=8` | Pass this flag to Detect to stamp exact input/config provenance into the Project Version Notes UI. |
+
+### What `sca-prescan` Actually Inspected (`40` dirs, `254` files, `2.85` MB)
+- **Pass 1 (Directory, Manifest & Encoding Walk)**: Traversed `40` directories and `254` files (`2.85` MB), classified `0` lockfile(s) and `1` unpinned manifest(s), verified manifest character encodings (`UTF-8` vs `UTF-16LE/BE`), and measured max directory depths for detectors, binaries, and exclusions.
+- **Pass 2 (In-Memory Archive, Binary & Header Inspection)**: Inspected `0` archive(s) and `0` compiled binary file(s) in memory without disk extraction, parsed `2` internal version headers/manifests (`META-INF/maven`, `MANIFEST.MF`, `PKG-INFO`, C `zlib.h`/`opensslv.h`/`VERSION.dat`), and checked `1` legal/SPDX attribution file(s).
+- **Pass 3 (3-Layer Cryptographic Provenance Hashing)**: Hashed `40` directory skeletons (`L0`, 0 file reads), 100% of `8` dependency-bearing inputs (`L1`), and `254/254` source files (`L2`, `100.0%` coverage).
+- **Pass 4 (100% Offline Version-Range & Rugpull Matching)**: Evaluated all discovered `(component, version)` pairs offline against the built-in Pareto CVE (`pareto_vuln_kb.json`) and license-rugpull (`pareto_license_kb.json`) catalogs (`0` outbound network calls).
 
 ## 2. Tuned Detect CLI Invocation & Configuration Calibration
 
