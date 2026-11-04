@@ -1,6 +1,6 @@
 # What Is Inside `sca_preflight_reference_capsule.b64`?
 
-[`sca_preflight_reference_capsule.b64`](sca_preflight_reference_capsule.b64) is a tiny `.tar.gz` folder (about **11 KB total** across **25 files**) encoded as Base64 text so GitHub Dependabot does not spam automated security alerts on this test repository.
+[`sca_preflight_reference_capsule.b64`](sca_preflight_reference_capsule.b64) is a tiny `.tar.gz` folder (about **11 KB total** across **25 archive entries**: **24 scanned target files** plus **1 `GROUND_TRUTH_MANIFEST.json` answer key**) encoded as Base64 text so GitHub Dependabot does not spam automated security alerts on this test repository. (Because the `.jar`, `.tar.gz`, and `.so` files inside this 11 KB capsule are synthetic metadata stubs rather than multi-megabyte upstream binaries, they test metadata/header/manifest pre-scanning without distributing real vulnerable binaries; for server-side SHA-1 binary hash matching in a vendor KB, use real upstream repositories as shown in [`../examples/REPORT_WALKTHROUGH_ZLIB.md`](../examples/REPORT_WALKTHROUGH_ZLIB.md).)
 
 When you unpack it into `/dev/shm/sca_preflight_reference_scan`:
 

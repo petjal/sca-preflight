@@ -257,7 +257,7 @@ operational_warnings_count: 2
 | **SCA Web UI Provenance Flag** | `--detect.project.version.notes=sca-ops-provenance:sca-sig:v2:L0=40f8b280f9ff:L1=aa17566a05ee:L2=067c3d506457:CFG=98b04404b51e@d3(100.0%);tree_merkle=sha256:067c3d506457baf7;dep_merkle=sha256:aa17566a05ee6a77;cfg_sha256=98b04404b51ee40a;files=254/254;dep_inputs=11` | Pass this flag to Detect to stamp exact input/config provenance into the Project Version Notes UI. |
 
 ### What `sca-prescan` Actually Inspected (`40` dirs, `254` files, `2.85` MB)
-- **Pass 1 (Directory, Manifest & Encoding Walk)**: Traversed `40` directories and `254` files (`2.85` MB), classified `0` lockfile(s) and `1` unpinned manifest(s), verified manifest character encodings (`UTF-8` vs `UTF-16LE/BE`), and measured max directory depths for detectors, binaries, and exclusions.
+- **Pass 1 (Directory, Manifest & Encoding Walk)**: Traversed `40` directories and `254` files (`2.85` MB), classified `0` lockfile(s), `1` unpinned manifest(s), and `24` native/container build script(s), verified manifest character encodings (`UTF-8` vs `UTF-16LE/BE`), and measured max directory depths for detectors, binaries, and exclusions.
 - **Pass 2 (In-Memory Archive, Binary & Header Inspection)**: Inspected `0` archive(s) and `0` compiled binary file(s) in memory without disk extraction, parsed `1` internal version headers/manifests (`META-INF/maven`, `MANIFEST.MF`, `PKG-INFO`, C `zlib.h`/`opensslv.h`/`VERSION.dat`), and checked `1` legal/SPDX attribution file(s).
 - **Pass 3 (3-Layer Cryptographic Provenance Hashing)**: Hashed `40` directory skeletons (`L0`, 0 file reads), 100% of `11` dependency-bearing inputs (`L1`), and `254/254` source files (`L2`, `100.0%` coverage).
 - **Pass 4 (100% Offline Version-Range & Rugpull Matching)**: Evaluated all discovered `(component, version)` pairs offline against the built-in Pareto CVE (`pareto_vuln_kb.json`) and license-rugpull (`pareto_license_kb.json`) catalogs (`0` outbound network calls).
@@ -268,13 +268,14 @@ operational_warnings_count: 2
 | :--- | :---: | :--- | :--- |
 | **Bucket 1: Excluded Non-Shipping Dirs** | `1` dir(s) | Saw 1 non-shipping folder(s) (.git), skipped traversal, and added to --detect.excluded.directories. | Skips .git by default, but traverses .venv, venv, or unlocked node_modules unless explicitly excluded. |
 | **Bucket 2a: Actionable BOM, Vuln & Calibration Files (`L1`)** | `11` file(s) (`0.11` MB) | Hashed 100% into Layer 1 (L1) and extracted BOM baselines, C/C++ header versions, archive/binary metadata, and 2 CVE / 0 license hit(s). | DETECTOR only processes root (depth=0) package manifests; SILENTLY IGNORES depth>=1 manifests, UTF-16 manifests, C/C++ version headers, CMake/Makefiles, and standalone binaries (--individualFileMatching=NONE). |
-| **Bucket 2b: Source & Doc Provenance Only (`L2 - L1`)** | `243` file(s) (`2.73` MB) | Hashed 243 first-party source/doc files into Layer 2 (L2) and scanned for embedded private keys (0 third-party BOM declarations). | Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole. |
+| **Bucket 2b: Source & Doc Provenance Only (`L2 - L1`)** | `243` file(s) (`2.74` MB) | Hashed 243 first-party source/doc files into Layer 2 (L2) and scanned for embedded private keys (0 third-party BOM declarations). | Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole. |
 | **Bucket 3: Unhashed Beyond Monorepo Early-Stop Cap** | `0` file(s) | 0 files skipped (100% hashed). | Signature Scanner hashes all files; >10,000 files or >1 GB in one scan risks server queue timeouts. |
 
 ### Actionable Files Processed in Bucket 2a (`11` file(s): `sca-prescan` vs. Default Detect)
 
 | File Path (Depth) | Bucket Sub-Type | What `sca-prescan` Extracted & Did | What Default Detect (`depth=0`) Does |
 | :--- | :--- | :--- | :--- |
+| `zlib.h` (`d=0`) | `2a-ii Native Version Header` | Parsed C/C++ version header macros; hashed into L1. Extracted `zlib 1.2.11` (c_header). Matched vulnerability: CVE-2022-37434 (CVSS 9.8, CISA-KEV), CVE-2023-45853 (CVSS 9.8). | SILENTLY IGNORED by DETECTOR (no Conan/vcpkg lockfile; relies on whole-directory SIGNATURE_SCAN or BDBA). |
 | `CMakeLists.txt` (`d=0`) | `2a-ii Native Build Script` | Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1. | SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile). |
 | `Makefile` (`d=0`) | `2a-ii Native Build Script` | Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1. | SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile). |
 | `contrib/blast/Makefile` (`d=2`) | `2a-ii Native Build Script` | Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1. | SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile). |
@@ -285,7 +286,6 @@ operational_warnings_count: 2
 | `contrib/puff/Makefile` (`d=2`) | `2a-ii Native Build Script` | Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1. | SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile). |
 | `contrib/untgz/Makefile` (`d=2`) | `2a-ii Native Build Script` | Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1. | SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile). |
 | `nintendods/Makefile` (`d=1`) | `2a-ii Native Build Script` | Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1. | SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile). |
-| `zlib.h` (`d=0`) | `2a-ii Native Version Header` | Parsed C/C++ version header macros; hashed into L1. Extracted `zlib 1.2.11` (c_header). Matched vulnerability: CVE-2022-37434 (CVSS 9.8, CISA-KEV), CVE-2023-45853 (CVSS 9.8). | SILENTLY IGNORED by DETECTOR (no Conan/vcpkg lockfile; relies on whole-directory SIGNATURE_SCAN or BDBA). |
 
 ## 2. Tuned Detect CLI Invocation & Configuration Calibration
 
@@ -304,7 +304,7 @@ java -jar detect.jar \
 
 | Optional Detect Flag | What Hidden Files / Failures It Unlocks in This Repo | Performance & BOM Trade-Off |
 | :--- | :--- | :--- |
-| `--detect.detector.search.depth=3` | Discovers nested manifests/lockfiles down to directory depth 3 (default is 0, which silently ignores subdirectories). | Increases detector filesystem walk and subproject inspector invocations across nested folders. |
+| `--detect.detector.search.depth=3` | Discovers nested manifests/lockfiles down to directory depth 3 (default is 0, which stops at root and skips standalone/non-reactor subdirectories or buildless nested modules). | Increases detector filesystem walk and subproject inspector invocations across nested folders. |
 
 ### Operational & Calibration Signals
 - Unpinned package manifests detected (contrib/dotzlib/DotZLib/DotZLib.csproj). Detect 10 defaults to --detect.accuracy.required=ALL (HIGH), which will exit with Code 5 (FAILURE_DETECTOR: Accuracy Not Met) or Exit Code 15 (FAILURE_ACCURACY_NOT_MET) if package manager executables (pip, npm, go, mvn, gradle, cargo, dotnet, bazel, conan, bundle) or installed environments are missing unless --detect.accuracy.required=NONE is passed for buildless/unbuilt runs.
@@ -313,7 +313,7 @@ java -jar detect.jar \
 ## 3. Expected BOM Baseline & Post-Scan Completeness Gate
 
 - **Expected Minimum BOM Components**: `>= 0` across `0` code location(s)
-- **Baseline Summary**: You should expect a BOM of at least 0 component version(s) across 0 code location(s) (0 locked + 0 direct unpinned), and here is why:
+- **Baseline Summary**: You should expect a BOM of at least 0 component version(s) across 0 code location(s) (0 locked + 0 direct unpinned) from package manager detectors (no third-party package lockfiles or external dependencies declared; BOM relies on Signature Scanning or BDBA).
 
 ## 4. Actionable High-Severity Vulnerabilities (2)
 
@@ -341,7 +341,7 @@ To test how the 4-Bucket File & Byte Disposition Accounting and `Bucket 2a` gap 
   - **Bucket 2b (Source/Doc Provenance `L2 - L1`)**: `527` files (`3.19` MB)
   - **Bucket 3 (Early-Stop Skipped)**: `0` files (`100.0%` coverage)
 - **What the `Bucket 2a` Gap Analysis Proves**:
-  - Out of `60` Maven/Gradle manifests declaring **`>= 264` direct dependencies across `51` subprojects**, Default Detect (`--detect.detector.search.depth=0`, `--detect.detector.search.continue=false`) processes **only 1 file** (root `pom.xml` at `d=0`, which declares just `2` direct dependencies) and **silently skips the other 59 subproject manifests** (`d=1..4`).
+  - Out of `60` Maven/Gradle manifests declaring **`>= 264` direct dependencies across `51` subprojects**, Default Detect (`--detect.detector.search.depth=0`, `--detect.detector.search.continue=false`) only inspects root `pom.xml` at `d=0` (and its declared `<modules>` reactor *only* when a full `mvn dependency:tree` build environment succeeds), while **silently skipping all standalone non-reactor POMs (`spring-cloud-function-samples/*`, `src/it/*`, `docs/pom.xml`), all Gradle subprojects (`build.gradle`), and all 59 child POMs in buildless mode** (`d=1..4`).
 
 > ### Gemini UI Output #4 (Evaluating `spring-cloud/spring-cloud-function` @ `v3.2.2`)
 > This scan demonstrates how well the tool scales from a compact C project (`zlib`) to a massive, multi-module Java and Kotlin enterprise monorepo (`spring_cloud_function`). Testing against this codebase is a great proof point because it highlights the exact failure modes enterprise teams frequently encounter with default scanner settings.

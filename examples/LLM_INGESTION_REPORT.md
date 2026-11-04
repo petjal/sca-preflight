@@ -23,8 +23,8 @@ unpinned_manifests_count: 3
 expected_min_bom_components: 8
 actionable_vulnerabilities_count: 27
 actionable_license_risks_count: 8
-blind_spot_traps_count: 4
-operational_warnings_count: 8
+blind_spot_traps_count: 6
+operational_warnings_count: 10
 ---
 
 # AI-First SCA Pre-Flight, Provenance & Risk Brief (`sca_preflight_reference_scan`)
@@ -43,7 +43,7 @@ operational_warnings_count: 8
 | **SCA Web UI Provenance Flag** | `--detect.project.version.notes=sca-ops-provenance:sca-sig:v2:L0=35a527e1d2b5:L1=9c52bea95b81:L2=9c52bea95b81:CFG=2adcf6e44988@d3(100.0%);tree_merkle=sha256:9c52bea95b818479;dep_merkle=sha256:9c52bea95b818479;cfg_sha256=2adcf6e44988ff2a;files=24/24;dep_inputs=24` | Pass this flag to Detect to stamp exact input/config provenance into the Project Version Notes UI. |
 
 ### What `sca-prescan` Actually Inspected (`15` dirs, `24` files, `0.01` MB)
-- **Pass 1 (Directory, Manifest & Encoding Walk)**: Traversed `15` directories and `24` files (`0.01` MB), classified `0` lockfile(s) and `3` unpinned manifest(s), verified manifest character encodings (`UTF-8` vs `UTF-16LE/BE`), and measured max directory depths for detectors, binaries, and exclusions.
+- **Pass 1 (Directory, Manifest & Encoding Walk)**: Traversed `15` directories and `24` files (`0.01` MB), classified `0` lockfile(s), `3` unpinned manifest(s), and `0` native/container build script(s), verified manifest character encodings (`UTF-8` vs `UTF-16LE/BE`), and measured max directory depths for detectors, binaries, and exclusions.
 - **Pass 2 (In-Memory Archive, Binary & Header Inspection)**: Inspected `19` archive(s) and `2` compiled binary file(s) in memory without disk extraction, parsed `1` internal version headers/manifests (`META-INF/maven`, `MANIFEST.MF`, `PKG-INFO`, C `zlib.h`/`opensslv.h`/`VERSION.dat`), and checked `0` legal/SPDX attribution file(s).
 - **Pass 3 (3-Layer Cryptographic Provenance Hashing)**: Hashed `15` directory skeletons (`L0`, 0 file reads), 100% of `24` dependency-bearing inputs (`L1`), and `24/24` source files (`L2`, `100.0%` coverage).
 - **Pass 4 (100% Offline Version-Range & Rugpull Matching)**: Evaluated all discovered `(component, version)` pairs offline against the built-in Pareto CVE (`pareto_vuln_kb.json`) and license-rugpull (`pareto_license_kb.json`) catalogs (`0` outbound network calls).
@@ -84,7 +84,7 @@ operational_warnings_count: 8
 | `mode_2_unknowns/vendor/npm_cache/cross-spawn-7.0.4.tgz` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2024-21538 (CVSS 9.8). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
 | `mode_2_unknowns/vendor/npm_cache/lodash-4.17.19.tgz` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-23337 (CVSS 9.8). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
 | `mode_2_unknowns/vendor/nuget_feed/newtonsoft.json.12.0.3.nupkg` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Extracted `Newtonsoft.Json 12.0.3` (nuspec). Matched vulnerability: CVE-2024-21907 (CVSS 7.5). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
-| `mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-44228 (CVSS 10.0, CISA-KEV), CVE-2022-42889 (CVSS 9.8, CISA-KEV). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
+| `mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar` (`d=3`) | `2a-iii Shaded / Fat Archive` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-44228 (CVSS 10.0, CISA-KEV), CVE-2022-42889 (CVSS 9.8, CISA-KEV). Flagged blind-spot trap: CVE-2022-42889, CVE-2021-44228. | BLIND-SPOT TRAP: Ignored by DETECTOR; Signature Scanner hashes outer archive only and misses shaded/repackaged inner classes unless deep inspection or BDBA is enabled. |
 
 ## 2. Tuned Detect CLI Invocation & Configuration Calibration
 
@@ -102,8 +102,8 @@ java -jar detect.jar \
 
 | Optional Detect Flag | What Hidden Files / Failures It Unlocks in This Repo | Performance & BOM Trade-Off |
 | :--- | :--- | :--- |
-| `--detect.detector.search.depth=3` | Discovers nested manifests/lockfiles down to directory depth 3 (default is 0, which silently ignores subdirectories). | Increases detector filesystem walk and subproject inspector invocations across nested folders. |
-| `--detect.binary.scan.search.depth=3` | Discovers binary/archive artifacts down to directory depth 3 for BINARY_SCAN (default is 0). | Uploads all matching nested archives when BINARY_SCAN is enabled. |
+| `--detect.detector.search.depth=3` | Discovers nested manifests/lockfiles down to directory depth 3 (default is 0, which stops at root and skips standalone/non-reactor subdirectories or buildless nested modules). | Increases detector filesystem walk and subproject inspector invocations across nested folders. |
+| `--detect.binary.scan.search.depth=3` | Discovers binary/archive artifacts down to directory depth 3 when BINARY_SCAN (BDBA) is enabled with --detect.binary.scan.file.name.patterns (default is 0; does not affect SIGNATURE_SCAN). | Applies only when BINARY_SCAN is enabled; uploads matching nested archives to the BDBA worker. |
 | `--detect.blackduck.signature.scanner.individual.file.matching=BINARY` | Computes single-file SHA-1 checksums for standalone binaries (.so, .dll, .exe, .o) omitted by default NONE. | Adds per-file SHA-1 matching overhead during Signature Scanning. |
 
 ### Operational & Calibration Signals
@@ -115,6 +115,8 @@ java -jar detect.jar \
 - BLIND-SPOT TRAP [CRITICAL]: CVE-2021-44228 (Log4Shell) detected in mode_1_knowns/lib/log4j-core-2.14.1.jar!/org/apache/logging/log4j/core/lookup/JndiLookup.class - Log4Shell vulnerable JndiLookup class present in archive.
 - BLIND-SPOT TRAP [CRITICAL]: CVE-2022-21724 (PgJDBC SocketFactory RCE) detected in mode_1_knowns/lib/postgresql-42.2.18.jar!/org/postgresql/Driver.class - PgJDBC unauthenticated arbitrary class instantiation RCE via AuthenticationPluginClassName / SocketFactory
 - BLIND-SPOT TRAP [CRITICAL]: CVE-2022-22965 (Spring4Shell) detected in mode_1_knowns/lib/spring-beans-5.3.17.jar!/org/springframework/beans/CachedIntrospectionResults.class - Spring4Shell vulnerable CachedIntrospectionResults class present in archive.
+- BLIND-SPOT TRAP [CRITICAL]: CVE-2022-42889 (Text4Shell) detected in mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar!/org/apache/commons/text/StringSubstitutor.class - Text4Shell vulnerable Commons Text StringSubstitutor class present in archive.
+- BLIND-SPOT TRAP [CRITICAL]: CVE-2021-44228 (Log4Shell) detected in mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar!/org/apache/logging/log4j/core/lookup/JndiLookup.class - Log4Shell vulnerable JndiLookup class present in archive.
 
 ## 3. Expected BOM Baseline & Post-Scan Completeness Gate
 

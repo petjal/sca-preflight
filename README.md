@@ -27,7 +27,7 @@ In real-world monorepos and C/C++/Java/Go/Rust builds, SCA scans usually run int
 
 ## 2. Quickstart: Unpack the Test Project & Run Your Scanner
 
-[`benchmark/sca_preflight_reference_capsule.b64`](benchmark/sca_preflight_reference_capsule.b64) is a Base64-encoded `.tar.gz` archive (~11 KB across 25 files) containing synthetic manifests, tiny dummy JAR metadata stubs, and dummy C/C++ `.so` version headers. See [`benchmark/README.md`](benchmark/README.md) for a plain-English breakdown of all 25 files and 8 concrete examples of what is inside each file before unpacking. It contains **only synthetic metadata stubs** and **zero third-party copyleft source code**, and is Base64-encoded so GitHub Dependabot does not open automated alerts on the sample manifests in this repo.
+[`benchmark/sca_preflight_reference_capsule.b64`](benchmark/sca_preflight_reference_capsule.b64) is a Base64-encoded `.tar.gz` archive (~11 KB across 25 archive entries: 24 scanned target files plus 1 `GROUND_TRUTH_MANIFEST.json` answer key) containing synthetic manifests, tiny dummy JAR metadata stubs, and dummy C/C++ `.so` version headers. See [`benchmark/README.md`](benchmark/README.md) for a plain-English breakdown of all 25 files and 8 concrete examples of what is inside each file before unpacking. It contains **only synthetic metadata stubs** and **zero third-party copyleft source code**, and is Base64-encoded so GitHub Dependabot does not open automated alerts on the sample manifests in this repo. (Note: because the `.jar`, `.tar.gz`, and `.so` files in this tiny 11 KB capsule are synthetic metadata stubs rather than multi-megabyte upstream binaries, they test metadata/header/manifest pre-scanning rather than server-side SHA-1 binary hash matching in a vendor KB; use Section 4's real-repo challenge below to test full vendor signature matching.)
 
 Unpack it into `/dev/shm/` on Linux or macOS:
 
@@ -47,8 +47,8 @@ Run your current SCA scanner against `/dev/shm/sca_preflight_reference_scan` and
   - `LIC-RUGPULL-HASHICORP-BSL`: HashiCorp Vault `v1.16.0` (`BSL-1.1` license change).
   - `LIC-COPYLEFT-GNU-READLINE-GPL3` & `LIC-DPI-GPL-3_0`: GNU Readline `8.2` (`GPL-3.0-only`, not LGPL).
   - `LIC-COPYLEFT-MYSQL-CONNECTOR-GPL2`: MySQL Connector/J `8.0.33` (`GPL-2.0-only`).
-- **4 Shaded-JAR Blind-Spot Traps & Encoding Warnings**:
-  - Class-path traps (`CVE-2021-44228`, `CVE-2022-22965`, `CVE-2022-42889`, `CVE-2022-21724`) hidden inside standalone and shaded uber-JARs (`telemetry_agent_shaded.jar`).
+- **6 Shaded-JAR & Class-Path Blind-Spot Traps + Encoding Warnings**:
+  - 6 class-path traps (`CVE-2021-44228` x2, `CVE-2022-42889` x2, `CVE-2022-22965`, `CVE-2022-21724`) across standalone `lib/` JARs and shaded uber-JARs (`telemetry_agent_shaded.jar`).
   - `NON_UTF8_MANIFEST_WARNING`: A Windows PowerShell `UTF-16LE` `requirements.txt` file (`mode_2_unknowns/services/auth_worker/requirements.txt`) that causes standard UTF-8 parsers to silently skip every Python dependency in that file.
 
 ---
@@ -106,10 +106,10 @@ Run your current SCA scanner against `/dev/shm/sca_preflight_reference_scan` and
 | `grafana/grafana` (`v10.0.0`) | Go + Node Monorepo (`12,226` files) | 12,226 | 11.39s | 81.1 MB | Triggered `MONOREPO_SCAN_SPLIT_RECOMMENDATION` (`> 10,000` files); caught `LIC-DPI-AGPL-3_0` and 7 CVEs across `go.mod` and `yarn.lock` |
 | `openssl/openssl` (`openssl-3.0.4`), `redis/redis` (`7.4.0`), `curl/curl` (`8.3.0`), `madler/zlib` (`v1.2.11`) | C / C++ (`VERSION.dat`, `version.h`, `curlver.h`, `zlib.h`) | 254–24,263 | 0.7s–17.5s | 27–120 MB | Parsed C version headers and `VERSION.dat` without a package manager to catch `CVE-2022-2274` / `CVE-2022-3602` (OpenSSL), `LIC-RUGPULL-REDIS-RSAL-SSPL`, `CVE-2023-38545` (curl), and `CVE-2022-37434` (zlib) |
 | `apache/struts` (`STRUTS_6_3_0_1`) | Java Multi-Module Maven | 3,115 | 5.69s | 42.1 MB | Caught `CVE-2023-50164` (Struts file-upload OGNL path traversal RCE, CVSS 9.8) and `CVE-2024-22243` |
-| `jenkinsci/jenkins` (`jenkins-2.440`) | Java Multi-Module Maven + Node | 5,180 | 7.09s | 51.4 MB | Caught `CVE-2024-23897` (Jenkins CLI `args4j` arbitrary file read/RCE KEV, CVSS 9.8), `CVE-2015-7501`, and `CVE-2024-21538` |
-| `spring-cloud/spring-cloud-function` (`v3.2.2`) | Java Spring Cloud Maven | 462 | 0.93s | 30.8 MB | Caught `CVE-2022-22963` (Spring Cloud Function SpEL RCE KEV), `CVE-2022-22965` (Spring4Shell KEV), `CVE-2015-7501`, and `CVE-2022-1471` |
+| `jenkinsci/jenkins` (`jenkins-2.440`) | Java Multi-Module Maven + Node | 5,180 | 7.09s | 51.4 MB | Caught `CVE-2024-23897` (Jenkins CLI `args4j` arbitrary file read/RCE KEV, CVSS 9.8) and `CVE-2024-21538` |
+| `spring-cloud/spring-cloud-function` (`v3.2.2`) | Java Spring Cloud Maven + Gradle (`60` manifests) | 607 | 0.93s | 30.8 MB | Caught `CVE-2022-22963` (Spring Cloud Function SpEL RCE KEV), `CVE-2022-22965` (Spring4Shell KEV), `CVE-2022-1471`, and `CVE-2024-22243` |
 | `alibaba/fastjson` (`1.2.80`) | Java Maven | 2,840 | 3.93s | 36.2 MB | Caught `CVE-2022-25845` (Alibaba Fastjson AutoType deserialization RCE, CVSS 9.8) |
-| `opencontainers/runc` (`v1.1.11`) | Go + C Container Runtime | 614 | 3.34s | 33.5 MB | Caught `CVE-2024-21626` (Leaky Vessels `WORKDIR` container breakout KEV), `CVE-2023-39325`, `CVE-2023-45288`, and `CVE-2024-24786` |
+| `opencontainers/runc` (`v1.1.11`) | Go + C Container Runtime | 1,205 | 3.34s | 33.5 MB | Caught `CVE-2024-21626` (Leaky Vessels `WORKDIR` container breakout KEV), `CVE-2023-39325`, `CVE-2023-45288`, and `CVE-2024-24786` |
 | `traefik/traefik` (`v2.10.4`) | Go + Yarn Cloud-Native Proxy | 2,140 | 2.31s | 44.0 MB | Caught `CVE-2024-21626`, `CVE-2023-39325` (HTTP/2 Rapid Reset KEV), `CVE-2023-45288`, `CVE-2024-21538`, and `CVE-2024-29041` |
 | `TryGhost/Ghost` (`v5.65.0`), `django/django` (`4.2.6`), `pallets/flask` (`2.3.2`), `BurntSushi/ripgrep` (`14.1.0`) | Node Monorepo (`yarn.lock`), Python (`pyproject.toml`), Rust (`Cargo.lock`) | 185–6,840 | 0.39s–7.57s | 28–56 MB | 10/10 cold pass in 512 MB RAM sandbox; calibrated multi-module BOM baselines and caught `CVE-2024-21538` / `CVE-2024-29041` in Ghost |
 | `astral-sh/uv` (`0.4.0`), `pnpm/pnpm` (`v8.6.0`), `JamesNK/Newtonsoft.Json` (`12.0.3`), `abseil/abseil-cpp`, `conan-io/conan` | Rust / Python (`uv.lock`), Node (`pnpm-lock.yaml`), .NET (`.csproj`), Bazel (`MODULE.bazel`), Conan (`conanfile.py`) | 821–2,068 | 0.7s–4.4s | 29–35 MB | Calibrated multi-ecosystem BOM baselines (`uv.lock`, `pnpm-lock.yaml`, `.csproj`, `MODULE.bazel`, `conanfile.py`) and caught `CVE-2024-21907` (Newtonsoft.Json) |
