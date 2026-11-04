@@ -217,9 +217,13 @@
       "cvss": 9.8,
       "cisa_kev": true,
       "cwe": "CWE-122",
+      "published_date": "",
+      "pre_nvd": false,
       "evidence_source": "internal_manifest:zlib.h",
-      "actionable_remedy": "Upgrade zlib to 1.2.12.1, 1.2.13, or higher.",
+      "actionable_remedy": "Upgrade zlib to 1.2.12.1, 1.2.13, or higher. [DIFFWATCH-VERIFIED: unpatched code in inflate.c]",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
+      "diffwatch_verified": true,
+      "diffwatch_location": "inflate.c",
       "all_evidence_sources": [
         "internal_manifest:zlib.h"
       ]
@@ -232,9 +236,13 @@
       "cvss": 9.8,
       "cisa_kev": false,
       "cwe": "CWE-190",
+      "published_date": "",
+      "pre_nvd": false,
       "evidence_source": "internal_manifest:zlib.h",
-      "actionable_remedy": "Upgrade zlib / MiniZip to 1.3.1 or higher.",
+      "actionable_remedy": "Upgrade zlib / MiniZip to 1.3.1 or higher. [DIFFWATCH-VERIFIED: unpatched code in contrib/minizip/zip.c]",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
+      "diffwatch_verified": true,
+      "diffwatch_location": "contrib/minizip/zip.c",
       "all_evidence_sources": [
         "internal_manifest:zlib.h"
       ]
@@ -374,11 +382,11 @@
 
       <section id="vulnerabilities">
         <h2>6. Actionable High-Severity Vulnerabilities (2)</h2>
-        <p class="muted"><strong>Honest Scope (Hot-Off-The-Presses &amp; CISA-KEV Hit-List, Zero Promises)</strong>: <code>sca-prescan</code>'s built-in check is not a replacement for a full SCA vulnerability database and promises nothing for comprehensive CVE coverage. It checks an offline hit-list of <code>3,910</code> CISA-KEV, hot-off-the-presses 2025-2026 critical advisories (including pre-NVD <code>GHSA</code>/<code>GO</code>/<code>RUSTSEC</code> advisories), CVSS 9.8-10.0 disasters, and license rugpulls in seconds before your main SCA scanner runs.</p>
+        <p class="muted"><strong>Honest Scope (Hot-Off-The-Presses, CISA-KEV &amp; DiffWatch Dual-Polarity Hit-List, Zero Promises)</strong>: <code>sca-prescan</code>'s built-in check is not a replacement for a full SCA vulnerability database and promises nothing for comprehensive CVE coverage. It checks an offline hit-list of <code>3,910</code> version/range rules plus <code>26</code> <strong>DiffWatch Dual-Polarity Hunk &amp; Shaded-Bytecode</strong> signatures (<code>vulnerable_anchor_regex</code> PRESENT + <code>patch_guard_regex</code> ABSENT) to catch CISA-KEV, hot-off-the-presses 2025-2026 critical advisories (including pre-NVD <code>GHSA</code>/<code>GO</code>/<code>RUSTSEC</code> advisories), shaded uber-JARs, unversioned vendor code, and backport guards in seconds before your main SCA scanner runs.</p>
         <table>
           <thead><tr><th>CVE ID</th><th>CVSS</th><th>KEV</th><th>Component &amp; Version</th><th>Evidence Source</th><th>Actionable Remedy</th></tr></thead>
           <tbody>
-            <tr><td><code>CVE-2022-37434</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>zlib 1.2.11</code></td><td><code>internal_manifest:zlib.h</code></td><td>Upgrade zlib to 1.2.12.1, 1.2.13, or higher.</td></tr><tr><td><code>CVE-2023-45853</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>zlib 1.2.11</code></td><td><code>internal_manifest:zlib.h</code></td><td>Upgrade zlib / MiniZip to 1.3.1 or higher.</td></tr>
+            <tr><td><code>CVE-2022-37434</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>zlib 1.2.11</code></td><td><code>internal_manifest:zlib.h</code></td><td>Upgrade zlib to 1.2.12.1, 1.2.13, or higher. [DIFFWATCH-VERIFIED: unpatched code in inflate.c]</td></tr><tr><td><code>CVE-2023-45853</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>zlib 1.2.11</code></td><td><code>internal_manifest:zlib.h</code></td><td>Upgrade zlib / MiniZip to 1.3.1 or higher. [DIFFWATCH-VERIFIED: unpatched code in contrib/minizip/zip.c]</td></tr>
           </tbody>
         </table>
       </section>

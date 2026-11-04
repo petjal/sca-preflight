@@ -401,6 +401,8 @@
       "cvss": 7.5,
       "cisa_kev": true,
       "cwe": "CWE-400",
+      "published_date": "",
+      "pre_nvd": false,
       "evidence_source": "manifest:go.mod",
       "actionable_remedy": "Upgrade golang.org/x/net to v0.17.0 or higher.",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
@@ -416,6 +418,8 @@
       "cvss": 7.5,
       "cisa_kev": false,
       "cwe": "CWE-400",
+      "published_date": "",
+      "pre_nvd": false,
       "evidence_source": "manifest:go.mod",
       "actionable_remedy": "Upgrade golang.org/x/net to v0.23.0 or higher.",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
@@ -431,9 +435,13 @@
       "cvss": 8.6,
       "cisa_kev": true,
       "cwe": "CWE-403",
+      "published_date": "",
+      "pre_nvd": false,
       "evidence_source": "manifest:go.mod",
-      "actionable_remedy": "Upgrade runc to 1.1.12 or higher.",
+      "actionable_remedy": "Upgrade runc to 1.1.12 or higher. [DIFFWATCH-VERIFIED: unpatched code in libcontainer/init_linux.go]",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
+      "diffwatch_verified": true,
+      "diffwatch_location": "libcontainer/init_linux.go",
       "all_evidence_sources": [
         "manifest:go.mod"
       ]
@@ -446,6 +454,8 @@
       "cvss": 7.5,
       "cisa_kev": false,
       "cwe": "CWE-835",
+      "published_date": "",
+      "pre_nvd": false,
       "evidence_source": "manifest:go.mod",
       "actionable_remedy": "Upgrade google.golang.org/protobuf to v1.33.0 or higher.",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
@@ -586,11 +596,11 @@
 
       <section id="vulnerabilities">
         <h2>6. Actionable High-Severity Vulnerabilities (4)</h2>
-        <p class="muted"><strong>Honest Scope (Hot-Off-The-Presses &amp; CISA-KEV Hit-List, Zero Promises)</strong>: <code>sca-prescan</code>'s built-in check is not a replacement for a full SCA vulnerability database and promises nothing for comprehensive CVE coverage. It checks an offline hit-list of <code>3,910</code> CISA-KEV, hot-off-the-presses 2025-2026 critical advisories (including pre-NVD <code>GHSA</code>/<code>GO</code>/<code>RUSTSEC</code> advisories), CVSS 9.8-10.0 disasters, and license rugpulls in seconds before your main SCA scanner runs.</p>
+        <p class="muted"><strong>Honest Scope (Hot-Off-The-Presses, CISA-KEV &amp; DiffWatch Dual-Polarity Hit-List, Zero Promises)</strong>: <code>sca-prescan</code>'s built-in check is not a replacement for a full SCA vulnerability database and promises nothing for comprehensive CVE coverage. It checks an offline hit-list of <code>3,910</code> version/range rules plus <code>26</code> <strong>DiffWatch Dual-Polarity Hunk &amp; Shaded-Bytecode</strong> signatures (<code>vulnerable_anchor_regex</code> PRESENT + <code>patch_guard_regex</code> ABSENT) to catch CISA-KEV, hot-off-the-presses 2025-2026 critical advisories (including pre-NVD <code>GHSA</code>/<code>GO</code>/<code>RUSTSEC</code> advisories), shaded uber-JARs, unversioned vendor code, and backport guards in seconds before your main SCA scanner runs.</p>
         <table>
           <thead><tr><th>CVE ID</th><th>CVSS</th><th>KEV</th><th>Component &amp; Version</th><th>Evidence Source</th><th>Actionable Remedy</th></tr></thead>
           <tbody>
-            <tr><td><code>CVE-2023-39325</code></td><td><strong>7.5</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>golang.org/x/net v0.8.0</code></td><td><code>manifest:go.mod</code></td><td>Upgrade golang.org/x/net to v0.17.0 or higher.</td></tr><tr><td><code>CVE-2023-45288</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>golang.org/x/net v0.8.0</code></td><td><code>manifest:go.mod</code></td><td>Upgrade golang.org/x/net to v0.23.0 or higher.</td></tr><tr><td><code>CVE-2024-21626</code></td><td><strong>8.6</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>runc 1.1.11</code></td><td><code>manifest:go.mod</code></td><td>Upgrade runc to 1.1.12 or higher.</td></tr><tr><td><code>CVE-2024-24786</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>google.golang.org/protobuf v1.27.1</code></td><td><code>manifest:go.mod</code></td><td>Upgrade google.golang.org/protobuf to v1.33.0 or higher.</td></tr>
+            <tr><td><code>CVE-2023-39325</code></td><td><strong>7.5</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>golang.org/x/net v0.8.0</code></td><td><code>manifest:go.mod</code></td><td>Upgrade golang.org/x/net to v0.17.0 or higher.</td></tr><tr><td><code>CVE-2023-45288</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>golang.org/x/net v0.8.0</code></td><td><code>manifest:go.mod</code></td><td>Upgrade golang.org/x/net to v0.23.0 or higher.</td></tr><tr><td><code>CVE-2024-21626</code></td><td><strong>8.6</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>runc 1.1.11</code></td><td><code>manifest:go.mod</code></td><td>Upgrade runc to 1.1.12 or higher. [DIFFWATCH-VERIFIED: unpatched code in libcontainer/init_linux.go]</td></tr><tr><td><code>CVE-2024-24786</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>google.golang.org/protobuf v1.27.1</code></td><td><code>manifest:go.mod</code></td><td>Upgrade google.golang.org/protobuf to v1.33.0 or higher.</td></tr>
           </tbody>
         </table>
       </section>

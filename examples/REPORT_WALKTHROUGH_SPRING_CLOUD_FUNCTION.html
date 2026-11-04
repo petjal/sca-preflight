@@ -1501,6 +1501,8 @@
       "cvss": 9.8,
       "cisa_kev": false,
       "cwe": "CWE-502",
+      "published_date": "",
+      "pre_nvd": false,
       "evidence_source": "manifest:spring-cloud-function-adapters/spring-cloud-function-adapter-aws/pom.xml (+20 locations)",
       "actionable_remedy": "Upgrade SnakeYAML to 2.0 or higher.",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
@@ -1536,9 +1538,13 @@
       "cvss": 9.8,
       "cisa_kev": true,
       "cwe": "CWE-94",
+      "published_date": "",
+      "pre_nvd": false,
       "evidence_source": "manifest:pom.xml (+12 locations)",
-      "actionable_remedy": "Upgrade spring-cloud-function-context to 3.1.7, 3.2.3 or higher.",
+      "actionable_remedy": "Upgrade spring-cloud-function-context to 3.1.7, 3.2.3 or higher. [DIFFWATCH-VERIFIED: unpatched code in spring-cloud-function-context/src/main/java/org/springframework/cloud/function/context/config/RoutingFunction.java]",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
+      "diffwatch_verified": true,
+      "diffwatch_location": "spring-cloud-function-context/src/main/java/org/springframework/cloud/function/context/config/RoutingFunction.java",
       "all_evidence_sources": [
         "manifest:pom.xml",
         "manifest:spring-cloud-function-adapters/spring-cloud-function-adapter-aws/pom.xml",
@@ -1563,9 +1569,13 @@
       "cvss": 9.8,
       "cisa_kev": true,
       "cwe": "CWE-94",
+      "published_date": "",
+      "pre_nvd": false,
       "evidence_source": "manifest:spring-cloud-function-samples/function-sample-kotlin-web/pom.xml",
-      "actionable_remedy": "Upgrade spring-cloud-function-context to 3.1.7, 3.2.3 or higher.",
+      "actionable_remedy": "Upgrade spring-cloud-function-context to 3.1.7, 3.2.3 or higher. [DIFFWATCH-VERIFIED: unpatched code in spring-cloud-function-context/src/main/java/org/springframework/cloud/function/context/config/RoutingFunction.java]",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
+      "diffwatch_verified": true,
+      "diffwatch_location": "spring-cloud-function-context/src/main/java/org/springframework/cloud/function/context/config/RoutingFunction.java",
       "all_evidence_sources": [
         "manifest:spring-cloud-function-samples/function-sample-kotlin-web/pom.xml"
       ]
@@ -1578,6 +1588,8 @@
       "cvss": 9.8,
       "cisa_kev": true,
       "cwe": "CWE-94",
+      "published_date": "",
+      "pre_nvd": false,
       "evidence_source": "manifest:spring-cloud-function-adapters/spring-cloud-function-adapter-aws/pom.xml (+21 locations)",
       "actionable_remedy": "Upgrade spring-beans/spring-webmvc to 5.3.18 or 5.2.20 or higher.",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
@@ -1614,6 +1626,8 @@
       "cvss": 8.1,
       "cisa_kev": false,
       "cwe": "CWE-601",
+      "published_date": "",
+      "pre_nvd": false,
       "evidence_source": "manifest:spring-cloud-function-adapters/spring-cloud-function-adapter-aws/pom.xml (+21 locations)",
       "actionable_remedy": "Upgrade spring-web to 5.3.33, 6.0.17, or 6.1.4 or higher.",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
@@ -1783,11 +1797,11 @@
 
       <section id="vulnerabilities">
         <h2>6. Actionable High-Severity Vulnerabilities (5)</h2>
-        <p class="muted"><strong>Honest Scope (Hot-Off-The-Presses &amp; CISA-KEV Hit-List, Zero Promises)</strong>: <code>sca-prescan</code>'s built-in check is not a replacement for a full SCA vulnerability database and promises nothing for comprehensive CVE coverage. It checks an offline hit-list of <code>3,910</code> CISA-KEV, hot-off-the-presses 2025-2026 critical advisories (including pre-NVD <code>GHSA</code>/<code>GO</code>/<code>RUSTSEC</code> advisories), CVSS 9.8-10.0 disasters, and license rugpulls in seconds before your main SCA scanner runs.</p>
+        <p class="muted"><strong>Honest Scope (Hot-Off-The-Presses, CISA-KEV &amp; DiffWatch Dual-Polarity Hit-List, Zero Promises)</strong>: <code>sca-prescan</code>'s built-in check is not a replacement for a full SCA vulnerability database and promises nothing for comprehensive CVE coverage. It checks an offline hit-list of <code>3,910</code> version/range rules plus <code>26</code> <strong>DiffWatch Dual-Polarity Hunk &amp; Shaded-Bytecode</strong> signatures (<code>vulnerable_anchor_regex</code> PRESENT + <code>patch_guard_regex</code> ABSENT) to catch CISA-KEV, hot-off-the-presses 2025-2026 critical advisories (including pre-NVD <code>GHSA</code>/<code>GO</code>/<code>RUSTSEC</code> advisories), shaded uber-JARs, unversioned vendor code, and backport guards in seconds before your main SCA scanner runs.</p>
         <table>
           <thead><tr><th>CVE ID</th><th>CVSS</th><th>KEV</th><th>Component &amp; Version</th><th>Evidence Source</th><th>Actionable Remedy</th></tr></thead>
           <tbody>
-            <tr><td><code>CVE-2022-1471</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>snakeyaml 1.29</code></td><td><code>manifest:spring-cloud-function-adapters/spring-cloud-function-adapter-aws/pom.xml (+20 locations)</code></td><td>Upgrade SnakeYAML to 2.0 or higher.</td></tr><tr><td><code>CVE-2022-22963</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>spring-cloud-function-context 3.2.2</code></td><td><code>manifest:pom.xml (+12 locations)</code></td><td>Upgrade spring-cloud-function-context to 3.1.7, 3.2.3 or higher.</td></tr><tr><td><code>CVE-2022-22963</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>spring-cloud-function-context 3.2.1-SNAPSHOT</code></td><td><code>manifest:spring-cloud-function-samples/function-sample-kotlin-web/pom.xml</code></td><td>Upgrade spring-cloud-function-context to 3.1.7, 3.2.3 or higher.</td></tr><tr><td><code>CVE-2022-22965</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>spring-beans 5.3.17</code></td><td><code>manifest:spring-cloud-function-adapters/spring-cloud-function-adapter-aws/pom.xml (+21 locations)</code></td><td>Upgrade spring-beans/spring-webmvc to 5.3.18 or 5.2.20 or higher.</td></tr><tr><td><code>CVE-2024-22243</code></td><td><strong>8.1</strong></td><td>NO</td><td><code>spring-web 5.3.17</code></td><td><code>manifest:spring-cloud-function-adapters/spring-cloud-function-adapter-aws/pom.xml (+21 locations)</code></td><td>Upgrade spring-web to 5.3.33, 6.0.17, or 6.1.4 or higher.</td></tr>
+            <tr><td><code>CVE-2022-1471</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>snakeyaml 1.29</code></td><td><code>manifest:spring-cloud-function-adapters/spring-cloud-function-adapter-aws/pom.xml (+20 locations)</code></td><td>Upgrade SnakeYAML to 2.0 or higher.</td></tr><tr><td><code>CVE-2022-22963</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>spring-cloud-function-context 3.2.2</code></td><td><code>manifest:pom.xml (+12 locations)</code></td><td>Upgrade spring-cloud-function-context to 3.1.7, 3.2.3 or higher. [DIFFWATCH-VERIFIED: unpatched code in spring-cloud-function-context/src/main/java/org/springframework/cloud/function/context/config/RoutingFunction.java]</td></tr><tr><td><code>CVE-2022-22963</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>spring-cloud-function-context 3.2.1-SNAPSHOT</code></td><td><code>manifest:spring-cloud-function-samples/function-sample-kotlin-web/pom.xml</code></td><td>Upgrade spring-cloud-function-context to 3.1.7, 3.2.3 or higher. [DIFFWATCH-VERIFIED: unpatched code in spring-cloud-function-context/src/main/java/org/springframework/cloud/function/context/config/RoutingFunction.java]</td></tr><tr><td><code>CVE-2022-22965</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>spring-beans 5.3.17</code></td><td><code>manifest:spring-cloud-function-adapters/spring-cloud-function-adapter-aws/pom.xml (+21 locations)</code></td><td>Upgrade spring-beans/spring-webmvc to 5.3.18 or 5.2.20 or higher.</td></tr><tr><td><code>CVE-2024-22243</code></td><td><strong>8.1</strong></td><td>NO</td><td><code>spring-web 5.3.17</code></td><td><code>manifest:spring-cloud-function-adapters/spring-cloud-function-adapter-aws/pom.xml (+21 locations)</code></td><td>Upgrade spring-web to 5.3.33, 6.0.17, or 6.1.4 or higher.</td></tr>
           </tbody>
         </table>
       </section>
