@@ -1157,7 +1157,12 @@ def match_pareto_vulnerabilities(
                     osv_id = str(entry.get("osv_id") or "")
                     if pub_date.startswith(("2025-", "2026-")) and "[HOT " not in remedy and "[PRE-NVD " not in remedy:
                         badge = "PRE-NVD" if pre_nvd else "HOT"
-                        cite = f" / {osv_id}" if (osv_id and osv_id != entry["cve_id"]) else (" / CISA-KEV" if entry.get("cisa_kev") else "")
+                        cite_parts = []
+                        if osv_id and osv_id != entry["cve_id"]:
+                            cite_parts.append(osv_id)
+                        if entry.get("cisa_kev"):
+                            cite_parts.append("CISA-KEV")
+                        cite = (" / " + " / ".join(cite_parts)) if cite_parts else ""
                         remedy = f"{remedy} [{badge} {pub_date}{cite}]"
                     methods_by_key[hit_key] = [src_method]
                     hits_by_key[hit_key] = {
@@ -1244,7 +1249,12 @@ def match_pareto_vulnerabilities(
                     osv_id = str(snip.get("osv_id") or "")
                     if pub_date.startswith(("2025-", "2026-")) and "[HOT " not in remedy and "[PRE-NVD " not in remedy:
                         badge = "PRE-NVD" if pre_nvd else "HOT"
-                        cite = f" / {osv_id}" if (osv_id and osv_id != snip_cve) else (" / CISA-KEV" if snip.get("cisa_kev") else "")
+                        cite_parts = []
+                        if osv_id and osv_id != snip_cve:
+                            cite_parts.append(osv_id)
+                        if snip.get("cisa_kev"):
+                            cite_parts.append("CISA-KEV")
+                        cite = (" / " + " / ".join(cite_parts)) if cite_parts else ""
                         remedy = f"{remedy} [{badge} {pub_date}{cite}]"
                     if "[UNPATCHED-SNIPPET-VERIFIED:" not in remedy:
                         remedy = f"{remedy} [UNPATCHED-SNIPPET-VERIFIED: unpatched code in {snip_loc}]"
@@ -1445,7 +1455,7 @@ def match_pareto_license_risks(
         loc = str(lic_disc.get("location", ""))
         base_loc = loc.split("!/")[0]
         lic_id = str(lic_disc.get("license_id", ""))
-        rule_id = f"LIC-DPI-{lic_id.upper().replace('.', '_')}"
+        rule_id = f"LIC-TEXT-{lic_id.upper().replace('.', '_')}"
         if "!/" in loc or base_loc.lower().endswith((".jar", ".war", ".ear", ".zip", ".tar.gz", ".tgz", ".whl")):
             h_key = (rule_id, "text_match", base_loc)
             if h_key not in hits_by_key:

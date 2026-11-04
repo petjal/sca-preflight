@@ -42,12 +42,12 @@
   "expected_license_rules": [
     "LIC-COPYLEFT-GNU-READLINE-GPL3",
     "LIC-COPYLEFT-MYSQL-CONNECTOR-GPL2",
-    "LIC-DPI-AGPL-3_0",
-    "LIC-DPI-GPL-3_0",
     "LIC-RUGPULL-HASHICORP-BSL",
     "LIC-RUGPULL-ITEXT-AGPL",
     "LIC-RUGPULL-MINIO-AGPL",
-    "LIC-RUGPULL-REDIS-RSAL-SSPL"
+    "LIC-RUGPULL-REDIS-RSAL-SSPL",
+    "LIC-TEXT-AGPL-3_0",
+    "LIC-TEXT-GPL-3_0"
   ],
   "expected_blind_spot_traps": [
     "CVE-2021-44228",

@@ -42,3 +42,7 @@ select = ["E", "F", "W", "I", "SIM", "B", "BLE"]
 ignore = [
   "E501",  # Line length handled by formatter
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

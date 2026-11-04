@@ -57,7 +57,8 @@
       ],
       "vulnerable_anchor_regex": "BrotliDecoderDecompressStream[\\s\\S]{0,4500}?(?:BrotliEnsureRingBuffer|WriteRingBuffer)",
       "patch_guard_regex": "BrotliSafeRingBufferWrite|BROTLI_DEC_OVERFLOW_GUARD|ringbuffer_limit_verified",
-      "actionable_remedy": "Upgrade Google Brotli to 1.1.1 or higher (CISA KEV 2026-10-27 decompression buffer overflow)."
+      "actionable_remedy": "Upgrade Google Brotli to 1.1.1 or higher (CISA KEV 2026-10-27 decompression buffer overflow).",
+      "osv_id": "GHSA-9v8h-qqgm-4m35"
     },
     {
       "rule_id": "SNIP-CVE-2023-4863",

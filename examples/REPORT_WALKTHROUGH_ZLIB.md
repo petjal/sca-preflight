@@ -320,7 +320,7 @@ java -jar detect.jar \
 
 ## 4. Actionable High-Severity Vulnerabilities (2)
 
-> **Scope Note (Free 5-Second Worst-of-the-Worst Check, Not a Full SCA Database)**: `sca-prescan`'s main job is tuning your Detect CLI flags and catching BOM blind spots before your scan starts. As a free 5-second side dish while walking the tree, it also checks an offline hit-list (`3,910` version/range rules + `32` unpatched code-snippet and shaded-bytecode patterns) focused strictly on **must-catch disasters**: actively exploited **CISA-KEV** flaws, **recent 2025-2026 critical advisories** (including pre-NVD `GHSA`/`GO`/`RUSTSEC` advisories), `CVSS 9.8-10.0` RCEs, and major open-source license rugpulls (`AGPL-3.0`, `SSPL-1.0`, `RSALv2`, `BSL-1.1`). When version strings are missing or stripped from shaded uber-JARs, it checks source files and in-memory `.class` constant pools directly (`[UNPATCHED-SNIPPET-VERIFIED]` / `[PATCH-GUARD-DETECTED]`). Always rely on your full SCA server and AST/SAST tools for comprehensive vulnerability coverage.
+> **Scope Note (Free 5-Second Worst-of-the-Worst Check, Not a Full SCA Database)**: `sca-prescan`'s main job is tuning your Detect CLI flags and catching BOM blind spots before your scan starts. As a free 5-second side dish while walking the tree, it also checks an offline hit-list (`3,910` version/range rules + `32` unpatched code-snippet and shaded-bytecode patterns) focused strictly on **must-catch disasters**: actively exploited **CISA-KEV** flaws, **recent 2025-2026 critical advisories** (including pre-NVD `GHSA`/`GO`/`RUSTSEC` advisories), `CVSS 9.8-10.0` RCEs, and major open-source license rugpulls (`AGPL-3.0`, `SSPL-1.0`, `RSALv2`, `BSL-1.1`). When version strings are missing or stripped from shaded uber-JARs, it checks source files and in-memory `.class` constant pools directly (`[UNPATCHED-SNIPPET-VERIFIED]` / `[PATCH-GUARD-DETECTED]`). All 2025-2026 rules (including 6-digit 2026 CVE sequence numbers such as `CVE-2026-111497` / `GHSA-9v8h-qqgm-4m35`, `CVE-2026-109618`, and `CVE-2026-106445` / `GHSA-p8wg-vrv2-v86f` issued after MITRE crossed 100,000 CVEs in 2026) are live, verifiable upstream advisories synced directly from the official CISA KEV catalog (`cisa.gov`) and OSV.dev (`api.osv.dev`). Always rely on your full SCA server and AST/SAST tools for comprehensive vulnerability coverage.
 
 | CVE ID | CVSS | KEV | Component & Version | Evidence Source | Actionable Remedy |
 | :--- | :---: | :---: | :--- | :--- | :--- |
@@ -473,10 +473,10 @@ When we pasted the updated `jenkins` report (`2eeb6dab.md`) alongside the refere
 >
 > | Trap Category | Component & Evidence Source | Detected License Shift | Recommended Drop-In Remedy |
 > | :--- | :--- | :--- | :--- |
-> | **JAR Metadata & Text** | `itextpdf-5.5.13.3.jar` (`mode_1_knowns/lib/`) | `MPL-1.1 / LGPL-2.0` -> **`AGPL-3.0-only`** (`LIC-RUGPULL-ITEXT-AGPL` & `LIC-DPI-AGPL-3_0`) | OpenPDF (`LGPL/MPL`) or Apache PDFBox (`Apache-2.0`) |
+> | **JAR Metadata & Text** | `itextpdf-5.5.13.3.jar` (`mode_1_knowns/lib/`) | `MPL-1.1 / LGPL-2.0` -> **`AGPL-3.0-only`** (`LIC-RUGPULL-ITEXT-AGPL` & `LIC-TEXT-AGPL-3_0`) | OpenPDF (`LGPL/MPL`) or Apache PDFBox (`Apache-2.0`) |
 > | **Go Manifest** | `minio` & `vault v1.16.0` (`mode_1_knowns/.../go.mod`) | `Apache-2.0` -> **`AGPL-3.0-only`** (`MinIO`) & `MPL-2.0` -> **`BSL-1.1`** (`Vault`) | Isolate MinIO out-of-process; replace Vault with OpenBao (`MPL-2.0`) |
 > | **Stripped Native `.so`** | `libdb_storage_kv.so` (`mode_2_unknowns/vendor/native/`) | `BSD-3-Clause` -> **`RSALv2 / SSPL-1.0`** (`Redis 7.4.0` via binary banner) | Redis `<= 7.2.x` or Valkey (`BSD-3-Clause`) |
-> | **Vendor Tarball** | `readline-8.2.tar.gz` (`mode_2_unknowns/vendor/archives/`) | **`GPL-3.0-only`** (not LGPL) (`LIC-COPYLEFT-GNU-READLINE-GPL3` & `LIC-DPI-GPL-3_0`) | BSD-licensed `libedit` (`editline`) or `linenoise` |
+> | **Vendor Tarball** | `readline-8.2.tar.gz` (`mode_2_unknowns/vendor/archives/`) | **`GPL-3.0-only`** (not LGPL) (`LIC-COPYLEFT-GNU-READLINE-GPL3` & `LIC-TEXT-GPL-3_0`) | BSD-licensed `libedit` (`editline`) or `linenoise` |
 > | **JDBC Driver JAR** | `mysql-connector-j-8.0.33.jar` (`mode_1_knowns/lib/`) | **`GPL-2.0-only`** (Universal FOSS Exception check) | MariaDB Connector/J (`LGPL-2.1`) or verify commercial/FOSS exception |
 >
 > - **3. New Operational & Calibration Warnings (12 Total)**:

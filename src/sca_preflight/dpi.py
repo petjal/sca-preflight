@@ -1,4 +1,4 @@
-"""Deep Packet Inspection (DPI) and Build Execution Risk Guards.
+"""In-Memory Artifact, Binary & Header Inspection and Build Execution Risk Guards.
 
 Provides binary and archive inspection, PE version extraction, disaster smell
 scanning, and pre-Detect build execution risk analysis (Jia Tan xz / Lazarus guard).
@@ -671,6 +671,7 @@ def _inspect_single_file(
                                 {
                                     "rule_id": str(rule["rule_id"]),
                                     "cve_id": str(rule["cve_id"]),
+                                    "osv_id": str(rule.get("osv_id") or ""),
                                     "component": str(rule["component"]),
                                     "ecosystem": str(rule.get("ecosystem", "")),
                                     "cvss": float(rule.get("cvss", 0.0)),
@@ -1033,6 +1034,7 @@ def _inspect_single_file(
                             {
                                 "rule_id": str(rule["rule_id"]),
                                 "cve_id": str(rule["cve_id"]),
+                                "osv_id": str(rule.get("osv_id") or ""),
                                 "component": str(rule["component"]),
                                 "ecosystem": str(rule.get("ecosystem", "")),
                                 "cvss": float(rule.get("cvss", 0.0)),
