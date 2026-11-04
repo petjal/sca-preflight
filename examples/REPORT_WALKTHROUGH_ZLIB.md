@@ -320,7 +320,7 @@ java -jar detect.jar \
 
 ## 4. Actionable High-Severity Vulnerabilities (2)
 
-> **Honest Scope (Hot-Off-The-Presses, CISA-KEV & DiffWatch Dual-Polarity Hit-List, Zero Promises)**: `sca-prescan`'s built-in check is **not** a replacement for a full 500,000-CVE SCA database and **promises nothing** when it comes to comprehensive CVE coverage. Instead, its built-in offline catalog (`3,910` version/range rules + `26` **DiffWatch Dual-Polarity Hunk & Shaded-Bytecode** signatures) focuses strictly on the **worst of the worst**: actively exploited **CISA-KEV** vulnerabilities, **hot-off-the-presses `2025-2026` critical advisories** (including brand-new `GHSA`/`GO`/`RUSTSEC` advisories before NVD even assigns a CVE number), `CVSS 9.8-10.0` disasters (Log4Shell, Spring4Shell, Text4Shell, OpenSSL, zlib, curl, pgjdbc, Brotli, PHP), and notorious open-source license rugpulls (`AGPL-3.0`, `SSPL-1.0`, `RSALv2`, `BSL-1.1`). When version strings are missing, stripped from shaded uber-JARs, or locked behind unresolved `${...}` build properties, **DiffWatch** inspects source hunks and in-memory `.class` constant pools directly (`vulnerable_anchor_regex` PRESENT + `patch_guard_regex` ABSENT) and annotates confirmed unpatched code with `[DIFFWATCH-VERIFIED]` or backported fixes with `[DIFFWATCH-BACKPORT-GUARD]`.
+> **Honest Scope (Hot-Off-The-Presses, CISA-KEV & DiffWatch Dual-Polarity Hit-List, Zero Promises)**: `sca-prescan`'s built-in check is **not** a replacement for a full 500,000-CVE SCA database and **promises nothing** when it comes to comprehensive CVE coverage. Instead, its built-in offline catalog (`3,910` version/range rules + `32` **DiffWatch Dual-Polarity Hunk & Shaded-Bytecode** signatures) focuses strictly on the **worst of the worst**: actively exploited **CISA-KEV** vulnerabilities, **hot-off-the-presses `2025-2026` critical advisories** (including brand-new `GHSA`/`GO`/`RUSTSEC` advisories before NVD even assigns a CVE number), `CVSS 9.8-10.0` disasters (Log4Shell, Spring4Shell, Text4Shell, OpenSSL, zlib, curl, pgjdbc, Brotli, PHP), and notorious open-source license rugpulls (`AGPL-3.0`, `SSPL-1.0`, `RSALv2`, `BSL-1.1`). When version strings are missing, stripped from shaded uber-JARs, or locked behind unresolved `${...}` build properties, **DiffWatch** inspects source hunks and in-memory `.class` constant pools directly (`vulnerable_anchor_regex` PRESENT + `patch_guard_regex` ABSENT) and annotates confirmed unpatched code with `[DIFFWATCH-VERIFIED]` or backported fixes with `[DIFFWATCH-BACKPORT-GUARD]`.
 
 | CVE ID | CVSS | KEV | Component & Version | Evidence Source | Actionable Remedy |
 | :--- | :---: | :---: | :--- | :--- | :--- |
@@ -420,3 +420,25 @@ To test a third distinct archetype - a **cloud-native Go + C container runtime w
 > - **Audit Assessment**:
 >   - **Strengths**: Accurately flags historic container zero-days, accounts for all 1,205 files without dropping vendor trees, and catches upcoming container scanner deprecations.
 >   - **Recommendation**: Because `runc` builds as a native binary from vendored source, teams running this pipeline should pair the baseline CLI command with `--detect.blackduck.signature.scanner.license.search=true` to properly capture the third-party licenses bundled inside `vendor/`.
+
+---
+
+## 9. Real-World Walkthrough #4: 12,046-File Java + Node Monorepo with Bucket 3 Early-Stop, DiffWatch Code Proof & Hot 2026 Advisories (`jenkinsci/jenkins` @ `jenkins-2.440`)
+
+While `zlib` (`254` files), `spring-cloud-function` (`607` files), and `runc` (`1,205` files) stayed below the `5,000`-file `L2` source-hashing cap (`Bucket 3 = 0`), we ran `sca-prescan` cold against **`jenkinsci/jenkins` at tag `jenkins-2.440`** (`12,046` files across `1,251` directories, `31.03` MB) to demonstrate **Bucket 3 Monorepo Early-Stop**, **DiffWatch Dual-Polarity code-hunk verification**, and **Hot 2026 advisory detection** in a single report (full HTML+JSON-LD report at [`REPORT_WALKTHROUGH_JENKINS.html`](REPORT_WALKTHROUGH_JENKINS.html)).
+
+- **4-Bucket File & Byte Accounting (`49 + 5000 + 6997 = 12046` files across `1251` dirs)**:
+  - **Bucket 1 (Excluded Dirs)**: `1` dir (`.git`)
+  - **Bucket 2a (Actionable `L1` Files)**: `49` files (`1.08` MB) - `1` pinned lockfile (`war/yarn.lock` at `d=1` with `719` locked frontend packages), `1` lockfile-paired manifest (`war/package.json` at `d=1`), `9` Maven `pom.xml` manifests (`1` root aggregator POM + `5` reactor module POMs + `3` nested test/plugin POMs), `1` `Dockerfile`, `35` embedded `.jar`/`.war`/`.zip` archives, and `2` license files. **100% of all `49` Bucket 2a files are hashed into `L1` regardless of repo size.**
+  - **Bucket 2b (Source/Doc Provenance `L2 - L1`)**: `5,000` first-party source/doc files (`29.95` MB) hashed into `L2`.
+  - **Bucket 3 (Unhashed Beyond Monorepo Early-Stop Cap)**: `6,997` deep source files (`early_stop_triggered: true`, `coverage_pct: 41.9%`). Because `L0` (all `1,251` directory skeletons) and `L1` (all `49` dependency-bearing inputs) are 100% hashed before `L2` stops at `5,049` files, the entire pre-scan finishes in `~7` seconds while triggering `MONOREPO_SCAN_SPLIT_RECOMMENDATION` (`> 10,000` files).
+- **What the `Bucket 2a` Gap Analysis & DiffWatch Engine Catch on `jenkins-2.440`**:
+  - **Default `depth=0` Misses 100% of the Jenkins Web UI (`719` Locked npm Packages in `war/yarn.lock`)**: Because `war/yarn.lock` and `war/package.json` sit one folder down (`d=1`) inside the `war/` subproject and Maven's reactor does not invoke Detect's Yarn detector, running Default Detect (`--detect.detector.search.depth=0`) **silently ignores all `719` frontend dependencies** (`85.7%` of the `>= 839` expected BOM components), along with **5 CVSS 9.8 vulnerabilities** in `war/yarn.lock`:
+    - `CVE-2026-106445` (`handlebars 4.7.8`, CVSS 9.8, `[HOT 2026-10-08]`)
+    - `CVE-2026-106446` (`handlebars 4.7.8`, CVSS 9.8, `[HOT 2026-10-08]`)
+    - `CVE-2026-33937` (`handlebars 4.7.8`, CVSS 9.8, `[HOT 2026-03-27]`)
+    - `CVE-2026-29063` (`immutable 4.3.0`, CVSS 9.8, `[HOT 2026-03-04]`)
+    - `CVE-2024-21538` (`cross-spawn 7.0.3`, CVSS 9.8)
+  - **DiffWatch Dual-Polarity Code Proof on `CVE-2024-23897` (CISA-KEV / CVSS 9.8 Jenkins CLI Arbitrary File Read RCE)**:
+    - Beyond matching `jenkins-core 2.440` in `pom.xml`, DiffWatch inspected `core/src/main/java/hudson/cli/CLICommand.java` directly, confirmed that `getCmdLineParser()` returns `new CmdLineParser(this)` without the upstream `withAtSyntax` / `ALLOW_AT_SYNTAX` patch guard (`DW-CVE-2024-23897`), and stamped `[DIFFWATCH-VERIFIED: unpatched code in core/src/main/java/hudson/cli/CLICommand.java]` onto the finding.
+
