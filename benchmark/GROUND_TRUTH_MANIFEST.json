@@ -6,6 +6,7 @@
   "workspace_tree_merkle_sha256": "f5de118557c17dc8e7aa25f1380172726830e7dd2e8f6bf776ff38dcd8ac50e5",
   "dependency_inputs_merkle_sha256": "13a4e95c91ad7fdc24139b84425ed2f2a75eb6bb4fc5e6c7131d465a6fb02ce0",
   "effective_detect_config_sha256": "2adcf6e44988ff2a5c42cefade661dd8c321d5c11369e759349879c0ad4647a0",
+  "expected_vulnerability_matches_count": 37,
   "expected_cves": [
     "CVE-2020-14343",
     "CVE-2020-28052",

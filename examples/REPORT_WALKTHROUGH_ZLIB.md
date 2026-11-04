@@ -463,4 +463,50 @@ While `zlib` (`254` files), `spring-cloud-function` (`607` files), and `runc` (`
 > - **Overall Assessment**:
 >   - This update proves the toolkit can handle true monorepo conditions. The combination of early-stop limits to protect CI runner memory, source-verified CVE proof via DiffWatch, and polyglot detection across Java and JavaScript makes this report exceptionally valuable for enterprise DevSecOps triage.
 
+---
+
+## 10. Walkthrough #5: 3-Mode EICAR Reference Capsule Showcase (`sca_preflight_reference_capsule` @ `LLM_INGESTION_REPORT.md`)
+
+When we pasted the updated `jenkins` report (`2eeb6dab.md`) alongside the reference calibration report [`LLM_INGESTION_REPORT.md`](LLM_INGESTION_REPORT.md) (generated from [`../benchmark/sca_preflight_reference_capsule.b64`](../benchmark/sca_preflight_reference_capsule.b64) across `25 + 4 + 0 = 29` scanned target files, `37` vulnerability matches across `30` unique CVEs/GHSAs, `8` license/rugpull hits, and `7` class-path blind-spot traps) into Google Gemini UI (Argon), it produced the evaluation below:
+
+> ### Gemini UI Output #7 (Argon Evaluating the Updated `jenkins` Diff & 3-Mode `sca_preflight_reference_capsule`)
+> #### 1. Diff in Your Attached Jenkins Report (`2eeb6dab.md`)
+> Compared to the Jenkins report from last night, there is **one explicit addition** in the **File & Byte Disposition Accounting** table under **Bucket 2b (`L2 - L1`)**:
+> - **Previous text**: *"Hashed 5000 first-party source/doc files into Layer 2 (L2) and scanned for embedded private keys (0 third-party BOM declarations)."*
+> - **Updated text**: *"Hashed 5000 first-party source/doc files into Layer 2 (L2), **scanned for DiffWatch Dual-Polarity code hunks (1 source-hunk verification(s))** and embedded private keys (0 third-party BOM declarations)."*
+>
+> Everything else in the attached file - including the cryptographic signatures (`L0`, `L1`, `L2`, `CFG`), the 6 high-severity CVE findings (`CVE-2024-23897`, `cross-spawn`, `handlebars`, `immutable`), and the 6 operational warnings - is identical to last night's run. That single-line tweak closes the loop on *where* DiffWatch did its work, tying the `CLICommand.java` source verification in Section 4 directly back to the Bucket 2b first-party file pass in Section 1.
+>
+> #### 2. Master Showcase Run Against `sca_preflight_reference_capsule` (`LLM_INGESTION_REPORT.md`)
+> This attached report (`LLM_INGESTION_REPORT.md`) is the reference calibration run against the updated **`sca_preflight_reference_capsule`** itself - showcasing the full 3-mode benchmark (`25 + 4 + 0 = 29` files across 20 directories) with **37 vulnerabilities**, **8 license/rugpull hits**, and **7 blind-spot traps**.
+> - **1. New `mode_3_diffwatch_unversioned` Traps in Action**:
+>   - This report demonstrates the new Mode 3 test cases (`mode_3_diffwatch_unversioned/`), where version numbers and package manifests are completely missing or stripped, forcing the scanner to rely on source-hunk and bytecode constant-pool analysis:
+>   - **Stripped Shaded Bytecode (`Bucket 2a`)**:
+>     - `enterprise_gateway_shaded.jar` has its Maven POM metadata completely stripped, yet DiffWatch inspects the in-memory `.class` constant pool (`JndiLookup.class`) to flag **`CVE-2021-44228` (Log4Shell)**.
+>   - **Standalone Unversioned Source Hunks (`Bucket 2b`)**:
+>     - The 4 source files in Bucket 2b are no longer just passive provenance files - they are actively scanned by DiffWatch (`4 standalone unversioned code-hunk CVE hit(s)`):
+>     - `DefaultServlet.java`: Flags **`CVE-2025-24813`** (CVSS 9.8 / CISA-KEV Tomcat partial PUT RCE) without needing a `pom.xml`.
+>     - `zend_alloc.c`: Flags **`CVE-2026-109618`** (CVSS 9.8 / CISA-KEV PHP allocator OOM UAF RCE).
+>     - `decode.c`: Flags **`CVE-2026-111497`** (CVSS 9.8 / CISA-KEV Google Brotli decompression buffer overflow).
+>     - `network.go`: Flags **`GHSA-hff9-5pqw-6w9f`** (CVSS 9.9 pre-NVD `imgproxy` SSRF guard bypass, demonstrating pre-CVE advisory detection).
+> - **2. Full License & Rugpull Matrix Populated (Section 5)**:
+>   - Unlike the previous real-world open-source project scans that had `0` license hits, this reference capsule exercises all **8 license & rugpull rules**, complete with drop-in open-source remedies:
+>
+> | Trap Category | Component & Evidence Source | Detected License Shift | Recommended Drop-In Remedy |
+> | :--- | :--- | :--- | :--- |
+> | **JAR Metadata & Text** | `itextpdf-5.5.13.3.jar` (`mode_1_knowns/lib/`) | `MPL-1.1 / LGPL-2.0` -> **`AGPL-3.0-only`** (`LIC-RUGPULL-ITEXT-AGPL` & `LIC-DPI-AGPL-3_0`) | OpenPDF (`LGPL/MPL`) or Apache PDFBox (`Apache-2.0`) |
+> | **Go Manifest** | `minio` & `vault v1.16.0` (`mode_1_knowns/.../go.mod`) | `Apache-2.0` -> **`AGPL-3.0-only`** (`MinIO`) & `MPL-2.0` -> **`BSL-1.1`** (`Vault`) | Isolate MinIO out-of-process; replace Vault with OpenBao (`MPL-2.0`) |
+> | **Stripped Native `.so`** | `libdb_storage_kv.so` (`mode_2_unknowns/vendor/native/`) | `BSD-3-Clause` -> **`RSALv2 / SSPL-1.0`** (`Redis 7.4.0` via binary banner) | Redis `<= 7.2.x` or Valkey (`BSD-3-Clause`) |
+> | **Vendor Tarball** | `readline-8.2.tar.gz` (`mode_2_unknowns/vendor/archives/`) | **`GPL-3.0-only`** (not LGPL) (`LIC-COPYLEFT-GNU-READLINE-GPL3` & `LIC-DPI-GPL-3_0`) | BSD-licensed `libedit` (`editline`) or `linenoise` |
+> | **JDBC Driver JAR** | `mysql-connector-j-8.0.33.jar` (`mode_1_knowns/lib/`) | **`GPL-2.0-only`** (Universal FOSS Exception check) | MariaDB Connector/J (`LGPL-2.1`) or verify commercial/FOSS exception |
+>
+> - **3. New Operational & Calibration Warnings (12 Total)**:
+>   - The capsule triggers several specialized operational signals in Section 2 that haven't appeared in the single-ecosystem scans:
+>   - **`NON_UTF8_MANIFEST_WARNING`**: Flags `mode_2_unknowns/services/auth_worker/requirements.txt` as `utf-16-le` (commonly created by Windows PowerShell `pip freeze > requirements.txt`). Standard UTF-8 parsers emit null-byte-corrupted BDIO identifiers (`\u0000`) and silently drop 100% of its dependencies (`PyYAML`, `urllib3`, `cryptography`).
+>   - **Standalone Binary Checksum Flag**: Because `.so` shared libraries (`libdb_storage_kv.so`, `libstorage_compress.so`) are present and Detect defaults to `--individualFileMatching=NONE`, the report recommends `--detect.blackduck.signature.scanner.individual.file.matching=BINARY` so single-file SHA-1 checksums are computed.
+>   - **`EPHEMERAL_SCAN_PATH_WARNING`**: Warns that unpacking and scanning inside a transient directory path causes Detect to generate a unique `code.location.name` on every CI build, bloating the server database and leaving stale components stuck in the BOM unless `--detect.code.location.name=<project>-<branch>-HEAD` is explicitly set.
+> - **Summary Takeaway**:
+>   - This file serves as a comprehensive "master showcase" for the repository's `examples/` folder. In a tiny `0.01 MB` footprint (`29` files), it proves that `sca-prescan` catches UTF-16 encoding corruption, stripped C/C++ `.so` strings, shaded uber-JARs with deleted POMs, unversioned C/Java/Go source hunks, and all major license rugpulls in a single offline pass.
+
+
 

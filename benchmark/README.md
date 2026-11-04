@@ -71,7 +71,7 @@ it creates three top-level test directories:
 
 | Unpacked Relative File Path | Size (Bytes) | What It Tests |
 | :--- | :---: | :--- |
-| `GROUND_TRUTH_MANIFEST.json` | 2,028 | Answer key (30 expected CVEs/GHSAs across 37 total matches, 8 license rules, 4 unique blind-spot trap IDs across 7 locations, and `sca-sig:v2` digests) |
+| `GROUND_TRUTH_MANIFEST.json` | 2,074 | Answer key (30 expected CVEs/GHSAs across 37 total matches, 8 license rules, 4 unique blind-spot trap IDs across 7 locations, and `sca-sig:v2` digests) |
 | `mode_1_knowns/lib/activemq-client-5.18.2.jar` | 778 | `CVE-2023-46604` (CVSS 10.0, CISA-KEV) |
 | `mode_1_knowns/lib/bcprov-jdk15on-1.66.jar` | 734 | `CVE-2020-28052` (BouncyCastle auth bypass) |
 | `mode_1_knowns/lib/commons-text-1.9.jar` | 709 | `CVE-2022-42889` (Text4Shell, CVSS 9.8) |
