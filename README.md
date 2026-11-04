@@ -104,6 +104,8 @@ Compare what `sca-prescan` finds against the answer key in [`benchmark/GROUND_TR
 - **[`examples/LLM_INGESTION_REPORT.md`](examples/LLM_INGESTION_REPORT.md)** - **Pre-Scan Summary & AI Brief (`sca-prescan --ai-brief`)**:
   - A single Markdown report with workstation paths stripped out so you can read it directly in GitHub or paste it straight into your internal company AI (Copilot, Claude, ChatGPT Enterprise, Gemini). (Pass `--html-report <path.html>` when running locally if you also want a standalone semantic HTML5 + embedded JSON report for browser viewing.)
   - Shows the `sca-sig:v2` workspace fingerprint, 4-Bucket File & Byte Disposition Accounting table, row-by-row `Bucket 2a` Actionable File Ledger, Baseline vs. Optional Detect CLI flags, expected component counts, and actionable CVE and license risk tables.
+- **[`examples/COMPANION_TOOLS_WALKTHROUGH.md`](examples/COMPANION_TOOLS_WALKTHROUGH.md)** - **Post-Scan BOM Cleanup (`sca-bom-ifttt`), DLP Log Scrubber (`sca-log-sanitize`) & Server Diagnostics (`sca-tealeaves`) Walkthrough**:
+  - Shows CLI flags, sample TOML rules, before/after log-scrubbing examples, pre-mutation `ifttt_audit.jsonl` rollback records, and what works offline today vs. what is ready for live validation against a customer's non-production/staging server.
 - **[`benchmark/GROUND_TRUTH_MANIFEST.json`](benchmark/GROUND_TRUTH_MANIFEST.json)** - **Answer Key (JSON)**:
   - The full list of expected CVEs, license rules, blind-spot traps, and SHA-256 fingerprints for `/dev/shm/sca_preflight_reference_scan`.
 
@@ -111,18 +113,20 @@ Compare what `sca-prescan` finds against the answer key in [`benchmark/GROUND_TR
 
 ## 4. Companion Tools in Active Development (`sca-bom-ifttt`, `sca-log-sanitize`, `sca-tealeaves`)
 
-In production environments, pre-scan workspace analysis is the first half of the equation; post-scan BOM hygiene, log sanitization, and server diagnostics form the second half. Pete maintains companion diagnostic tools used during client advisory engagements:
+In production environments, pre-scan workspace analysis is the first half of the equation; post-scan BOM hygiene, log sanitization, and server diagnostics form the second half. Pete maintains companion diagnostic tools (with `94` passing unit tests in a private toolkit repository) used during W2 and 1099 client engagements.
 
-- **`sca-bom-ifttt` (Automated REST API BOM Cleanup Engine)**:
-  - Runs *after* your scan finishes to clean up noisy BOMs via the REST API with safe dry-run preview mode (`--dry-run`) and full audit comments.
+See **[`examples/COMPANION_TOOLS_WALKTHROUGH.md`](examples/COMPANION_TOOLS_WALKTHROUGH.md)** for full CLI documentation, before/after outputs, and how to partner on validating live REST API mutations against your staging server:
+
+- **`sca-bom-ifttt` (Automated REST API BOM Cleanup Engine - `1,469` lines, `12/12` unit tests passing)**:
+  - Runs *after* your scan finishes to clean up noisy BOMs via the REST API with safe dry-run preview mode (`--dry-run` default), two-phase `codelocation` / `bom_component` separation (preventing `HTTP 409 Conflict` races against async `bomengine` recalculation), and pre-mutation `.jsonl` audit logging.
   - **Phase 1 (Scan Cleanup)**: Unmaps old, stale CI build scans before touching BOM components.
-  - **Phase 2 (BOM Cleanup)**: Rolls noisy subcomponents (`jackson-core`, `jackson-annotations`) under their parent (`jackson-databind`), suppresses duplicate `N-1` signature-scan guesses when an exact package-manager match exists, flags filename version mismatches, and resolves dual-license GPL entries.
+  - **Phase 2 (BOM Cleanup)**: Rolls noisy subcomponents (`jackson-core`, `jackson-annotations`) under their parent (`jackson-databind`), suppresses duplicate `N-1` signature-scan guesses when an exact package-manager match exists, flags filename version mismatches against `sca-prescan`, and resolves dual-license GPL entries.
   - **Zero-Day / Unindexed Component Check (`--verify-bdio`)**: Emits a warning when a brand-new component version exists in your uploaded `.bdio` file but gets dropped from the server BOM because the central KB has not indexed it yet.
-  - See [`examples/bom_ifttt_dry_run_preview.txt`](examples/bom_ifttt_dry_run_preview.txt) for a sample dry-run execution trace and [`examples/sample_bom_ifttt_rules.toml`](examples/sample_bom_ifttt_rules.toml) for sample rule configurations.
-- **`sca-log-sanitize` (Data Loss Prevention / DLP Log Sanitizer)**:
-  - High-throughput DLP filter that strips API tokens, bearer authorization tokens, URI passwords, internal IPv4 addresses, internal server hostnames, and local user workstation paths from Detect console and diagnostic logs before sharing externally with vendors or AI assistants.
-- **`sca-tealeaves` (Server Runbook & Diagnostic Engine)**:
-  - Analyzes server health, PostgreSQL connection pools, registration key limits, worker thread saturation, and detector accuracy failures to diagnose slow scans and server queue bottlenecks.
+  - **Status**: Offline JSON evaluation (`--offline-bom-file`) is 100% tested and ready today; live REST API `PUT` / `DELETE` execution (`--apply`) is ready for validation against a licensed customer staging server. See [`examples/COMPANION_TOOLS_WALKTHROUGH.md`](examples/COMPANION_TOOLS_WALKTHROUGH.md), [`examples/bom_ifttt_dry_run_preview.txt`](examples/bom_ifttt_dry_run_preview.txt), and [`examples/sample_bom_ifttt_rules.toml`](examples/sample_bom_ifttt_rules.toml).
+- **`sca-log-sanitize` (Streaming `.zip`, `.bdio` & SQL DLP Log Scrubber - `485` lines, `8/8` unit tests passing)**:
+  - High-throughput streaming DLP filter that strips API tokens, bearer authorization tokens, JDBC URI passwords, internal IPv4 addresses, internal server hostnames (`.corp`, `.internal`), and local user workstation paths from Detect `.zip` bundles (including nested `.gz` and `.bdio` archives) while preserving `/api/...` paths, `/sys/fs/cgroup/...` metrics, and 4-part server/Postgres version strings (`2024.7.0.1`, `14.11.0.1`). Auto-tokenizes project and version names from `status/status.json` into `Project_001` / `Version_001` with a `0600`-permission local lookup key.
+- **`sca-tealeaves` (Offline Server, PostgreSQL & Container Cgroup Diagnostic Engine - `1,066` lines)**:
+  - Analyzes sanitized support bundles, container cgroup memory pressure (`memory.oom.group` vs. OS page cache), `/dev/shm` starvation (`< 256 MB` vs. PostgreSQL `shared_buffers`), `HikariPool` connection timeouts, and unused PostgreSQL index bloat.
 
 ---
 
