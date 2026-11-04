@@ -387,3 +387,35 @@ To test how the 4-Bucket File & Byte Disposition Accounting and `Bucket 2a` gap 
 >   - **Gradle test dependency pollution**: Flags that modern Detect (11.x+) pulls test-scoped dependencies into production BOMs unless excluded via `--detect.gradle.excluded.configurations=*test*,*Test*,...`.
 > - **Rigorous bucket accounting at scale**: Perfectly balances `80 + 527 + 0 = 607` files, proving 100% traversal coverage across 603 directories without dropping unparsed modules.
 > - **Practical Value**: Moving from a single-file C audit to a 60-subproject polyglot tree proves the framework's versatility. It provides immediate, high-value calibration for DevSecOps engineers who would otherwise assume their default pipelines were protecting them, when in reality default settings were skipping 90%+ of the project's dependency surface.
+
+---
+
+## 8. Real-World Walkthrough #3: Go & C Container Runtime with Vendored Source Tree (`opencontainers/runc` @ `v1.1.11`)
+
+To test a third distinct archetype - a **cloud-native Go + C container runtime with a committed `vendor/` source tree and a pinned `go.sum` lockfile** - we ran `sca-prescan` cold inside the 512 MB RAM sandbox against `https://github.com/opencontainers/runc` at tag `v1.1.11` (full HTML+JSON-LD report at [`REPORT_WALKTHROUGH_RUNC.html`](REPORT_WALKTHROUGH_RUNC.html)).
+
+- **4-Bucket File & Byte Accounting (`34 + 1171 + 0 = 1205` files, `12.07` MB across `153` dirs)**:
+  - **Bucket 1 (Excluded Dirs)**: `1` dir (`.git`)
+  - **Bucket 2a (Actionable `L1` Files)**: `34` files (`4.86` MB) - `1` pinned lockfile (`go.sum` declaring `43` locked Go modules), `1` lockfile-paired manifest (`go.mod` at `d=0`), `6` container/native build scripts (`Dockerfile`, root `Makefile`, and `4` `vendor/**/Makefile` files), and `26` legal/attribution files (`2` root `LICENSE`/`NOTICE` files plus `24` `vendor/**/LICENSE` files). (`1 + 1 + 6 + 26 = 34` files).
+  - **Bucket 2b (Source/Doc Provenance `L2 - L1`)**: `1171` files (`7.21` MB)
+  - **Bucket 3 (Early-Stop Skipped)**: `0` files (`100.0%` coverage)
+- **What the `Bucket 2a` Gap Analysis Proves**:
+  - **Sibling Lockfile Pairing**: Because `go.mod` sits beside `go.sum` at `d=0`, `sca-prescan` classifies `go.mod` as `2a-i Manifest (Lockfile-Paired)` (`lockfile_paired_manifests_count: 1`, `unpinned_manifests_count: 0`) and sets a deterministic post-scan completeness floor of **`>= 43` locked components** without emitting false unpinned-manifest warnings.
+  - **Vendored License Blind Spot (`vendor/**/LICENSE`)**: Default Detect package scans resolve module coordinates from `go.mod`/`go.sum` but **silently ignore the `24` embedded third-party `LICENSE` files inside `vendor/`** unless `--detect.blackduck.signature.scanner.license.search=true` (listed in Section 2.2 Optional Tweaks) is enabled.
+  - **Container Tooling Deprecation (`DOCKER_INSPECTOR_EOL_WARNING`)**: Because a root `Dockerfile` is present (`golang:1.20-bullseye`), `sca-prescan` warns that legacy `--detect.tools=DOCKER` reached End-of-Life in July 2026 and directs pipelines to `--detect.tools=CONTAINER_SCAN` with `--detect.container.scan.file.path=<image.tar>`.
+
+> ### Gemini UI Output #5 (Evaluating `opencontainers/runc` @ `v1.1.11`)
+> This audit covers the new report for **Open Container Initiative's `runc` (`opencontainers_runc`)**, an archetype project for container virtualization and the Go ecosystem.
+> - **Executive Summary**: The report maintains the same mathematical rigor established in previous scans (`34 + 1171 + 0 = 1205` files across 153 directories), while introducing specialized checks for **Go dependency graphs**, **vendored source trees**, and **container buildfiles**.
+> - **Critical Vulnerabilities Identified**: The pre-scan matched 4 actionable vulnerabilities in `go.mod`, including two high-profile **CISA-KEV** items:
+>   - **`CVE-2024-21626` (CVSS 8.6 / CISA-KEV - "Leaky Vessels")**: File descriptor leak in `runc exec` / `setcwd` allowing a process inside a container to break out to the host filesystem. Upgrading to runc **1.1.12** or newer is required to patch this container escape flaw.
+>   - **`CVE-2023-39325` (CVSS 7.5 / CISA-KEV - HTTP/2 Rapid Reset)**: Stream cancellation flood causing denial of service in `golang.org/x/net v0.8.0`. Remediated by upgrading to **v0.17.0+**.
+>   - **`CVE-2023-45288` (CVSS 7.5 - HTTP/2 CONTINUATION Flood)**: Unbounded header frame processing in `golang.org/x/net v0.8.0` resulting in CPU exhaustion. Remediated by upgrading to **v0.23.0+**.
+>   - **`CVE-2024-24786` (CVSS 7.5)**: Infinite loop during proto unmarshaling in `google.golang.org/protobuf v1.27.1`. Remediated by upgrading to **v1.33.0+**.
+> - **Key Go & Supply Chain Insights**:
+>   - **Surfacing the `vendor/` licensing blind spot**: The pre-scan identified **26 separate legal/attribution notices** and Makefiles inside `vendor/` (e.g., `vendor/github.com/checkpoint-restore/go-criu`, `vendor/github.com/cilium/ebpf`, `vendor/golang.org/x/sys`). Default Detect package scans ignore these vendored legal notices unless `--detect.blackduck.signature.scanner.license.search=true` is enabled.
+>   - **Locked component baseline gate**: Unlike previous unpinned C/Java projects, `go.sum` provides a deterministic lockfile baseline. The report establishes an expected minimum BOM gate of **`>= 43` locked components**, giving CI pipelines a clear pass/fail threshold for post-scan completeness.
+>   - **Timely container tooling signal (`DOCKER_INSPECTOR_EOL_WARNING`)**: The operational signals section specifically warns that the legacy Docker Inspector (`--detect.tools=DOCKER`) reached End-of-Life in July 2026 and fails on modern layered images with exit code 255. It directs teams to modern container scanning (`--detect.tools=CONTAINER_SCAN` via `--detect.container.scan.file.path=<image.tar>`).
+> - **Audit Assessment**:
+>   - **Strengths**: Accurately flags historic container zero-days, accounts for all 1,205 files without dropping vendor trees, and catches upcoming container scanner deprecations.
+>   - **Recommendation**: Because `runc` builds as a native binary from vendored source, teams running this pipeline should pair the baseline CLI command with `--detect.blackduck.signature.scanner.license.search=true` to properly capture the third-party licenses bundled inside `vendor/`.

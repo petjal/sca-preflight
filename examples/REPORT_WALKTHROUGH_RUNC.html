@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCA Pre-Flight &amp; File Disposition Report (opencontainers_runc)</title>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "SCA Pre-Flight, File Disposition & Risk Brief (opencontainers_runc)",
+  "description": "Deterministic SCA pre-flight audit for opencontainers_runc: 153 dirs, 1205 files (12.07 MB), 34 Bucket 2a actionable inputs.",
+  "identifier": "sca-sig:v2:L0=3931b6c806ae:L1=dd8b83315b2a:L2=7989f337ae21:CFG=2df5fcb38981@d6(100.0%)"
+}
+  </script>
+  <script type="application/json" id="sca-ops-ai-brief-json">
+{
+  "schema": "sca-ops-ai-brief/v1",
+  "workspace_name": "opencontainers_runc",
+  "dlp_sanitized": true,
+  "host_paths_stripped": true,
+  "scan_input_provenance": {
+    "multilayer_codebase_signature": "sca-sig:v2:L0=3931b6c806ae:L1=dd8b83315b2a:L2=7989f337ae21:CFG=2df5fcb38981@d6(100.0%)",
+    "topology_skeleton_sha256": "3931b6c806ae4579a46192a59bfa1a50cfd48575588ec0b76818d13dced64ce8",
+    "workspace_tree_merkle_sha256": "7989f337ae2137e1fff85ed498ff8909e779c96452828699d5234c18f3ee190c",
+    "dependency_inputs_merkle_sha256": "dd8b83315b2a8fb97f71a55beeb2515fa21c02e68fb542a7654fe51f25e5ad8a",
+    "effective_detect_config_sha256": "2df5fcb389812bfe503c7eee67c23bcc87daf1340ca66debccf34b5c8459f27b",
+    "files_discovered_count": 1205,
+    "files_hashed_count": 1205,
+    "dependency_inputs_hashed_count": 34,
+    "dependency_input_paths": [
+      "Dockerfile",
+      "LICENSE",
+      "Makefile",
+      "NOTICE",
+      "go.mod",
+      "go.sum",
+      "vendor/github.com/checkpoint-restore/go-criu/v5/LICENSE",
+      "vendor/github.com/checkpoint-restore/go-criu/v5/Makefile",
+      "vendor/github.com/cilium/ebpf/LICENSE",
+      "vendor/github.com/cilium/ebpf/Makefile",
+      "vendor/github.com/containerd/console/LICENSE",
+      "vendor/github.com/coreos/go-systemd/v22/LICENSE",
+      "vendor/github.com/coreos/go-systemd/v22/NOTICE",
+      "vendor/github.com/cpuguy83/go-md2man/v2/LICENSE.md",
+      "vendor/github.com/cyphar/filepath-securejoin/LICENSE",
+      "vendor/github.com/docker/go-units/LICENSE",
+      "vendor/github.com/godbus/dbus/v5/LICENSE",
+      "vendor/github.com/moby/sys/mountinfo/LICENSE",
+      "vendor/github.com/mrunalp/fileutils/LICENSE",
+      "vendor/github.com/opencontainers/runtime-spec/LICENSE",
+      "vendor/github.com/opencontainers/selinux/LICENSE",
+      "vendor/github.com/russross/blackfriday/v2/LICENSE.txt",
+      "vendor/github.com/seccomp/libseccomp-golang/LICENSE",
+      "vendor/github.com/seccomp/libseccomp-golang/Makefile",
+      "vendor/github.com/shurcooL/sanitized_anchor_name/LICENSE",
+      "vendor/github.com/sirupsen/logrus/LICENSE",
+      "vendor/github.com/syndtr/gocapability/LICENSE",
+      "vendor/github.com/urfave/cli/LICENSE",
+      "vendor/github.com/vishvananda/netlink/LICENSE",
+      "vendor/github.com/vishvananda/netlink/Makefile",
+      "vendor/github.com/vishvananda/netns/LICENSE",
+      "vendor/golang.org/x/net/LICENSE",
+      "vendor/golang.org/x/sys/LICENSE",
+      "vendor/google.golang.org/protobuf/LICENSE"
+    ],
+    "dependency_inputs_bytes": 164177,
+    "total_bytes_hashed": 12658632,
+    "coverage_pct": 100.0,
+    "early_stop_triggered": false,
+    "max_depth_reached": 6,
+    "threads_used": 16,
+    "effective_detect_arguments": [
+      "--detect.blackduck.signature.scanner.memory=4096",
+      "--detect.blackduck.signature.scanner.parallel.processors=1",
+      "--detect.excluded.directories=.git"
+    ],
+    "bd_ui_version_notes_arg": "--detect.project.version.notes=sca-ops-provenance:sca-sig:v2:L0=3931b6c806ae:L1=dd8b83315b2a:L2=7989f337ae21:CFG=2df5fcb38981@d6(100.0%);tree_merkle=sha256:7989f337ae2137e1;dep_merkle=sha256:dd8b83315b2a8fb9;cfg_sha256=2df5fcb389812bfe;files=1205/1205;dep_inputs=34"
+  },
+  "file_accounting": {
+    "total_dirs_scanned": 153,
+    "total_files_scanned": 1205,
+    "total_workspace_mb": 12.07,
+    "bucket_1_excluded_dirs": {
+      "count": 1,
+      "directories": [
+        ".git"
+      ],
+      "prescan_action": "Saw 1 non-shipping folder(s) (.git), skipped traversal, and added to --detect.excluded.directories.",
+      "default_detect_action": "Skips .git by default, but traverses .venv, venv, or unlocked node_modules unless explicitly excluded."
+    },
+    "bucket_2a_actionable_l1_files": {
+      "count": 34,
+      "size_mb": 0.16,
+      "prescan_action": "Hashed 100% into Layer 1 (L1) and extracted BOM baselines, C/C++ header versions, archive/binary metadata, and 4 CVE / 0 license hit(s).",
+      "default_detect_action": "DETECTOR only processes root (depth=0) package manifests; SILENTLY IGNORES depth>=1 manifests, UTF-16 manifests, C/C++ version headers, CMake/Makefiles, and standalone binaries (--individualFileMatching=NONE)."
+    },
+    "bucket_2b_provenance_only_l2_files": {
+      "count": 1171,
+      "size_mb": 11.91,
+      "prescan_action": "Hashed 1171 first-party source/doc files into Layer 2 (L2) and scanned for embedded private keys (0 third-party BOM declarations).",
+      "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole."
+    },
+    "bucket_3_early_stop_unhashed_files": {
+      "count": 0,
+      "prescan_action": "0 files skipped (100% hashed).",
+      "default_detect_action": "Signature Scanner hashes all files; >10,000 files or >1 GB in one scan risks server queue timeouts."
+    },
+    "actionable_files_ledger": [
+      {
+        "path": "go.mod",
+        "depth": 0,
+        "bucket": "2a-i Manifest (Lockfile-Paired)",
+        "prescan_action": "Package manifest (23 direct dep(s), paired with sibling lockfile, encoding=utf-8, depth=0); hashed into L1. Matched vulnerability: CVE-2023-39325 (CVSS 7.5, CISA-KEV), CVE-2023-45288 (CVSS 7.5), CVE-2024-21626 (CVSS 8.6, CISA-KEV), CVE-2024-24786 (CVSS 7.5).",
+        "default_detect_action": "Processed by DETECTOR at root depth=0 alongside sibling lockfile."
+      },
+      {
+        "path": "Dockerfile",
+        "depth": 0,
+        "bucket": "2a-ii Containerfile",
+        "prescan_action": "Extracted base image declaration(s): golang:${GO_VERSION}-bullseye; hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by standard source DETECTOR scan (requires CONTAINER_SCAN on built image tar)."
+      },
+      {
+        "path": "go.sum",
+        "depth": 0,
+        "bucket": "2a-i Lockfile",
+        "prescan_action": "Pinned lockfile (43 locked component(s), encoding=utf-8); hashed into L1.",
+        "default_detect_action": "Processed by DETECTOR at root depth=0."
+      },
+      {
+        "path": "LICENSE",
+        "depth": 0,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "Makefile",
+        "depth": 0,
+        "bucket": "2a-ii Native Build Script",
+        "prescan_action": "Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile)."
+      },
+      {
+        "path": "NOTICE",
+        "depth": 0,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/checkpoint-restore/go-criu/v5/LICENSE",
+        "depth": 5,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/checkpoint-restore/go-criu/v5/Makefile",
+        "depth": 5,
+        "bucket": "2a-ii Native Build Script",
+        "prescan_action": "Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile)."
+      },
+      {
+        "path": "vendor/github.com/cilium/ebpf/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/cilium/ebpf/Makefile",
+        "depth": 4,
+        "bucket": "2a-ii Native Build Script",
+        "prescan_action": "Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile)."
+      },
+      {
+        "path": "vendor/github.com/containerd/console/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/coreos/go-systemd/v22/LICENSE",
+        "depth": 5,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/coreos/go-systemd/v22/NOTICE",
+        "depth": 5,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/cpuguy83/go-md2man/v2/LICENSE.md",
+        "depth": 5,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/cyphar/filepath-securejoin/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/docker/go-units/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/godbus/dbus/v5/LICENSE",
+        "depth": 5,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/moby/sys/mountinfo/LICENSE",
+        "depth": 5,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/mrunalp/fileutils/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/opencontainers/runtime-spec/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/opencontainers/selinux/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/russross/blackfriday/v2/LICENSE.txt",
+        "depth": 5,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/seccomp/libseccomp-golang/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/seccomp/libseccomp-golang/Makefile",
+        "depth": 4,
+        "bucket": "2a-ii Native Build Script",
+        "prescan_action": "Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile)."
+      },
+      {
+        "path": "vendor/github.com/shurcooL/sanitized_anchor_name/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/sirupsen/logrus/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/syndtr/gocapability/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/urfave/cli/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/vishvananda/netlink/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/github.com/vishvananda/netlink/Makefile",
+        "depth": 4,
+        "bucket": "2a-ii Native Build Script",
+        "prescan_action": "Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile)."
+      },
+      {
+        "path": "vendor/github.com/vishvananda/netns/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/golang.org/x/net/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/golang.org/x/sys/LICENSE",
+        "depth": 4,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      },
+      {
+        "path": "vendor/google.golang.org/protobuf/LICENSE",
+        "depth": 3,
+        "bucket": "2a-iv Legal / Attribution",
+        "prescan_action": "Inspected license/attribution text (no SPDX tag); hashed into L1.",
+        "default_detect_action": "SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled."
+      }
+    ]
+  },
+  "detect_argument_plan": {
+    "effective_recommended_arguments": [
+      "--detect.blackduck.signature.scanner.memory=4096",
+      "--detect.blackduck.signature.scanner.parallel.processors=1",
+      "--detect.excluded.directories=.git"
+    ],
+    "baseline_safe_arguments": [
+      "--detect.blackduck.signature.scanner.memory=4096",
+      "--detect.blackduck.signature.scanner.parallel.processors=1",
+      "--detect.excluded.directories=.git"
+    ],
+    "optional_coverage_tweaks": [
+      {
+        "argument": "--detect.blackduck.signature.scanner.license.search=true",
+        "property": "--detect.blackduck.signature.scanner.license.search",
+        "unlocks": "Scans 24 vendored legal/attribution notice(s) under vendor/ (default is false, which skips embedded license text inside vendored source trees).",
+        "tradeoff": "Increases Signature Scanner text-search time across vendored source files."
+      }
+    ],
+    "already_configured_by_customer": [],
+    "additive_merge_notes": []
+  },
+  "expected_bom_baseline": {
+    "expected_code_locations": 1,
+    "total_locked_components": 43,
+    "total_unpinned_direct_dependencies": 0,
+    "expected_min_total_components": 43,
+    "subprojects": [
+      {
+        "directory": ".",
+        "ecosystem": "GO",
+        "lockfiles": [
+          "go.sum"
+        ],
+        "manifests": [
+          "go.mod"
+        ],
+        "locked_count": 43,
+        "direct_manifest_count": 23,
+        "expected_min_components": 43,
+        "reason": "go.sum declares 43 locked module(s)"
+      }
+    ],
+    "summary_statement": "You should expect a BOM of at least 43 component version(s) across 1 code location(s) (43 locked + 0 direct unpinned), and here is why:"
+  },
+  "actionable_vulnerabilities": [
+    {
+      "cve_id": "CVE-2023-39325",
+      "component": "golang.org/x/net",
+      "installed_version": "v0.8.0",
+      "fixed_in_version": "v0.17.0",
+      "cvss": 7.5,
+      "cisa_kev": true,
+      "cwe": "CWE-400",
+      "evidence_source": "manifest:go.mod",
+      "actionable_remedy": "Upgrade golang.org/x/net to v0.17.0 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
+      "all_evidence_sources": [
+        "manifest:go.mod"
+      ]
+    },
+    {
+      "cve_id": "CVE-2023-45288",
+      "component": "golang.org/x/net",
+      "installed_version": "v0.8.0",
+      "fixed_in_version": "v0.23.0",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-400",
+      "evidence_source": "manifest:go.mod",
+      "actionable_remedy": "Upgrade golang.org/x/net to v0.23.0 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
+      "all_evidence_sources": [
+        "manifest:go.mod"
+      ]
+    },
+    {
+      "cve_id": "CVE-2024-21626",
+      "component": "runc",
+      "installed_version": "1.1.11",
+      "fixed_in_version": "1.1.12",
+      "cvss": 8.6,
+      "cisa_kev": true,
+      "cwe": "CWE-403",
+      "evidence_source": "manifest:go.mod",
+      "actionable_remedy": "Upgrade runc to 1.1.12 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
+      "all_evidence_sources": [
+        "manifest:go.mod"
+      ]
+    },
+    {
+      "cve_id": "CVE-2024-24786",
+      "component": "google.golang.org/protobuf",
+      "installed_version": "v1.27.1",
+      "fixed_in_version": "v1.33.0",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-835",
+      "evidence_source": "manifest:go.mod",
+      "actionable_remedy": "Upgrade google.golang.org/protobuf to v1.33.0 or higher.",
+      "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
+      "all_evidence_sources": [
+        "manifest:go.mod"
+      ]
+    }
+  ],
+  "actionable_license_risks": [],
+  "operational_warnings": [
+    "DOCKER_INSPECTOR_EOL_WARNING: Dockerfile/Containerfile detected (1 base image declaration(s)). Docker Inspector (--detect.tools=DOCKER / detect-docker-inspector.jar) reached End-of-Life in July 2026 and fails with exit code 255 on modern container layers. Use --detect.tools=CONTAINER_SCAN with --detect.container.scan.file.path=<image.tar> instead of --detect.tools=DOCKER."
+  ]
+}
+  </script>
+  <style>
+    :root {
+      --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #475569;
+      --border: #e2e8f0; --accent: #1d4ed8; --danger-bg: #fee2e2; --danger-fg: #991b1b;
+      --warn-bg: #fef3c7; --warn-fg: #92400e; --info-bg: #e0f2fe; --info-fg: #075985;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.55;
+      display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
+    }
+    nav.toc {
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+      background: #0f172a; color: #f8fafc; padding: 1.5rem 1rem; border-right: 1px solid var(--border);
+    }
+    nav.toc h2 { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-top: 0; }
+    nav.toc ul { list-style: none; padding: 0; margin: 0; }
+    nav.toc li { margin-bottom: 0.6rem; }
+    nav.toc a { color: #e2e8f0; text-decoration: none; font-size: 0.9rem; }
+    nav.toc a:hover { color: #60a5fa; text-decoration: underline; }
+    main { max-width: 1400px; padding: 2rem 2.5rem; }
+    article section {
+      background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+    h1 { margin-top: 0; font-size: 1.7rem; }
+    h2 { margin-top: 0; font-size: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: #f1f5f9; font-weight: 600; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.86rem; }
+    pre { background: #0f172a; color: #f8fafc; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.8rem; }
+    .badge-danger { background: var(--danger-bg); color: var(--danger-fg); }
+    .badge-warn { background: var(--warn-bg); color: var(--warn-fg); }
+    .badge-info { background: var(--info-bg); color: var(--info-fg); }
+    .muted { color: var(--muted); font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <nav class="toc" aria-label="Table of Contents">
+    <h2>SCA Pre-Flight TOC</h2>
+    <ul>
+      <li><a href="#provenance">1. Codebase Signature (L0/L1/L2)</a></li>
+      <li><a href="#accounting">2. 4-Bucket File &amp; Byte Accounting</a></li>
+      <li><a href="#ledger">3. Actionable Bucket 2a File Ledger</a></li>
+      <li><a href="#cli-calibration">4. Baseline vs. Optional Detect CLI</a></li>
+      <li><a href="#bom-baseline">5. Expected BOM Baseline</a></li>
+      <li><a href="#vulnerabilities">6. High-Severity Vulnerabilities (4)</a></li>
+      <li><a href="#licenses">7. License &amp; Rugpull Risks (0)</a></li>
+      <li><a href="#llm-prompts">8. Enterprise LLM Prompts</a></li>
+      <li><a href="#embedded-json">9. Embedded JSON Copy (For LLMs)</a></li>
+    </ul>
+  </nav>
+  <main>
+    <article>
+      <header>
+        <h1>SCA Pre-Flight, File Disposition &amp; Risk Brief (<code>opencontainers_runc</code>)</h1>
+        <p class="muted">Generated by <code>sca-prescan</code> | Scanned: <strong>153</strong> dirs, <strong>1205</strong> files (<strong>12.07 MB</strong>) | Embedded JSON payload included in <code>#sca-ops-ai-brief-json</code> for 100% LLM ingestion parity.</p>
+      </header>
+
+      <section id="provenance">
+        <h2>1. Stratified Multilayer Codebase Signature (<code>L0 / L1 / L2 / CFG</code>)</h2>
+        <table>
+          <thead><tr><th>Layer</th><th>Digest / Signature</th><th>Operational Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Compact Signature</strong></td><td><code>sca-sig:v2:L0=3931b6c806ae:L1=dd8b83315b2a:L2=7989f337ae21:CFG=2df5fcb38981@d6(100.0%)</code></td><td>Composite fingerprint stamped into Project Version Notes UI.</td></tr>
+            <tr><td><strong>Layer 0 (<code>L0</code>)</strong></td><td><code>3931b6c806ae4579a46192a59bfa1a50cfd48575588ec0b76818d13dced64ce8</code></td><td>Zero-file-read folder skeleton (153 dirs).</td></tr>
+            <tr><td><strong>Layer 1 (<code>L1</code>)</strong></td><td><code>dd8b83315b2a8fb97f71a55beeb2515fa21c02e68fb542a7654fe51f25e5ad8a</code></td><td>100% of 34 Bucket 2a dependency-bearing files (0.16 MB).</td></tr>
+            <tr><td><strong>Layer 2 (<code>L2</code>)</strong></td><td><code>7989f337ae2137e1fff85ed498ff8909e779c96452828699d5234c18f3ee190c</code></td><td>Top-down source tree (1205/1205 files, 100.0%).</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="accounting">
+        <h2>2. 4-Bucket File &amp; Byte Disposition Accounting (<code>34 + 1171 + 0 = 1205</code> files)</h2>
+        <table>
+          <thead><tr><th>Bucket</th><th>Count / Size</th><th>What <code>sca-prescan</code> Did With These Objects</th><th>What Default Detect (<code>depth=0</code>) Does With Them</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Bucket 1: Excluded Dirs</strong></td><td>1 dir(s)</td><td>Saw 1 non-shipping folder(s) (.git), skipped traversal, and added to --detect.excluded.directories.</td><td>Skips .git by default, but traverses .venv, venv, or unlocked node_modules unless explicitly excluded.</td></tr>
+            <tr><td><strong>Bucket 2a: Actionable BOM / Vuln / Calibration Files (<code>L1</code>)</strong></td><td><strong>34 file(s)</strong> (0.16 MB)</td><td>Hashed 100% into Layer 1 (L1) and extracted BOM baselines, C/C++ header versions, archive/binary metadata, and 4 CVE / 0 license hit(s).</td><td>DETECTOR only processes root (depth=0) package manifests; SILENTLY IGNORES depth&gt;=1 manifests, UTF-16 manifests, C/C++ version headers, CMake/Makefiles, and standalone binaries (--individualFileMatching=NONE).</td></tr>
+            <tr><td><strong>Bucket 2b: Source &amp; Doc Provenance Only (<code>L2 - L1</code>)</strong></td><td>1171 file(s) (11.91 MB)</td><td>Hashed 1171 first-party source/doc files into Layer 2 (L2) and scanned for embedded private keys (0 third-party BOM declarations).</td><td>Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole.</td></tr>
+            <tr><td><strong>Bucket 3: Monorepo Early-Stop Cap</strong></td><td>0 file(s)</td><td>0 files skipped (100% hashed).</td><td>Signature Scanner hashes all files; &gt;10,000 files or &gt;1 GB in one scan risks server queue timeouts.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="ledger">
+        <h2>3. Actionable Files Processed in Bucket 2a (34 file(s): <code>sca-prescan</code> vs. Default Detect)</h2>
+        <table>
+          <thead><tr><th>File Path (Depth)</th><th>Bucket Sub-Type</th><th>What <code>sca-prescan</code> Extracted &amp; Did</th><th>What Default Detect (<code>depth=0</code>) Does</th></tr></thead>
+          <tbody>
+            <tr><td><code>go.mod</code> <span class="muted">(d=0)</span></td><td><span class="badge badge-info">2a-i Manifest (Lockfile-Paired)</span></td><td>Package manifest (23 direct dep(s), paired with sibling lockfile, encoding=utf-8, depth=0); hashed into L1. Matched vulnerability: CVE-2023-39325 (CVSS 7.5, CISA-KEV), CVE-2023-45288 (CVSS 7.5), CVE-2024-21626 (CVSS 8.6, CISA-KEV), CVE-2024-24786 (CVSS 7.5).</td><td>Processed by DETECTOR at root depth=0 alongside sibling lockfile.</td></tr><tr><td><code>Dockerfile</code> <span class="muted">(d=0)</span></td><td><span class="badge badge-info">2a-ii Containerfile</span></td><td>Extracted base image declaration(s): golang:${GO_VERSION}-bullseye; hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by standard source DETECTOR scan (requires CONTAINER_SCAN on built image tar).</span></td></tr><tr><td><code>go.sum</code> <span class="muted">(d=0)</span></td><td><span class="badge badge-info">2a-i Lockfile</span></td><td>Pinned lockfile (43 locked component(s), encoding=utf-8); hashed into L1.</td><td>Processed by DETECTOR at root depth=0.</td></tr><tr><td><code>LICENSE</code> <span class="muted">(d=0)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>Makefile</code> <span class="muted">(d=0)</span></td><td><span class="badge badge-info">2a-ii Native Build Script</span></td><td>Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile).</span></td></tr><tr><td><code>NOTICE</code> <span class="muted">(d=0)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/checkpoint-restore/go-criu/v5/LICENSE</code> <span class="muted">(d=5)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/checkpoint-restore/go-criu/v5/Makefile</code> <span class="muted">(d=5)</span></td><td><span class="badge badge-info">2a-ii Native Build Script</span></td><td>Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile).</span></td></tr><tr><td><code>vendor/github.com/cilium/ebpf/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/cilium/ebpf/Makefile</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-ii Native Build Script</span></td><td>Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile).</span></td></tr><tr><td><code>vendor/github.com/containerd/console/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/coreos/go-systemd/v22/LICENSE</code> <span class="muted">(d=5)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/coreos/go-systemd/v22/NOTICE</code> <span class="muted">(d=5)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/cpuguy83/go-md2man/v2/LICENSE.md</code> <span class="muted">(d=5)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/cyphar/filepath-securejoin/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/docker/go-units/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/godbus/dbus/v5/LICENSE</code> <span class="muted">(d=5)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/moby/sys/mountinfo/LICENSE</code> <span class="muted">(d=5)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/mrunalp/fileutils/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/opencontainers/runtime-spec/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/opencontainers/selinux/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/russross/blackfriday/v2/LICENSE.txt</code> <span class="muted">(d=5)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/seccomp/libseccomp-golang/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/seccomp/libseccomp-golang/Makefile</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-ii Native Build Script</span></td><td>Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile).</span></td></tr><tr><td><code>vendor/github.com/shurcooL/sanitized_anchor_name/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/sirupsen/logrus/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/syndtr/gocapability/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/urfave/cli/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/vishvananda/netlink/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/github.com/vishvananda/netlink/Makefile</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-ii Native Build Script</span></td><td>Inspected for native find_package/pkg_check_modules hints and build-execution hooks; hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by DETECTOR (no C/C++ package lockfile).</span></td></tr><tr><td><code>vendor/github.com/vishvananda/netns/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/golang.org/x/net/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/golang.org/x/sys/LICENSE</code> <span class="muted">(d=4)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr><tr><td><code>vendor/google.golang.org/protobuf/LICENSE</code> <span class="muted">(d=3)</span></td><td><span class="badge badge-info">2a-iv Legal / Attribution</span></td><td>Inspected license/attribution text (no SPDX tag); hashed into L1.</td><td><span class="badge badge-danger">SILENTLY IGNORED by default unless --detect.blackduck.signature.scanner.license.search=true is enabled.</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="cli-calibration">
+        <h2>4. Baseline Safe Invocation vs. Optional Fuller-BOM Tweaks</h2>
+        <p><strong>4.1 Baseline Safe Invocation (Follows Stated Vendor Default-Settings Policy)</strong>: Keeps Detect at default <code>--detect.tools=ALL</code> and <code>--detect.detector.search.depth=0</code> for predictable scan performance, adding only runner RAM sizing, safe directory exclusions, and the provenance stamp. Always <strong>additively concatenate</strong> comma-separated flags (<code>--detect.excluded.directories</code>) with existing pipeline settings.</p>
+        <pre><code>java -jar detect.jar \
+  --detect.blackduck.signature.scanner.memory=4096 \
+  --detect.blackduck.signature.scanner.parallel.processors=1 \
+  --detect.excluded.directories=.git \
+  &#x27;--detect.project.version.notes=sca-ops-provenance:sca-sig:v2:L0=3931b6c806ae:L1=dd8b83315b2a:L2=7989f337ae21:CFG=2df5fcb38981@d6(100.0%);tree_merkle=sha256:7989f337ae2137e1;dep_merkle=sha256:dd8b83315b2a8fb9;cfg_sha256=2df5fcb389812bfe;files=1205/1205;dep_inputs=34&#x27;</code></pre>
+        <h3>4.2 Optional Fuller-BOM &amp; Buildless Tweaks (Trade-Offs Explained)</h3>
+        <table>
+          <thead><tr><th>Optional Flag</th><th>What Hidden Files / Failures It Unlocks</th><th>Performance &amp; BOM Trade-Off</th></tr></thead>
+          <tbody>
+            <tr><td><code>--detect.blackduck.signature.scanner.license.search=true</code></td><td>Scans 24 vendored legal/attribution notice(s) under vendor/ (default is false, which skips embedded license text inside vendored source trees).</td><td>Increases Signature Scanner text-search time across vendored source files.</td></tr>
+          </tbody>
+        </table>
+        <h3>4.3 Operational &amp; Calibration Warnings</h3>
+        <ul><li>DOCKER_INSPECTOR_EOL_WARNING: Dockerfile/Containerfile detected (1 base image declaration(s)). Docker Inspector (--detect.tools=DOCKER / detect-docker-inspector.jar) reached End-of-Life in July 2026 and fails with exit code 255 on modern container layers. Use --detect.tools=CONTAINER_SCAN with --detect.container.scan.file.path=&lt;image.tar&gt; instead of --detect.tools=DOCKER.</li></ul>
+      </section>
+
+      <section id="bom-baseline">
+        <h2>5. Expected BOM Baseline &amp; Post-Scan Completeness Gate</h2>
+        <p><strong>Expected Minimum BOM Components</strong>: <code>&gt;= 43</code> across <code>1</code> code location(s)</p>
+        <p><strong>Baseline Summary</strong>: You should expect a BOM of at least 43 component version(s) across 1 code location(s) (43 locked + 0 direct unpinned), and here is why:</p>
+        <ul><li><code>[GO] .</code>: <code>&gt;= 43</code> component(s) (go.sum declares 43 locked module(s))</li></ul>
+      </section>
+
+      <section id="vulnerabilities">
+        <h2>6. Actionable High-Severity Vulnerabilities (4)</h2>
+        <p class="muted"><strong>Honest Scope (Small Hit-List, Zero Promises)</strong>: <code>sca-prescan</code>'s built-in check is not a full SCA vulnerability database and promises nothing for comprehensive CVE coverage. It checks a small curated hit-list of well-known CVSS 9.8-10.0 / CISA-KEV disasters and license rugpulls offline in seconds before your main SCA scanner runs.</p>
+        <table>
+          <thead><tr><th>CVE ID</th><th>CVSS</th><th>KEV</th><th>Component &amp; Version</th><th>Evidence Source</th><th>Actionable Remedy</th></tr></thead>
+          <tbody>
+            <tr><td><code>CVE-2023-39325</code></td><td><strong>7.5</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>golang.org/x/net v0.8.0</code></td><td><code>manifest:go.mod</code></td><td>Upgrade golang.org/x/net to v0.17.0 or higher.</td></tr><tr><td><code>CVE-2023-45288</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>golang.org/x/net v0.8.0</code></td><td><code>manifest:go.mod</code></td><td>Upgrade golang.org/x/net to v0.23.0 or higher.</td></tr><tr><td><code>CVE-2024-21626</code></td><td><strong>8.6</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>runc 1.1.11</code></td><td><code>manifest:go.mod</code></td><td>Upgrade runc to 1.1.12 or higher.</td></tr><tr><td><code>CVE-2024-24786</code></td><td><strong>7.5</strong></td><td>NO</td><td><code>google.golang.org/protobuf v1.27.1</code></td><td><code>manifest:go.mod</code></td><td>Upgrade google.golang.org/protobuf to v1.33.0 or higher.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="licenses">
+        <h2>7. High-Severity License &amp; Rugpull Risks (0)</h2>
+        <table>
+          <thead><tr><th>Rule ID</th><th>Severity</th><th>Component &amp; Version</th><th>License</th><th>Evidence Source</th><th>Safe Version / Remedy</th></tr></thead>
+          <tbody>
+            <tr><td colspan="6">No high-severity license or rugpull risks matched.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="llm-prompts">
+        <h2>8. Ready-to-Copy Prompts for Your Enterprise LLM</h2>
+        <h3>8.1 Prompts to Point at This AI-Intended Report (<code>A1-A4</code>)</h3>
+        <ul>
+          <li><strong>Prompt A1 (CI Pipeline Calibration PR)</strong>: <em>"Using this brief, write a pull-request description for our DevSecOps pipeline explaining which Detect CLI flags we are adding, which uncalibrated coverage gaps they close, and how the multilayer codebase signature (<code>L0/L1/L2/CFG</code>) works."</em></li>
+          <li><strong>Prompt A2 (Legal &amp; License Rugpull Triage)</strong>: <em>"Group all AGPL-3.0, SSPL-1.0, RSALv2, BSL-1.1, and GPL findings in this brief by distribution risk for a shipped commercial appliance vs. internal tool, and list the non-copyleft drop-in replacements."</em></li>
+          <li><strong>Prompt A3 (Security Remediation Plan)</strong>: <em>"Prioritize all CISA-KEV and CVSS 9.8-10.0 vulnerabilities in this brief by artifact location (standard manifests vs. shaded uber-JARs, nested vendor archives, and native binaries) and output a step-by-step upgrade plan."</em></li>
+          <li><strong>Prompt A4 (BOM Delta Cross-Examination)</strong>: <em>"Compare the Expected BOM Baseline and Deep Packet Inspection findings in this brief against our current Project Version BOM export, and list every component that default detector settings omitted."</em></li>
+        </ul>
+        <h3>8.2 InfoSec Self-Audit Prompts (<code>B1-B3</code>: Point at the Python Source or This Report)</h3>
+        <p class="muted"><strong>Where is the Python source code?</strong> It lives in a separate, private repo (<code>sca-ops-toolkit</code>). Email <strong>Pete (<code>pjalajas+sca-preflight@gmail.com</code>)</strong> for access. Because the scripts are plain, readable Python (zero external pip dependencies), your InfoSec reviewer can run Prompts B1-B3 against the source tree or this generated brief.</p>
+        <ul>
+          <li><strong>Prompt B1 (Zero-Exfiltration &amp; Network Boundary Audit)</strong>: <em>"Audit all Python modules in the toolkit (<code>src/</code>). Enumerate every import or call involving network sockets, HTTP clients (<code>urllib</code>, <code>http</code>, <code>socket</code>), or subprocess execution. Verify that <code>sca-prescan</code>, <code>sca-tealeaves</code>, and <code>sca-log-sanitize</code> make zero outbound network connections during workspace analysis unless <code>--bd-url</code> is explicitly passed by the operator."</em></li>
+          <li><strong>Prompt B2 (Read-Only Workspace &amp; Dry-Run Mutation Safety Audit)</strong>: <em>"Audit <code>prescan.py</code>, <code>completeness.py</code>, and <code>bom_ifttt.py</code>. Verify that workspace scanning is strictly read-only on the target source tree, never executes untrusted build scripts (<code>mvn</code>, <code>gradle</code>, <code>npm</code>, <code>pip</code>), and that <code>BomIftttEngine</code> defaults to <code>dry_run=True</code> unless <code>--apply</code> is explicitly supplied."</em></li>
+          <li><strong>Prompt B3 (DLP &amp; Output Sanitization Audit)</strong>: <em>"Audit <code>log_sanitize.py</code> and this generated report file. Verify that workstation paths, internal hostnames, private IPv4 addresses, and credentials (<code>--blackduck.api.token</code>, Bearer tokens, URI passwords) are stripped or tokenized before external sharing."</em></li>
+        </ul>
+      </section>
+
+      <section id="embedded-json">
+        <h2>9. Embedded Machine-Readable JSON Copy (<code>#sca-ops-ai-brief-json</code>)</h2>
+        <p>This HTML file embeds valid Schema.org <code>TechArticle</code> JSON-LD alongside a complete, DLP-sanitized JSON copy inside <code>&lt;script type="application/json" id="sca-ops-ai-brief-json"&gt;</code> in the document <code>&lt;head&gt;</code> so enterprise LLMs and automation scripts can parse exact counts and SHA-256 digests directly from this single HTML file.</p>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
