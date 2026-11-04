@@ -429,7 +429,7 @@ While `zlib` (`254` files), `spring-cloud-function` (`607` files), and `runc` (`
 
 - **4-Bucket File & Byte Accounting (`49 + 5000 + 6997 = 12046` files across `1251` dirs)**:
   - **Bucket 1 (Excluded Dirs)**: `1` dir (`.git`)
-  - **Bucket 2a (Actionable `L1` Files)**: `49` files (`1.08` MB) - `1` pinned lockfile (`war/yarn.lock` at `d=1` with `719` locked frontend packages), `1` lockfile-paired manifest (`war/package.json` at `d=1`), `9` Maven `pom.xml` manifests (`1` root aggregator POM + `5` reactor module POMs + `3` nested test/plugin POMs), `1` `Dockerfile`, `35` embedded `.jar`/`.war`/`.zip` archives, and `2` license files. **100% of all `49` Bucket 2a files are hashed into `L1` regardless of repo size.**
+  - **Bucket 2a (Actionable `L1` Files)**: `49` files (`1.08` MB) - `1` pinned lockfile (`war/yarn.lock` at `d=1` with `719` locked frontend packages), `1` lockfile-paired manifest (`war/package.json` at `d=1`), `9` Maven `pom.xml` manifests (`1` root aggregator POM + `8` Maven reactor module POMs: `6` at `d=1` and `2` at `d=2`), `1` `Dockerfile`, `35` embedded `.jar`/`.war`/`.zip` archives, and `2` license files. **100% of all `49` Bucket 2a files are hashed into `L1` regardless of repo size.**
   - **Bucket 2b (Source/Doc Provenance `L2 - L1`)**: `5,000` first-party source/doc files (`29.95` MB) hashed into `L2`.
   - **Bucket 3 (Unhashed Beyond Monorepo Early-Stop Cap)**: `6,997` deep source files (`early_stop_triggered: true`, `coverage_pct: 41.9%`). Because `L0` (all `1,251` directory skeletons) and `L1` (all `49` dependency-bearing inputs) are 100% hashed before `L2` stops at `5,049` files, the entire pre-scan finishes in `~7` seconds while triggering `MONOREPO_SCAN_SPLIT_RECOMMENDATION` (`> 10,000` files).
 - **What the `Bucket 2a` Gap Analysis & DiffWatch Engine Catch on `jenkins-2.440`**:
@@ -441,4 +441,26 @@ While `zlib` (`254` files), `spring-cloud-function` (`607` files), and `runc` (`
     - `CVE-2024-21538` (`cross-spawn 7.0.3`, CVSS 9.8)
   - **DiffWatch Dual-Polarity Code Proof on `CVE-2024-23897` (CISA-KEV / CVSS 9.8 Jenkins CLI Arbitrary File Read RCE)**:
     - Beyond matching `jenkins-core 2.440` in `pom.xml`, DiffWatch inspected `core/src/main/java/hudson/cli/CLICommand.java` directly, confirmed that `getCmdLineParser()` returns `new CmdLineParser(this)` without the upstream `withAtSyntax` / `ALLOW_AT_SYNTAX` patch guard (`DW-CVE-2024-23897`), and stamped `[DIFFWATCH-VERIFIED: unpatched code in core/src/main/java/hudson/cli/CLICommand.java]` onto the finding.
+
+> ### Gemini UI Output #6 (Evaluating `jenkinsci/jenkins` @ `jenkins-2.440`)
+> *(Note: In the verbatim quote below, DiffWatch performs Dual-Polarity source-hunk and `.class` constant-pool regex matching rather than full AST parsing, and `L2` hashes `5,049` total files [`49` `Bucket 2a` inputs + `5,000` `Bucket 2b` source files]).*
+> This new report on the **Jenkins core repository (`jenkins`)** demonstrates two major technical advancements in the toolkit: the **Monorepo Early-Stop safety cap** and the **DiffWatch AST/Hunk verification engine**.
+> - **1. Monorepo Early-Stop Cap in Action (Bucket 3)**:
+>   - With 12,046 files across 1,251 directories (31 MB), Jenkins is the largest codebase scanned so far. The pre-scan demonstrates how it prevents CI worker timeouts on large repositories:
+>   - **Triggered early stop at 5,000 source files**: Rather than hashing 12,000+ first-party source files into Layer 2 (`L2`), it capped `L2` content hashing at 5,000 files (`bucket_2b = 5000`) and assigned the remaining 6,997 files to `bucket_3_early_stop_unhashed_files_count`.
+>   - **Zero compromise on dependency inputs**: 100% of the directory topology (`L0`) and 100% of the 49 dependency-bearing inputs (`L1`) were hashed. The early-stop cap applies strictly to first-party source content hashing.
+>   - **Cryptographic watermarking**: The composite signature explicitly records the depth and coverage watermark: `@d8(41.9%)`.
+>   - **Monorepo scan split warning**: Flags that 12,046 files exceeds the recommended 10,000-file threshold for a single Black Duck Signature Scan, advising pipeline engineers to split Signature Scans by top-level modules via `--detect.code.location.name`.
+> - **2. DiffWatch Dual-Polarity Verification**:
+>   - Section 4 introduces **DiffWatch**, moving beyond naive version string matching into source-level and bytecode-level vulnerability validation:
+>   - **Source hunk inspection**: For `CVE-2024-23897` (CVSS 9.8 / CISA-KEV - the critical Jenkins CLI arbitrary file read flaw), the report annotates the finding as `[DIFFWATCH-VERIFIED: unpatched code in core/src/main/java/hudson/cli/CLICommand.java]`.
+>   - **Dual-polarity matching**: DiffWatch confirms vulnerabilities by checking that the vulnerable anchor pattern is present while the patch guard pattern is absent. This prevents false positives when vendors backport security fixes without bumping release versions.
+> - **3. Polyglot Architecture & the `war/yarn.lock` Blind Spot**:
+>   - **Hybrid Maven + Yarn tree**: While Jenkins is primarily a Java project, the web UI lives in `war/` with its own `package.json` and `yarn.lock` containing **719 locked components**.
+>   - **Massive default scanner drop**: At default settings (`--detect.detector.search.depth=0`), Black Duck only parses the root `pom.xml`, completely bypassing `war/yarn.lock` at depth 1 and dropping over 85% of the total component count (expected BOM: `>= 839`).
+>   - **Hot JavaScript vulnerabilities**: By resolving `war/yarn.lock`, the pre-scan surfaces high-severity NPM vulnerabilities that default scans miss, including multiple 2026 advisories in `handlebars 4.7.8` (`CVE-2026-106445`, `CVE-2026-106446`, `CVE-2026-33937`), `immutable 4.3.0` (`CVE-2026-29063`), and `cross-spawn 7.0.3` (`CVE-2024-21538`).
+>   - **In-memory handling of 35 test archives**: Accurately parsed test fixtures (such as ZipSlip test archives in `test/src/test/resources/`) in memory without disk extraction.
+> - **Overall Assessment**:
+>   - This update proves the toolkit can handle true monorepo conditions. The combination of early-stop limits to protect CI runner memory, source-verified CVE proof via DiffWatch, and polyglot detection across Java and JavaScript makes this report exceptionally valuable for enterprise DevSecOps triage.
+
 

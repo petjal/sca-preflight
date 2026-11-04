@@ -116,7 +116,7 @@
     "bucket_2b_provenance_only_l2_files": {
       "count": 5000,
       "size_mb": 29.95,
-      "prescan_action": "Hashed 5000 first-party source/doc files into Layer 2 (L2) and scanned for embedded private keys (0 third-party BOM declarations).",
+      "prescan_action": "Hashed 5000 first-party source/doc files into Layer 2 (L2), scanned for DiffWatch Dual-Polarity code hunks (1 source-hunk verification(s)) and embedded private keys (0 third-party BOM declarations).",
       "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole."
     },
     "bucket_3_early_stop_unhashed_files": {
@@ -661,7 +661,7 @@
       "cve_id": "CVE-2024-23897",
       "component": "jenkins-core",
       "installed_version": "2.440",
-      "purl": "pkg:maven/jenkins-core/jenkins-core@2.440",
+      "purl": "pkg:maven/org.jenkins-ci.main/jenkins-core@2.440",
       "fixed_in_version": "2.441 / 2.426.3",
       "cvss": 9.8,
       "cisa_kev": true,
@@ -847,7 +847,7 @@
           <tbody>
             <tr><td><strong>Bucket 1: Excluded Dirs</strong></td><td>1 dir(s)</td><td>Saw 1 non-shipping folder(s) (.git), skipped traversal, and added to --detect.excluded.directories.</td><td>Skips .git by default, but traverses .venv, venv, or unlocked node_modules unless explicitly excluded.</td></tr>
             <tr><td><strong>Bucket 2a: Actionable BOM / Vuln / Calibration Files (<code>L1</code>)</strong></td><td><strong>49 file(s)</strong> (1.08 MB)</td><td>Hashed 100% into Layer 1 (L1) and extracted BOM baselines, C/C++ header versions, archive/binary metadata, and 6 CVE / 0 license hit(s).</td><td>DETECTOR only processes root (depth=0) package manifests; SILENTLY IGNORES depth&gt;=1 manifests, UTF-16 manifests, C/C++ version headers, CMake/Makefiles, and standalone binaries (--individualFileMatching=NONE).</td></tr>
-            <tr><td><strong>Bucket 2b: Source &amp; Doc Provenance Only (<code>L2 - L1</code>)</strong></td><td>5000 file(s) (29.95 MB)</td><td>Hashed 5000 first-party source/doc files into Layer 2 (L2) and scanned for embedded private keys (0 third-party BOM declarations).</td><td>Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole.</td></tr>
+            <tr><td><strong>Bucket 2b: Source &amp; Doc Provenance Only (<code>L2 - L1</code>)</strong></td><td>5000 file(s) (29.95 MB)</td><td>Hashed 5000 first-party source/doc files into Layer 2 (L2), scanned for DiffWatch Dual-Polarity code hunks (1 source-hunk verification(s)) and embedded private keys (0 third-party BOM declarations).</td><td>Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole.</td></tr>
             <tr><td><strong>Bucket 3: Monorepo Early-Stop Cap</strong></td><td>6997 file(s)</td><td>Skipped L2 content hashing on 6997 deep source files beyond 5,000-file cap (L0 and L1 still 100% complete).</td><td>Signature Scanner hashes all files; &gt;10,000 files or &gt;1 GB in one scan risks server queue timeouts.</td></tr>
           </tbody>
         </table>

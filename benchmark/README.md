@@ -24,7 +24,7 @@ it creates three top-level test directories:
 - **What is inside**: Not the real 1.8 MB Apache Log4j library. It is a tiny 743-byte valid `.zip`/`.jar` containing:
   - `META-INF/MANIFEST.MF`
   - `META-INF/maven/org.apache.logging.log4j/log4j-core/pom.properties` (`groupId=org.apache.logging.log4j`, `artifactId=log4j-core`, `version=2.14.1`)
-  - A 42-byte dummy Java class header (`0xCAFEBABE`) at `org/apache/logging/log4j/core/lookup/JndiLookup.class`.
+  - A 61-byte dummy Java class header (`0xCAFEBABE`) at `org/apache/logging/log4j/core/lookup/JndiLookup.class`.
 - **What it tests**: Whether your scanner checks standalone `.jar` files in a `lib/` folder when there is no `pom.xml` or `build.gradle` next to them, and whether it flags **Log4Shell (`CVE-2021-44228`)**.
 
 ### 2. Shaded "Uber-JAR" (`mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar` - 1,523 bytes)
@@ -32,7 +32,7 @@ it creates three top-level test directories:
 - **What it tests**: Many Java teams bundle third-party libraries inside one big "fat" or "shaded" JAR. If a scanner only looks at the outer filename (`telemetry_agent_shaded.jar`), it misses both **Log4Shell (`CVE-2021-44228`)** and **Text4Shell (`CVE-2022-42889`)** hiding inside.
 
 ### 3. Stripped C/C++ Shared Library (`mode_2_unknowns/vendor/native/libdb_storage_kv.so` - 52 bytes)
-- **What is inside**: A 52-byte file starting with the Linux ELF binary magic bytes (`\x7fELF...`) followed by the ASCII version string `Redis server v=7.4.0 sha=00000000:0 malloc=libc`.
+- **What is inside**: A 52-byte file starting with the Linux ELF binary magic bytes (`\x7fELF...`) followed by the ASCII version string `Redis/7.4.0`.
 - **What it tests**: In C/C++ or storage appliance builds, teams often check in pre-compiled `.so` libraries with generic filenames (`libdb_storage_kv.so`). Default Detect settings don't run binary/string inspection, so they miss that this file embeds **Redis 7.4.0** (which switched from permissive `BSD-3-Clause` to the restrictive **`RSALv2 / SSPL-1.0`** license).
 
 ### 4. UTF-16LE Python Manifest (`mode_2_unknowns/services/auth_worker/requirements.txt` - 104 bytes)
@@ -46,7 +46,7 @@ it creates three top-level test directories:
   - **License rugpulls**: Flags that HashiCorp Vault `v1.16.0` switched from `MPL-2.0` to **`BSL-1.1`**, and MinIO switched from `Apache-2.0` to **`AGPL-3.0-only`**.
 
 ### 6. Vendored C/C++ Source Tarball (`mode_2_unknowns/vendor/archives/openssl-3.0.4.tar.gz` - 165 bytes)
-- **What is inside**: A tiny `.tar.gz` archive containing a 1-line `README` (`OpenSSL 3.0.4`). (A sibling tarball, `readline-8.2.tar.gz`, also includes a `COPYING` file with the `GNU GENERAL PUBLIC LICENSE Version 3` header).
+- **What is inside**: A tiny `.tar.gz` archive containing `include/openssl/opensslv.h` (`#define OPENSSL_VERSION_STR "3.0.4"`). (A sibling tarball, `readline-8.2.tar.gz`, also includes a `COPYING` file with the `GNU GENERAL PUBLIC LICENSE Version 3` header).
 - **What it tests**: Whether your scanner inspects vendored `.tar.gz` source archives in a `vendor/archives/` directory and flags **OpenSSL `3.0.4` (`CVE-2022-2274`, CVSS 9.8, and `CVE-2022-3602`)** and **GNU Readline `8.2` (`GPL-3.0-only`)**.
 
 ### 7. Cached npm Package Tarball (`mode_2_unknowns/vendor/npm_cache/lodash-4.17.19.tgz` - 147 bytes)
@@ -71,7 +71,7 @@ it creates three top-level test directories:
 
 | Unpacked Relative File Path | Size (Bytes) | What It Tests |
 | :--- | :---: | :--- |
-| `GROUND_TRUTH_MANIFEST.json` | 2,028 | Answer key (30 expected CVEs/GHSAs across 36 total matches, 8 license rules, 4 unique blind-spot trap IDs across 7 locations, and `sca-sig:v2` digests) |
+| `GROUND_TRUTH_MANIFEST.json` | 2,028 | Answer key (30 expected CVEs/GHSAs across 37 total matches, 8 license rules, 4 unique blind-spot trap IDs across 7 locations, and `sca-sig:v2` digests) |
 | `mode_1_knowns/lib/activemq-client-5.18.2.jar` | 778 | `CVE-2023-46604` (CVSS 10.0, CISA-KEV) |
 | `mode_1_knowns/lib/bcprov-jdk15on-1.66.jar` | 734 | `CVE-2020-28052` (BouncyCastle auth bypass) |
 | `mode_1_knowns/lib/commons-text-1.9.jar` | 709 | `CVE-2022-42889` (Text4Shell, CVSS 9.8) |

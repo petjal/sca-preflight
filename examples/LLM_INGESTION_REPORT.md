@@ -1,6 +1,6 @@
 ---
 schema: sca-ops-ai-brief/v1
-workspace_name: sca_preflight_reference_scan
+workspace_name: sca_preflight_reference_capsule
 dlp_sanitized: true
 host_paths_stripped: true
 multilayer_codebase_signature: sca-sig:v2:L0=d22a5e6a2a05:L1=13a4e95c91ad:L2=f5de118557c1:CFG=2adcf6e44988@d3(100.0%)
@@ -22,13 +22,13 @@ lockfiles_count: 0
 lockfile_paired_manifests_count: 0
 unpinned_manifests_count: 3
 expected_min_bom_components: 8
-actionable_vulnerabilities_count: 36
+actionable_vulnerabilities_count: 37
 actionable_license_risks_count: 8
 blind_spot_traps_count: 7
 operational_warnings_count: 12
 ---
 
-# AI-First SCA Pre-Flight, Provenance & Risk Brief (`sca_preflight_reference_scan`)
+# AI-First SCA Pre-Flight, Provenance & Risk Brief (`sca_preflight_reference_capsule`)
 
 > **LLM Ingestion Instructions**: Point your enterprise AI assistant (Copilot, Claude, ChatGPT Enterprise) at this single file. All host paths are stripped to relative workspace paths and all integer totals are pre-computed in the YAML header above.
 
@@ -54,8 +54,8 @@ operational_warnings_count: 12
 | Bucket | Count / Size | What `sca-prescan` Did With These Objects | What Default Detect (`depth=0`) Does With Them |
 | :--- | :---: | :--- | :--- |
 | **Bucket 1: Excluded Non-Shipping Dirs** | `0` dir(s) | Saw 0 non-shipping folder(s) (none), skipped traversal, and added to --detect.excluded.directories. | Skips .git by default, but traverses .venv, venv, or unlocked node_modules unless explicitly excluded. |
-| **Bucket 2a: Actionable BOM, Vuln & Calibration Files (`L1`)** | `25` file(s) (`0.01` MB) | Hashed 100% into Layer 1 (L1) and extracted BOM baselines, C/C++ header versions, archive/binary metadata, and 36 CVE / 8 license hit(s). | DETECTOR only processes root (depth=0) package manifests; SILENTLY IGNORES depth>=1 manifests, UTF-16 manifests, C/C++ version headers, CMake/Makefiles, and standalone binaries (--individualFileMatching=NONE). |
-| **Bucket 2b: Source & Doc Provenance Only (`L2 - L1`)** | `4` file(s) (`0.0` MB) | Hashed 4 first-party source/doc files into Layer 2 (L2) and scanned for embedded private keys (0 third-party BOM declarations). | Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole. |
+| **Bucket 2a: Actionable BOM, Vuln & Calibration Files (`L1`)** | `25` file(s) (`0.01` MB) | Hashed 100% into Layer 1 (L1) and extracted BOM baselines, C/C++ header versions, archive/binary metadata, and 33 CVE / 8 license hit(s). | DETECTOR only processes root (depth=0) package manifests; SILENTLY IGNORES depth>=1 manifests, UTF-16 manifests, C/C++ version headers, CMake/Makefiles, and standalone binaries (--individualFileMatching=NONE). |
+| **Bucket 2b: Source & Doc Provenance Only (`L2 - L1`)** | `4` file(s) (`0.0` MB) | Hashed 4 source/doc files into Layer 2 (L2), scanned for DiffWatch Dual-Polarity code hunks (4 standalone unversioned code-hunk CVE hit(s)) and embedded private keys (0 package manifest declarations). | Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole. |
 | **Bucket 3: Unhashed Beyond Monorepo Early-Stop Cap** | `0` file(s) | 0 files skipped (100% hashed). | Signature Scanner hashes all files; >10,000 files or >1 GB in one scan risks server queue timeouts. |
 
 ### Actionable Files Processed in Bucket 2a (`25` file(s): `sca-prescan` vs. Default Detect)
@@ -86,7 +86,7 @@ operational_warnings_count: 12
 | `mode_2_unknowns/vendor/npm_cache/lodash-4.17.19.tgz` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-23337 (CVSS 9.8). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
 | `mode_2_unknowns/vendor/nuget_feed/newtonsoft.json.12.0.3.nupkg` (`d=3`) | `2a-iii Archive / Binary` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Extracted `Newtonsoft.Json 12.0.3` (nuspec). Matched vulnerability: CVE-2024-21907 (CVSS 7.5). | Ignored by DETECTOR; Signature Scanner hashes archive structure, but shaded classes with stripped POMs require deep inspection or BDBA. |
 | `mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar` (`d=3`) | `2a-iii Shaded / Fat Archive` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-44228 (CVSS 10.0, CISA-KEV), CVE-2021-45046 (CVSS 9.0, CISA-KEV), CVE-2022-42889 (CVSS 9.8, CISA-KEV). Flagged blind-spot trap: CVE-2022-42889, CVE-2021-44228. | BLIND-SPOT TRAP: Ignored by DETECTOR; Signature Scanner hashes outer archive only and misses shaded/repackaged inner classes unless deep inspection or BDBA is enabled. |
-| `mode_3_diffwatch_unversioned/shaded_stripped/enterprise_gateway_shaded.jar` (`d=2`) | `2a-iii Shaded / Fat Archive` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Flagged blind-spot trap: CVE-2021-44228. | BLIND-SPOT TRAP: Ignored by DETECTOR; Signature Scanner hashes outer archive only and misses shaded/repackaged inner classes unless deep inspection or BDBA is enabled. |
+| `mode_3_diffwatch_unversioned/shaded_stripped/enterprise_gateway_shaded.jar` (`d=2`) | `2a-iii Shaded / Fat Archive` | Inspected in memory for internal POM/manifest metadata, shaded classes, and binary version strings; hashed into L1. Matched vulnerability: CVE-2021-44228 (CVSS 10.0, CISA-KEV). Flagged blind-spot trap: CVE-2021-44228. | BLIND-SPOT TRAP: Ignored by DETECTOR; Signature Scanner hashes outer archive only and misses shaded/repackaged inner classes unless deep inspection or BDBA is enabled. |
 
 ## 2. Tuned Detect CLI Invocation & Configuration Calibration
 
@@ -113,7 +113,7 @@ java -jar detect.jar \
 - Unpinned package manifests detected (mode_1_knowns/services/ingress_proxy/go.mod, mode_2_unknowns/services/auth_worker/requirements.txt, mode_2_unknowns/services/ingress_proxy/go.mod). Detect 10 defaults to --detect.accuracy.required=ALL (HIGH), which will exit with Code 5 (FAILURE_DETECTOR: Accuracy Not Met) or Exit Code 15 (FAILURE_ACCURACY_NOT_MET) if package manager executables (pip, npm, go, mvn, gradle, cargo, dotnet, bazel, conan, bundle) or installed environments are missing unless --detect.accuracy.required=NONE is passed for buildless/unbuilt runs.
 - Binary/archive artifacts found at depth 3. Detect defaults --detect.binary.scan.search.depth=0; added --detect.binary.scan.search.depth=3 to recommended arguments for BINARY_SCAN.
 - Standalone binary files (.so, .dll, .exe, .bin, .o) detected. Since 2020.2.0 (Scanning Best Practices), Signature Scanner defaults --individualFileMatching=NONE and omits single-file SHA-1 checksums in generated BDIO archives for standalone binaries. Added --detect.blackduck.signature.scanner.individual.file.matching=BINARY so standard SCA servers match unmodified binaries by file checksum.
-- EPHEMERAL_SCAN_PATH_WARNING: Workspace path '<WORKSPACE_ROOT>/sca_preflight_reference_scan' appears to contain a transient CI build, commit ID, or temporary directory name. By default, Detect derives code.location.name from <hostname> + <full path>, which creates a new persisted scan on every CI build, bloating PostgreSQL and leaving deleted dependencies stuck in the aggregated BOM. Set an explicit static scan name via --detect.code.location.name=<project>-<branch>-HEAD.
+- EPHEMERAL_SCAN_PATH_WARNING: Workspace path '<WORKSPACE_ROOT>/sca_preflight_reference_capsule' appears to contain a transient CI build, commit ID, or temporary directory name. By default, Detect derives code.location.name from <hostname> + <full path>, which creates a new persisted scan on every CI build, bloating PostgreSQL and leaving deleted dependencies stuck in the aggregated BOM. Set an explicit static scan name via --detect.code.location.name=<project>-<branch>-HEAD.
 - BLIND-SPOT TRAP [CRITICAL]: CVE-2022-42889 (Text4Shell) detected in mode_1_knowns/lib/commons-text-1.9.jar!/org/apache/commons/text/StringSubstitutor.class - Text4Shell vulnerable Commons Text StringSubstitutor class present in archive.
 - BLIND-SPOT TRAP [CRITICAL]: CVE-2021-44228 (Log4Shell) detected in mode_1_knowns/lib/log4j-core-2.14.1.jar!/org/apache/logging/log4j/core/lookup/JndiLookup.class - Log4Shell vulnerable JndiLookup class present in archive.
 - BLIND-SPOT TRAP [CRITICAL]: CVE-2022-21724 (PgJDBC SocketFactory RCE) detected in mode_1_knowns/lib/postgresql-42.2.18.jar!/org/postgresql/Driver.class - PgJDBC unauthenticated arbitrary class instantiation RCE via AuthenticationPluginClassName / SocketFactory
@@ -130,7 +130,7 @@ java -jar detect.jar \
   - `[PYTHON] mode_2_unknowns/services/auth_worker`: `>= 3` component(s) (mode_2_unknowns/services/auth_worker/requirements.txt declares 3 direct dependency(s); no lockfile)
   - `[GO] mode_2_unknowns/services/ingress_proxy`: `>= 3` component(s) (mode_2_unknowns/services/ingress_proxy/go.mod declares 3 direct dependency(s); no lockfile)
 
-## 4. Actionable High-Severity Vulnerabilities (36)
+## 4. Actionable High-Severity Vulnerabilities (37)
 
 > **Honest Scope (Hot-Off-The-Presses, CISA-KEV & DiffWatch Dual-Polarity Hit-List, Zero Promises)**: `sca-prescan`'s built-in check is **not** a replacement for a full 500,000-CVE SCA database and **promises nothing** when it comes to comprehensive CVE coverage. Instead, its built-in offline catalog (`3,910` version/range rules + `32` **DiffWatch Dual-Polarity Hunk & Shaded-Bytecode** signatures) focuses strictly on the **worst of the worst**: actively exploited **CISA-KEV** vulnerabilities, **hot-off-the-presses `2025-2026` critical advisories** (including brand-new `GHSA`/`GO`/`RUSTSEC` advisories before NVD even assigns a CVE number), `CVSS 9.8-10.0` disasters (Log4Shell, Spring4Shell, Text4Shell, OpenSSL, zlib, curl, pgjdbc, Brotli, PHP), and notorious open-source license rugpulls (`AGPL-3.0`, `SSPL-1.0`, `RSALv2`, `BSL-1.1`). When version strings are missing, stripped from shaded uber-JARs, or locked behind unresolved `${...}` build properties, **DiffWatch** inspects source hunks and in-memory `.class` constant pools directly (`vulnerable_anchor_regex` PRESENT + `patch_guard_regex` ABSENT) and annotates confirmed unpatched code with `[DIFFWATCH-VERIFIED]` or backported fixes with `[DIFFWATCH-BACKPORT-GUARD]`.
 
@@ -142,6 +142,7 @@ java -jar detect.jar \
 | `CVE-2021-23337` | 9.8 | NO | `lodash 4.17.19` | `assertion:mode_2_unknowns/vendor/npm_cache/lodash-4.17.19.tgz` | Upgrade lodash to 4.17.21 or higher. |
 | `CVE-2021-44228` | 10.0 | YES | `log4j-core 2.14.1` | `archive+archive_maven+assertion:mode_1_knowns/lib/log4j-core-2.14.1.jar` | Upgrade log4j-core to 2.17.1 or higher (or 2.12.4 for Java 7). [DIFFWATCH-VERIFIED: unpatched code in mode_1_knowns/lib/log4j-core-2.14.1.jar!/org/apache/logging/log4j/core/lookup/JndiLookup.class] |
 | `CVE-2021-44228` | 10.0 | YES | `log4j-core 2.14.1` | `archive_maven:mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar` | Upgrade log4j-core to 2.17.1 or higher (or 2.12.4 for Java 7). [DIFFWATCH-VERIFIED: unpatched code in mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar!/org/apache/logging/log4j/core/lookup/JndiLookup.class] |
+| `CVE-2021-44228` | 10.0 | YES | `log4j-core shaded (diffwatch-bytecode)` | `diffwatch_bytecode:mode_3_diffwatch_unversioned/shaded_stripped/enterprise_gateway_shaded.jar!/org/apache/logging/log4j/core/lookup/JndiLookup.class` | Upgrade log4j-core to 2.17.1+ or strip JndiLookup.class from shaded JARs (CISA KEV Log4Shell JNDI RCE). [DIFFWATCH-VERIFIED: unpatched code in mode_3_diffwatch_unversioned/shaded_stripped/enterprise_gateway_shaded.jar!/org/apache/logging/log4j/core/lookup/JndiLookup.class] |
 | `CVE-2021-45046` | 9.0 | YES | `log4j-core 2.14.1` | `archive+archive_maven+assertion:mode_1_knowns/lib/log4j-core-2.14.1.jar` | Upgrade log4j-core to 2.16.0 or higher. |
 | `CVE-2021-45046` | 9.0 | YES | `log4j-core 2.14.1` | `archive_maven:mode_2_unknowns/vendor/shaded/telemetry_agent_shaded.jar` | Upgrade log4j-core to 2.16.0 or higher. |
 | `CVE-2022-1471` | 9.8 | NO | `snakeyaml 1.33` | `archive+archive_maven+assertion:mode_1_knowns/lib/snakeyaml-1.33.jar` | Upgrade SnakeYAML to 2.0 or higher. [DIFFWATCH-VERIFIED: unpatched code in mode_1_knowns/lib/snakeyaml-1.33.jar!/org/yaml/snakeyaml/constructor/Constructor.class] |
