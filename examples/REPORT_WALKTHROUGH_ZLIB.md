@@ -6,7 +6,7 @@ This guide uses a real blind-challenge report generated for **Mark Adler's `zlib
 - Why Section 2 separates **Baseline Safe Invocation (Default Vendor Policy)** from **Optional Fuller-BOM Tweaks**, and how `--existing-detect-args` additively concatenates comma-separated flags without clobbering existing pipeline configs.
 - What happens when you paste the report straight into an enterprise AI assistant (Google Gemini UI).
 
-> **Browser + LLM Dual Format**: Alongside `LLM_INGESTION_REPORT.md`, `sca-prescan --html-report <path.html>` generates a standalone semantic HTML5 report ([`REPORT_WALKTHROUGH_ZLIB.html`](REPORT_WALKTHROUGH_ZLIB.html) and [`LLM_INGESTION_REPORT.html`](LLM_INGESTION_REPORT.html)) with sticky navigation, color-coded `SILENTLY IGNORED` / `CISA-KEV` badges, and the complete JSON report embedded inside a `<script type="application/json" id="sca-ops-ai-brief-json">` block for one-file human + LLM ingestion.
+> **GitHub-Native Markdown + Optional Local HTML**: All sample reports in [`examples/`](./) are provided in GitHub-native Markdown (`.md`) so they render directly in the GitHub web UI (`LLM_INGESTION_REPORT.md`, `REPORT_WALKTHROUGH_ZLIB.md`, `REPORT_WALKTHROUGH_SPRING_CLOUD_FUNCTION.md`, `REPORT_WALKTHROUGH_RUNC.md`, `REPORT_WALKTHROUGH_JENKINS.md`). When running `sca-prescan` locally, you can also pass `--html-report <path.html>` to generate a standalone semantic HTML5 report with sticky navigation, color-coded `SILENTLY IGNORED` / `CISA-KEV` badges, and the complete JSON report embedded inside a `<script type="application/json" id="sca-ops-ai-brief-json">` block.
 
 ---
 
@@ -211,7 +211,7 @@ To respect that policy and avoid nagging teams about flags they already set:
 
 ## 6. Full Updated `LLM_INGESTION_REPORT.md` (`madler/zlib` @ `v1.2.11`)
 
-Below is the complete updated `LLM_INGESTION_REPORT.md` generated for `madler/zlib` (`v1.2.11`) with `--repo-only`, showing the 4-Bucket File & Byte Disposition Accounting (`11 + 243 + 0 = 254` files) and the 11-row `Bucket 2a` Actionable File Ledger (also viewable in browser HTML format at [`REPORT_WALKTHROUGH_ZLIB.html`](REPORT_WALKTHROUGH_ZLIB.html)):
+Below is the complete updated `LLM_INGESTION_REPORT.md` generated for `madler/zlib` (`v1.2.11`) with `--repo-only`, showing the 4-Bucket File & Byte Disposition Accounting (`11 + 243 + 0 = 254` files) and the 11-row `Bucket 2a` Actionable File Ledger:
 
 ````markdown
 ---
@@ -336,7 +336,7 @@ _No high-severity license or rugpull risks matched._
 
 ## 7. Real-World Walkthrough #2: Multi-Module Java/Kotlin Monorepo (`spring-cloud/spring-cloud-function` @ `v3.2.2`)
 
-To test how the 4-Bucket File & Byte Disposition Accounting and `Bucket 2a` gap analysis scale from a single-directory C library (`madler/zlib`) to a **60-subproject Java/Kotlin Maven + Gradle monorepo**, we ran `sca-prescan` cold inside the same 512 MB RAM sandbox against `https://github.com/spring-cloud/spring-cloud-function` at tag `v3.2.2` (full HTML+JSON-LD report at [`REPORT_WALKTHROUGH_SPRING_CLOUD_FUNCTION.html`](REPORT_WALKTHROUGH_SPRING_CLOUD_FUNCTION.html)).
+To test how the 4-Bucket File & Byte Disposition Accounting and `Bucket 2a` gap analysis scale from a single-directory C library (`madler/zlib`) to a **60-subproject Java/Kotlin Maven + Gradle monorepo**, we ran `sca-prescan` cold inside the same 512 MB RAM sandbox against `https://github.com/spring-cloud/spring-cloud-function` at tag `v3.2.2` (full Markdown report at [`REPORT_WALKTHROUGH_SPRING_CLOUD_FUNCTION.md`](REPORT_WALKTHROUGH_SPRING_CLOUD_FUNCTION.md)).
 
 - **4-Bucket File & Byte Accounting (`80 + 527 + 0 = 607` files, `4.24` MB across `603` dirs)**:
   - **Bucket 1 (Excluded Dirs)**: `1` dir (`.git`)
@@ -372,7 +372,7 @@ To test how the 4-Bucket File & Byte Disposition Accounting and `Bucket 2a` gap 
 
 ## 8. Real-World Walkthrough #3: Go & C Container Runtime with Vendored Source Tree (`opencontainers/runc` @ `v1.1.11`)
 
-To test a third distinct archetype - a **cloud-native Go + C container runtime with a committed `vendor/` source tree and a pinned `go.sum` lockfile** - we ran `sca-prescan` cold inside the 512 MB RAM sandbox against `https://github.com/opencontainers/runc` at tag `v1.1.11` (full HTML+JSON-LD report at [`REPORT_WALKTHROUGH_RUNC.html`](REPORT_WALKTHROUGH_RUNC.html)).
+To test a third distinct archetype - a **cloud-native Go + C container runtime with a committed `vendor/` source tree and a pinned `go.sum` lockfile** - we ran `sca-prescan` cold inside the 512 MB RAM sandbox against `https://github.com/opencontainers/runc` at tag `v1.1.11` (full Markdown report at [`REPORT_WALKTHROUGH_RUNC.md`](REPORT_WALKTHROUGH_RUNC.md)).
 
 - **4-Bucket File & Byte Accounting (`34 + 1171 + 0 = 1205` files, `12.07` MB across `153` dirs)**:
   - **Bucket 1 (Excluded Dirs)**: `1` dir (`.git`)
@@ -404,7 +404,7 @@ To test a third distinct archetype - a **cloud-native Go + C container runtime w
 
 ## 9. Real-World Walkthrough #4: 12,046-File Java + Node Monorepo with Bucket 3 Early-Stop, Unpatched Snippet Code Proof & Hot 2026 Advisories (`jenkinsci/jenkins` @ `jenkins-2.440`)
 
-While `zlib` (`254` files), `spring-cloud-function` (`607` files), and `runc` (`1,205` files) stayed below the `5,000`-file `L2` source-hashing cap (`Bucket 3 = 0`), we ran `sca-prescan` cold against **`jenkinsci/jenkins` at tag `jenkins-2.440`** (`12,046` files across `1,251` directories, `31.03` MB) to demonstrate **Bucket 3 Monorepo Early-Stop**, **unpatched code-snippet verification**, and **Hot 2026 advisory detection** in a single report (full HTML+JSON-LD report at [`REPORT_WALKTHROUGH_JENKINS.html`](REPORT_WALKTHROUGH_JENKINS.html)).
+While `zlib` (`254` files), `spring-cloud-function` (`607` files), and `runc` (`1,205` files) stayed below the `5,000`-file `L2` source-hashing cap (`Bucket 3 = 0`), we ran `sca-prescan` cold against **`jenkinsci/jenkins` at tag `jenkins-2.440`** (`12,046` files across `1,251` directories, `31.03` MB) to demonstrate **Bucket 3 Monorepo Early-Stop**, **unpatched code-snippet verification**, and **Hot 2026 advisory detection** in a single report (full Markdown report at [`REPORT_WALKTHROUGH_JENKINS.md`](REPORT_WALKTHROUGH_JENKINS.md)).
 
 - **4-Bucket File & Byte Accounting (`49 + 5000 + 6997 = 12046` files across `1251` dirs)**:
   - **Bucket 1 (Excluded Dirs)**: `1` dir (`.git`)
