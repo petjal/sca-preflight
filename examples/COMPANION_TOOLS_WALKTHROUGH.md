@@ -8,8 +8,7 @@ Whereas `sca-prescan` (open-sourced in [`src/sca_preflight/`](../src/sca_preflig
 > Because I work as an independent engineer and do not run a licensed commercial SCA server in my home lab:
 > - **100% Tested & Ready Today (Offline & Dry-Run Modes)**: Offline BOM JSON rule evaluation (`--offline-bom-file`), offline code-location unmapping previews (`--offline-codelocations-file`), `.bdio` vs. BOM dropped-component checks (`--verify-bdio`), streaming `.zip` / `.bdio` / `.sql` log sanitization (`sca-log-sanitize`), and offline server/PostgreSQL/Detect diagnostics (`sca-diag`) are 100% built and verified against offline fixtures and real Detect 10 diagnostic bundles.
 > - **Ready for Live Customer Staging Validation**: The live REST API mutation phase (`--apply` sending `PUT` and `DELETE` calls against a live server) is built with token-bucket rate limiting and pre-mutation JSONL audit logging, and is ready to be validated against a customer's non-production or staging server.
->
-> **Want to test-drive or co-develop these against your staging environment?** If your team has a non-production server, an exported BOM JSON file, or a tricky diagnostic `.zip` bundle and wants to collaborate on tuning these rules for your environment, email **`pjalajas+sca-preflight@gmail.com`**.
+> - **Want to Test-Drive or Co-Develop Against Your Staging Environment?** Send an exported BOM JSON file, a sanitized diagnostic `.zip`, or reach out to schedule a staging validation session at **`pjalajas+sca-preflight@gmail.com`**.
 
 ---
 
@@ -118,9 +117,27 @@ Every simulated or applied action writes a structured JSONL line so compliance a
 }
 ```
 
-### 1.6 Open Item for Customer Staging Validation
+### 1.6 How to Export Your JSON for Offline Testing & Open Staging Validation Item
 
-- **What works right now**: You can export your project version's `/components` JSON (`GET /api/projects/{id}/versions/{ver}/components?limit=1000`) and run `sca-bom-ifttt --offline-bom-file components.json` completely offline today with zero connection to your server.
+- **What works right now (100% Offline, Read-Only)**: You can export your server's code locations and project version BOM components to static JSON files using a `READ`-only API token (`?limit=1000` so pagination does not stop at the default 10 items) and run `sca-bom-ifttt` completely offline with zero network connection to your server:
+
+```bash
+# 1. Exchange your READ-only API token for a short-lived Bearer token
+BEARER=$(curl -sS -X POST "https://your-sca-server.internal/api/tokens/authenticate" \
+  -H "Authorization: token $BD_READ_ONLY_TOKEN" \
+  -H "Accept: application/vnd.blackducksoftware.user-4+json" | python3 -c "import sys,json; print(json.load(sys.stdin)['bearerToken'])")
+
+# 2. Export code locations (up to 1,000 items per page)
+curl -sS "https://your-sca-server.internal/api/codelocations?limit=1000&offset=0" \
+  -H "Authorization: Bearer $BEARER" \
+  -H "Accept: application/vnd.blackducksoftware.scan-5+json" -o codelocations.json
+
+# 3. Export BOM components for a specific Project & Version UUID
+curl -sS "https://your-sca-server.internal/api/projects/$PROJECT_ID/versions/$VERSION_ID/components?limit=1000&offset=0" \
+  -H "Authorization: Bearer $BEARER" \
+  -H "Accept: application/vnd.blackducksoftware.bill-of-materials-6+json" -o bom_components.json
+```
+
 - **What needs a staging server**: Validating endpoint-specific vendor `Accept` / `Content-Type` headers (`application/vnd.blackducksoftware.bill-of-materials-6+json` vs. generic `application/json`) during live `PUT` updates across 2024.x, 2025.x, and 2026.x server releases.
 
 ---
