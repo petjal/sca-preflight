@@ -103,9 +103,9 @@ That is what the separate, private **`sca-ops-toolkit`** repository is built for
 - **Run `sca-bom-ifttt` *after* your scan**:
   - Uses simple rule files ([`../examples/sample_bom_ifttt_rules.toml`](../examples/sample_bom_ifttt_rules.toml)) to unmap stale CI build scans, roll up noisy subcomponents, suppress duplicate `N-1` signature-scan noise, and flag brand-new component versions that were uploaded in `.bdio` but dropped from the server BOM.
 
-### Licensing & Advisory Contact
+### Specialist Engagement & Advisory Contact
 
-If your team wants to license **`sca-ops-toolkit`** for your internal CI/CD pipelines, or bring Pete in for a focused consulting engagement to tune your SCA scans, automate BOM cleanup, or troubleshoot server/database bottlenecks:
+If your team wants to bring Pete in through your existing staffing or consulting channel for a focused engagement to tune your SCA scans, automate BOM cleanup, or troubleshoot server and PostgreSQL bottlenecks - using **`sca-ops-toolkit`** as his diagnostic workbench so your team gets the calibrated CLI flags, `.toml` cleanup rules, and server runbooks without software-licensing overhead:
 
 - **Emil Walter "Pete" Jalajas**
 - Email: `pjalajas+sca-preflight@gmail.com`

@@ -113,8 +113,8 @@ Run your current SCA scanner against `/dev/shm/sca_preflight_reference_scan` and
 | `traefik/traefik` (`v2.10.4`) | Go + Yarn Cloud-Native Proxy | 2,140 | 2.31s | 44.0 MB | Caught `CVE-2024-21626`, `CVE-2023-39325` (HTTP/2 Rapid Reset KEV), `CVE-2023-45288`, `CVE-2024-21538`, and `CVE-2024-29041` |
 | `TryGhost/Ghost` (`v5.65.0`), `django/django` (`4.2.6`), `pallets/flask` (`2.3.2`), `BurntSushi/ripgrep` (`14.1.0`) | Node Monorepo (`yarn.lock`), Python (`pyproject.toml`), Rust (`Cargo.lock`) | 185-6,840 | 0.39s-7.57s | 28-56 MB | 10/10 cold pass in 512 MB RAM sandbox; calibrated multi-module BOM baselines and caught `CVE-2024-21538` / `CVE-2024-29041` in Ghost |
 | `astral-sh/uv` (`0.4.0`), `pnpm/pnpm` (`v8.6.0`), `JamesNK/Newtonsoft.Json` (`12.0.3`), `abseil/abseil-cpp`, `conan-io/conan` | Rust / Python (`uv.lock`), Node (`pnpm-lock.yaml`), .NET (`.csproj`), Bazel (`MODULE.bazel`), Conan (`conanfile.py`) | 821-2,068 | 0.7s-4.4s | 29-35 MB | Calibrated multi-ecosystem BOM baselines (`uv.lock`, `pnpm-lock.yaml`, `.csproj`, `MODULE.bazel`, `conanfile.py`) and caught `CVE-2024-21907` (Newtonsoft.Json) |
-- **Licensing & Consulting Contact**:
-  - If your team wants to license **`sca-ops-toolkit`** for your internal pipelines, or bring Pete in to help tune your SCA scans, automate BOM cleanup, or troubleshoot server/database bottlenecks, reach out directly:
+- **Specialist Engagement & Advisory Contact**:
+  - If your team wants to bring Pete in through your existing staffing or consulting channel for a focused engagement to tune your SCA scans, automate BOM cleanup, or troubleshoot server and PostgreSQL bottlenecks - using **`sca-ops-toolkit`** as his diagnostic workbench so your team gets the calibrated CLI flags, `.toml` cleanup rules, and server runbooks without software-licensing overhead - reach out directly:
   - **Emil Walter "Pete" Jalajas**
   - Email: `pjalajas+sca-preflight@gmail.com`
   - Phone: `978-225-0525`
