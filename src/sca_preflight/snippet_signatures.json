@@ -1,0 +1,641 @@
+{
+  "version": "1.0.0",
+  "description": "Unpatched Code Snippet & Shaded-Bytecode Signatures (Vulnerable Code Pattern Present + Upstream Security Patch Guard Absent)",
+  "signatures": [
+    {
+      "rule_id": "SNIP-CVE-2022-37434",
+      "cve_id": "CVE-2022-37434",
+      "component": "zlib",
+      "ecosystem": "C_CPP",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-787",
+      "published_date": "2022-08-05",
+      "pre_nvd": false,
+      "fixed_in_version": "1.2.13",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "inflate.c"
+      ],
+      "vulnerable_anchor_regex": "state->head->extra_len\\s*-\\s*state->length[\\s\\S]{0,240}?zmemcpy\\s*\\(\\s*state->head->extra",
+      "patch_guard_regex": "\\(\\s*len\\s*=\\s*state->head->extra_len\\s*-\\s*state->length\\s*\\)\\s*<\\s*state->head->extra_max|len\\s*<\\s*state->head->extra_max",
+      "actionable_remedy": "Upgrade zlib to 1.2.13+ (or apply commit eff308af adding 'len < state->head->extra_max' guard in inflate.c COPY_ state)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2023-45853",
+      "cve_id": "CVE-2023-45853",
+      "component": "zlib",
+      "ecosystem": "C_CPP",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-190",
+      "published_date": "2023-10-14",
+      "pre_nvd": false,
+      "fixed_in_version": "1.3.1",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "zip.c"
+      ],
+      "vulnerable_anchor_regex": "zipOpenNewFileInZip4_64[\\s\\S]{0,2600}?size_centralheader\\s*=\\s*SIZECENTRALHEADER\\s*\\+\\s*size_filename",
+      "patch_guard_regex": "size_filename\\s*>\\s*(?:USHRT_MAX|0xffff|65535)",
+      "actionable_remedy": "Upgrade zlib/minizip to 1.3.1+ (or apply commit 73331a6a adding USHRT_MAX bounds checks in zipOpenNewFileInZip4_64)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2026-111497",
+      "cve_id": "CVE-2026-111497",
+      "component": "brotli",
+      "ecosystem": "C_CPP",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-787",
+      "published_date": "2026-10-27",
+      "pre_nvd": false,
+      "fixed_in_version": "1.1.1",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "decode.c"
+      ],
+      "vulnerable_anchor_regex": "BrotliDecoderDecompressStream[\\s\\S]{0,4500}?(?:BrotliEnsureRingBuffer|WriteRingBuffer)",
+      "patch_guard_regex": "BrotliSafeRingBufferWrite|BROTLI_DEC_OVERFLOW_GUARD|ringbuffer_limit_verified",
+      "actionable_remedy": "Upgrade Google Brotli to 1.1.1 or higher (CISA KEV 2026-10-27 decompression buffer overflow)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2023-4863",
+      "cve_id": "CVE-2023-4863",
+      "component": "libwebp",
+      "ecosystem": "C_CPP",
+      "cvss": 8.8,
+      "cisa_kev": true,
+      "cwe": "CWE-787",
+      "published_date": "2023-09-12",
+      "pre_nvd": false,
+      "fixed_in_version": "1.3.2",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "vp8l_dec.c"
+      ],
+      "vulnerable_anchor_regex": "BuildHuffmanTable\\s*\\(",
+      "patch_guard_regex": "kbaLut|table_size\\s*>\\s*MAX_HTREE_GROUPS|MAX_HTREE_GROUPS|Vp8lBuildHuffmanTable|num_htree_groups_max",
+      "actionable_remedy": "Upgrade libwebp to 1.3.2+ (CISA KEV Huffman table heap buffer overflow in BuildHuffmanTable)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2022-3602",
+      "cve_id": "CVE-2022-3602",
+      "component": "openssl",
+      "ecosystem": "C_CPP",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-787",
+      "published_date": "2022-11-01",
+      "pre_nvd": false,
+      "fixed_in_version": "3.0.7",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "punycode.c"
+      ],
+      "vulnerable_anchor_regex": "ossl_punycode_decode[\\s\\S]{0,3000}?if\\s*\\(\\s*written_out\\s*>\\s*max_out\\s*\\)",
+      "patch_guard_regex": "written_out\\s*>=\\s*max_out",
+      "actionable_remedy": "Upgrade OpenSSL to 3.0.7+ (or replace 'written_out > max_out' with 'written_out >= max_out' in crypto/punycode.c)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2014-0160",
+      "cve_id": "CVE-2014-0160",
+      "component": "openssl",
+      "ecosystem": "C_CPP",
+      "cvss": 7.5,
+      "cisa_kev": true,
+      "cwe": "CWE-125",
+      "published_date": "2014-04-07",
+      "pre_nvd": false,
+      "fixed_in_version": "1.0.1g",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "d1_both.c",
+        "t1_lib.c"
+      ],
+      "vulnerable_anchor_regex": "tls1_process_heartbeat\\s*\\([\\s\\S]{0,1500}?n2s\\s*\\(\\s*p\\s*,\\s*payload\\s*\\)",
+      "patch_guard_regex": "1\\s*\\+\\s*2\\s*\\+\\s*payload\\s*\\+\\s*16\\s*>\\s*s->s3->rrec\\.length",
+      "actionable_remedy": "Upgrade OpenSSL to 1.0.1g+ / 3.x (CISA KEV Heartbleed bounds check missing in tls1_process_heartbeat)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2022-35737",
+      "cve_id": "CVE-2022-35737",
+      "component": "sqlite",
+      "ecosystem": "C_CPP",
+      "cvss": 7.5,
+      "cisa_kev": true,
+      "cwe": "CWE-190",
+      "published_date": "2022-08-01",
+      "pre_nvd": false,
+      "fixed_in_version": "3.39.2",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "sqlite3.c",
+        "printf.c"
+      ],
+      "vulnerable_anchor_regex": "etSQLESCAPE[\\s\\S]{0,1500}?int\\s+i,\\s*j,\\s*k,\\s*n,\\s*isnull",
+      "patch_guard_regex": "(?:sqlite3_int64|i64)\\s+i,\\s*j,\\s*k,\\s*n",
+      "actionable_remedy": "Upgrade SQLite to 3.39.2+ (CISA KEV 32-bit integer overflow in sqlite3_str_vappendf etSQLESCAPE)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2026-109618",
+      "cve_id": "CVE-2026-109618",
+      "component": "php",
+      "ecosystem": "C_CPP",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-416",
+      "published_date": "2026-10-26",
+      "pre_nvd": false,
+      "fixed_in_version": "8.3.14",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "zend_alloc.c"
+      ],
+      "vulnerable_anchor_regex": "zend_mm_safe_error[\\s\\S]{0,1500}?zend_bailout\\s*\\(\\s*\\)",
+      "patch_guard_regex": "delayed_oom|femalloc|zend_mm_Abort",
+      "actionable_remedy": "Upgrade PHP to 8.3.14+ / 8.4.2+ (CISA KEV 2026-10-26 zend_bailout allocator OOM state corruption UAF RCE, commit 3584a98bda)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2026-109619",
+      "cve_id": "CVE-2026-109619",
+      "component": "php",
+      "ecosystem": "C_CPP",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-416",
+      "published_date": "2026-10-26",
+      "pre_nvd": false,
+      "fixed_in_version": "8.3.14",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "var_unserializer.c"
+      ],
+      "vulnerable_anchor_regex": "php_var_unserialize_destroy\\s*\\([\\s\\S]{0,600}?zend_hash_destroy",
+      "patch_guard_regex": "UNSERIALIZE_DESTROY_GUARD|var_destroy_lock",
+      "actionable_remedy": "Upgrade PHP to 8.3.14+ / 8.4.2+ (CISA KEV 2026-10-26 unserialize destructor stale request-state UAF RCE, commit 08f4b64e0a)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2024-6387",
+      "cve_id": "CVE-2024-6387",
+      "component": "openssh",
+      "ecosystem": "C_CPP",
+      "cvss": 8.1,
+      "cisa_kev": true,
+      "cwe": "CWE-364",
+      "published_date": "2024-07-01",
+      "pre_nvd": false,
+      "fixed_in_version": "9.8p1",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "log.c",
+        "sshd.c"
+      ],
+      "vulnerable_anchor_regex": "sigdie\\s*\\([\\s\\S]{0,600}?do_log2\\s*\\(",
+      "patch_guard_regex": "_exit\\s*\\(\\s*1\\s*\\)\\s*;[\\s\\S]{0,60}?async-signal-safe|mm_log_handler",
+      "actionable_remedy": "Upgrade OpenSSH to 9.8p1+ (CISA KEV regreSSHion async-signal-unsafe sigdie syslog RCE)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2024-25062",
+      "cve_id": "CVE-2024-25062",
+      "component": "libxml2",
+      "ecosystem": "C_CPP",
+      "cvss": 7.5,
+      "cisa_kev": true,
+      "cwe": "CWE-416",
+      "published_date": "2024-02-04",
+      "pre_nvd": false,
+      "fixed_in_version": "2.12.5",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "xmlreader.c"
+      ],
+      "vulnerable_anchor_regex": "xmlTextReaderValidateEntity\\s*\\([\\s\\S]{0,600}?xmlTextReaderFreeProp",
+      "patch_guard_regex": "reader->node\\s*!=\\s*NULL\\s*&&\\s*reader->node->type\\s*==\\s*XML_ENTITY_REF_NODE",
+      "actionable_remedy": "Upgrade libxml2 to 2.12.5+ (CISA KEV Use-After-Free in xmlTextReaderValidateEntity)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2024-45490",
+      "cve_id": "CVE-2024-45490",
+      "component": "expat",
+      "ecosystem": "C_CPP",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-190",
+      "published_date": "2024-08-30",
+      "pre_nvd": false,
+      "fixed_in_version": "2.6.3",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "xmlparse.c"
+      ],
+      "vulnerable_anchor_regex": "XML_ParseBuffer\\s*\\(\\s*XML_Parser\\s+parser,\\s*int\\s+len,\\s*int\\s+isFinal\\s*\\)",
+      "patch_guard_regex": "if\\s*\\(\\s*len\\s*<\\s*0\\s*\\)\\s*\\{\\s*parser->m_errorCode\\s*=\\s*XML_ERROR_INVALID_ARGUMENT",
+      "actionable_remedy": "Upgrade libexpat to 2.6.3+ (reject negative len in XML_ParseBuffer in xmlparse.c)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2021-44228",
+      "cve_id": "CVE-2021-44228",
+      "component": "log4j-core",
+      "ecosystem": "MAVEN",
+      "cvss": 10.0,
+      "cisa_kev": true,
+      "cwe": "CWE-502",
+      "published_date": "2021-12-10",
+      "pre_nvd": false,
+      "fixed_in_version": "2.17.1",
+      "target_type": "bytecode_class",
+      "target_filenames": [
+        "JndiLookup.java",
+        "JndiLookup.class",
+        "JndiManager.java",
+        "JndiManager.class"
+      ],
+      "vulnerable_anchor_regex": "(?:org/apache/logging/log4j/core/(?:lookup/JndiLookup|net/JndiManager)|JndiLookup[\\s\\S]{0,1000}?(?:JndiManager|convert|lookup)|class\\s+Jndi(?:Lookup|Manager)\\b)",
+      "patch_guard_regex": "allowedJndiProtocols|isJndiLookupEnabled|enableJndiLookup",
+      "actionable_remedy": "Upgrade log4j-core to 2.17.1+ or strip JndiLookup.class from shaded JARs (CISA KEV Log4Shell JNDI RCE)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2022-22963",
+      "cve_id": "CVE-2022-22963",
+      "component": "spring-cloud-function-context",
+      "ecosystem": "MAVEN",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-917",
+      "published_date": "2022-03-29",
+      "pre_nvd": false,
+      "fixed_in_version": "3.1.7 / 3.2.3",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "RoutingFunction.java",
+        "RoutingFunction.class"
+      ],
+      "vulnerable_anchor_regex": "(?:org/springframework/cloud/function/context/config/RoutingFunction|class\\s+RoutingFunction\\b[\\s\\S]{0,5500}?functionFromExpression)",
+      "patch_guard_regex": "SimpleEvaluationContext|headerEvalContext|isViaHeader",
+      "actionable_remedy": "Upgrade spring-cloud-function-context to 3.1.7+ or 3.2.3+ (CISA KEV SpEL injection in RoutingFunction.functionFromExpression)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2022-22965",
+      "cve_id": "CVE-2022-22965",
+      "component": "spring-beans",
+      "ecosystem": "MAVEN",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-94",
+      "published_date": "2022-04-01",
+      "pre_nvd": false,
+      "fixed_in_version": "5.3.18",
+      "target_type": "bytecode_class",
+      "target_filenames": [
+        "CachedIntrospectionResults.java",
+        "CachedIntrospectionResults.class"
+      ],
+      "vulnerable_anchor_regex": "(?:org/springframework/beans/CachedIntrospectionResults|class\\s+CachedIntrospectionResults\\b)",
+      "patch_guard_regex": "java/security/ProtectionDomain|ProtectionDomain\\.class",
+      "actionable_remedy": "Upgrade spring-beans to 5.3.18+ / 5.2.20+ (CISA KEV Spring4Shell ClassLoader/ProtectionDomain property filter in CachedIntrospectionResults)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2022-42889",
+      "cve_id": "CVE-2022-42889",
+      "component": "commons-text",
+      "ecosystem": "MAVEN",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-94",
+      "published_date": "2022-10-13",
+      "pre_nvd": false,
+      "fixed_in_version": "1.10.0",
+      "target_type": "bytecode_class",
+      "target_filenames": [
+        "StringLookupFactory.java",
+        "StringLookupFactory.class",
+        "StringSubstitutor.class"
+      ],
+      "vulnerable_anchor_regex": "(?:org/apache/commons/text/(?:lookup/StringLookupFactory|StringSubstitutor)|class\\s+StringLookupFactory\\b)",
+      "patch_guard_regex": "DEFAULT_STRING_LOOKUPS_PROPERTY|defaultStringLookups",
+      "actionable_remedy": "Upgrade commons-text to 1.10.0+ (CISA KEV Text4Shell script/dns/url interpolation disabled via DEFAULT_STRING_LOOKUPS_PROPERTY)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2022-1471",
+      "cve_id": "CVE-2022-1471",
+      "component": "snakeyaml",
+      "ecosystem": "MAVEN",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-502",
+      "published_date": "2022-12-01",
+      "pre_nvd": false,
+      "fixed_in_version": "2.0",
+      "target_type": "bytecode_class",
+      "target_filenames": [
+        "Constructor.java",
+        "Constructor.class"
+      ],
+      "vulnerable_anchor_regex": "(?:org/yaml/snakeyaml/constructor/Constructor|package\\s+org\\.yaml\\.snakeyaml\\.constructor[\\s\\S]{0,2000}?class\\s+Constructor\\b)",
+      "patch_guard_regex": "TagInspector|getTagInspector",
+      "actionable_remedy": "Upgrade snakeyaml to 2.0+ or use SafeConstructor (TagInspector global tag restriction)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2022-21724",
+      "cve_id": "CVE-2022-21724",
+      "component": "postgresql",
+      "ecosystem": "MAVEN",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-94",
+      "published_date": "2022-02-02",
+      "pre_nvd": false,
+      "fixed_in_version": "42.3.3",
+      "target_type": "bytecode_class",
+      "target_filenames": [
+        "ObjectFactory.java",
+        "ObjectFactory.class",
+        "Driver.class"
+      ],
+      "vulnerable_anchor_regex": "(?:org/postgresql/(?:util/ObjectFactory|Driver)|class\\s+ObjectFactory\\b[\\s\\S]{0,2000}?instantiate)",
+      "patch_guard_regex": "asSubclass|Class<T>\\s+expectedClass",
+      "actionable_remedy": "Upgrade org.postgresql:postgresql to 42.2.25+ / 42.3.3+ (enforce Class.asSubclass in ObjectFactory.instantiate)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2023-46604",
+      "cve_id": "CVE-2023-46604",
+      "component": "activemq-client",
+      "ecosystem": "MAVEN",
+      "cvss": 10.0,
+      "cisa_kev": true,
+      "cwe": "CWE-502",
+      "published_date": "2023-10-27",
+      "pre_nvd": false,
+      "fixed_in_version": "5.18.3",
+      "target_type": "bytecode_class",
+      "target_filenames": [
+        "BaseDataStreamMarshaller.java",
+        "BaseDataStreamMarshaller.class"
+      ],
+      "vulnerable_anchor_regex": "(?:org/apache/activemq/openwire/v\\d+/BaseDataStreamMarshaller|class\\s+BaseDataStreamMarshaller\\b)",
+      "patch_guard_regex": "validateIsThrowable|Throwable\\.class\\.isAssignableFrom",
+      "actionable_remedy": "Upgrade activemq-client to 5.18.3+ (CISA KEV OpenWire BaseDataStreamMarshaller.createThrowable validation)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2022-25845",
+      "cve_id": "CVE-2022-25845",
+      "component": "fastjson",
+      "ecosystem": "MAVEN",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-502",
+      "published_date": "2022-06-10",
+      "pre_nvd": false,
+      "fixed_in_version": "1.2.83",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "ParserConfig.java"
+      ],
+      "vulnerable_anchor_regex": "expectHash\\s*==\\s*0x90a25f5baa21529eL",
+      "patch_guard_regex": "0xa8ceb4a58b298896L|Throwable\\.class\\s*==\\s*expectClass",
+      "actionable_remedy": "Upgrade com.alibaba:fastjson to 1.2.83+ or enable safeMode (blocks Throwable expectClass AutoType bypass in ParserConfig)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2023-50164",
+      "cve_id": "CVE-2023-50164",
+      "component": "struts2-core",
+      "ecosystem": "MAVEN",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-22",
+      "published_date": "2023-12-07",
+      "pre_nvd": false,
+      "fixed_in_version": "6.3.0.2",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "HttpParameters.java",
+        "HttpParameters.class"
+      ],
+      "vulnerable_anchor_regex": "(?:org/apache/struts2/dispatcher/HttpParameters|class\\s+HttpParameters\\b[\\s\\S]{0,2500}?requestParameterMap)",
+      "patch_guard_regex": "CASE_INSENSITIVE_ORDER|equalsIgnoreCase",
+      "actionable_remedy": "Upgrade org.apache.struts:struts2-core to 2.5.33+ or 6.3.0.2+ (enforces case-insensitive parameter map lookup in HttpParameters)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2024-21626",
+      "cve_id": "CVE-2024-21626",
+      "component": "github.com/opencontainers/runc",
+      "ecosystem": "GO",
+      "cvss": 8.6,
+      "cisa_kev": true,
+      "cwe": "CWE-403",
+      "published_date": "2024-01-31",
+      "pre_nvd": false,
+      "fixed_in_version": "1.1.12",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "init_linux.go"
+      ],
+      "vulnerable_anchor_regex": "func\\s+finalizeNamespace\\s*\\(\\s*config\\s+\\*initConfig\\s*\\)[\\s\\S]{0,1800}?unix\\.Chdir\\s*\\(\\s*config\\.Cwd\\s*\\)",
+      "patch_guard_regex": "verifyCwd\\s*\\(",
+      "actionable_remedy": "Upgrade runc to 1.1.12+ (CISA KEV 'Leaky Vessels' - adds verifyCwd() after unix.Chdir(config.Cwd) in finalizeNamespace)."
+    },
+    {
+      "rule_id": "SNIP-GHSA-hff9-5pqw-6w9f",
+      "cve_id": "GHSA-hff9-5pqw-6w9f",
+      "component": "github.com/darthsim/imgproxy",
+      "ecosystem": "GO",
+      "cvss": 9.9,
+      "cisa_kev": false,
+      "cwe": "CWE-918",
+      "published_date": "2026-10-30",
+      "pre_nvd": true,
+      "fixed_in_version": "3.30.1",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "network.go"
+      ],
+      "vulnerable_anchor_regex": "func\\s+(?:VerifyRequestURL|CheckAddress)\\s*\\(",
+      "patch_guard_regex": "IsLoopbackOrLinkLocalMulticast|verifyRedirectTarget",
+      "actionable_remedy": "Upgrade github.com/darthsim/imgproxy to 3.30.1+ (Pre-NVD 2026-10-30 SSRF guard in network.go)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2020-14343",
+      "cve_id": "CVE-2020-14343",
+      "component": "PyYAML",
+      "ecosystem": "PYTHON",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-94",
+      "published_date": "2020-07-21",
+      "pre_nvd": false,
+      "fixed_in_version": "5.4",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "constructor.py"
+      ],
+      "vulnerable_anchor_regex": "class\\s+FullConstructor\\s*\\(\\s*SafeConstructor\\s*\\)[\\s\\S]{0,4000}?def\\s+construct_python_object_apply",
+      "patch_guard_regex": "unsafe\\s*=\\s*True|FullLoader\\s+deprecated_python_apply",
+      "actionable_remedy": "Upgrade PyYAML to 5.4+ (restricts arbitrary python/object/new execution in FullConstructor)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2024-27351",
+      "cve_id": "CVE-2024-27351",
+      "component": "django",
+      "ecosystem": "PYTHON",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-1333",
+      "published_date": "2024-03-04",
+      "pre_nvd": false,
+      "fixed_in_version": "4.2.11",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "text.py"
+      ],
+      "vulnerable_anchor_regex": "re_words\\s*=\\s*_lazy_re_compile\\s*\\(\\s*r\"<\\[\\^>\\]\\+\\?>",
+      "patch_guard_regex": "re_words\\s*=\\s*_lazy_re_compile\\s*\\(\\s*r\"&\\.\\*\\?;\\|<\\.\\*\\?>",
+      "actionable_remedy": "Upgrade Django to 4.2.11+ / 5.0.3+ (fixes polynomial ReDoS in Truncator.words re_words regex in django/utils/text.py)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2026-116692",
+      "cve_id": "CVE-2026-116692",
+      "component": "mlflow",
+      "ecosystem": "PYTHON",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-22",
+      "published_date": "2026-10-27",
+      "pre_nvd": false,
+      "fixed_in_version": "2.18.0",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "local_artifact_repo.py",
+        "handlers.py"
+      ],
+      "vulnerable_anchor_regex": "def\\s+_download_file\\s*\\([\\s\\S]{0,1000}?shutil\\.copyfile",
+      "patch_guard_regex": "validate_path_is_safe|is_safe_artifact_path",
+      "actionable_remedy": "Upgrade mlflow to 2.18.0+ (Hot 2026-10-27 unauthenticated arbitrary file read guard in artifact handler).",
+      "osv_id": "GHSA-26p8-2jq9-3vq9"
+    },
+    {
+      "rule_id": "SNIP-CVE-2024-23897",
+      "cve_id": "CVE-2024-23897",
+      "component": "org.jenkins-ci.main:jenkins-core",
+      "ecosystem": "MAVEN",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-22",
+      "published_date": "2024-01-24",
+      "pre_nvd": false,
+      "fixed_in_version": "2.442",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "CLICommand.java",
+        "CLICommand.class"
+      ],
+      "vulnerable_anchor_regex": "(?:hudson/cli/CLICommand|protected\\s+CmdLineParser\\s+getCmdLineParser\\s*\\(\\s*\\)\\s*\\{\\s*return\\s+new\\s+CmdLineParser\\s*\\(\\s*this\\s*\\))",
+      "patch_guard_regex": "withAtSyntax|ALLOW_AT_SYNTAX|expandAtFiles",
+      "actionable_remedy": "Upgrade Jenkins to 2.442+ / LTS 2.426.3+ (CISA KEV CLI args4j @file arbitrary file read RCE; disables expandAtFiles via ParserProperties.withAtSyntax)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2025-24813",
+      "cve_id": "CVE-2025-24813",
+      "component": "org.apache.tomcat:tomcat-catalina",
+      "ecosystem": "MAVEN",
+      "cvss": 9.8,
+      "cisa_kev": true,
+      "cwe": "CWE-502",
+      "published_date": "2025-03-10",
+      "pre_nvd": false,
+      "fixed_in_version": "9.0.99 / 10.1.35 / 11.0.3",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "DefaultServlet.java",
+        "DefaultServlet.class"
+      ],
+      "vulnerable_anchor_regex": "(?:org/apache/catalina/servlets/DefaultServlet[\\s\\S]{0,2000}?executePartialPut|protected\\s+File\\s+executePartialPut\\s*\\()",
+      "patch_guard_regex": "checkPartialPutPath|validatePartialPut|isPartialPutSafe",
+      "actionable_remedy": "Upgrade Apache Tomcat to 9.0.99+ / 10.1.35+ / 11.0.3+ (CISA KEV 2025-03-10 partial PUT session deserialization RCE in DefaultServlet.executePartialPut).",
+      "osv_id": "GHSA-83qj-6fr2-vhqg"
+    },
+    {
+      "rule_id": "SNIP-CVE-2025-29927",
+      "cve_id": "CVE-2025-29927",
+      "component": "next",
+      "ecosystem": "NPM",
+      "cvss": 9.1,
+      "cisa_kev": false,
+      "cwe": "CWE-285",
+      "published_date": "2025-03-21",
+      "pre_nvd": false,
+      "fixed_in_version": "14.2.25 / 15.2.3",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "sandbox.ts",
+        "adapter.ts",
+        "middleware.js"
+      ],
+      "vulnerable_anchor_regex": "x-middleware-subrequest[\\s\\S]{0,800}?MAX_RECURSION_DEPTH",
+      "patch_guard_regex": "x-middleware-subrequest-id|verifySubrequestId|SYMBOL_FOR_REQ_CONTEXT",
+      "actionable_remedy": "Upgrade Next.js to 14.2.25+ / 15.2.3+ (2025-03-21 middleware authorization bypass via forged x-middleware-subrequest header).",
+      "osv_id": "GHSA-f82v-jwr5-mffw"
+    },
+    {
+      "rule_id": "SNIP-CVE-2025-30208",
+      "cve_id": "CVE-2025-30208",
+      "component": "vite",
+      "ecosystem": "NPM",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-200",
+      "published_date": "2025-03-24",
+      "pre_nvd": false,
+      "fixed_in_version": "6.2.3",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "rawfs.ts",
+        "transform.ts"
+      ],
+      "vulnerable_anchor_regex": "rawRE\\s*=\\s*/\\(\\?:\\^\\|&\\)raw\\(\\?:&\\|\\$\\)/",
+      "patch_guard_regex": "trailingSeparatorRE[\\s\\S]{0,300}?ensureServingAccess|cleanUrl\\s*\\(\\s*url\\s*\\)\\s*!==\\s*cleanUrl",
+      "actionable_remedy": "Upgrade Vite to 6.2.3+ / 5.4.15+ (2025-03-24 @fs arbitrary file read via ?raw?? query separator bypass).",
+      "osv_id": "GHSA-x574-m823-4x7w"
+    },
+    {
+      "rule_id": "SNIP-CVE-2024-3094",
+      "cve_id": "CVE-2024-3094",
+      "component": "xz",
+      "ecosystem": "C_CPP",
+      "cvss": 10.0,
+      "cisa_kev": true,
+      "cwe": "CWE-506",
+      "published_date": "2024-03-29",
+      "pre_nvd": false,
+      "fixed_in_version": "5.6.2",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "crc64_fast.c",
+        "crc32_fast.c"
+      ],
+      "vulnerable_anchor_regex": "_get_cpuid\\s*\\(\\s*1,\\s*&eax,\\s*&ebx,\\s*&ecx,\\s*&edx,\\s*__builtin_frame_address",
+      "patch_guard_regex": "XZ_CLEAN_CPUID_GUARD|lzma_cpuid_verified_clean",
+      "actionable_remedy": "Downgrade xz-utils to 5.4.x or upgrade to clean 5.6.2+ immediately (CISA KEV CVSS 10.0 Jia Tan IFUNC _get_cpuid sshd backdoor in crc64_fast.c)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2024-38816",
+      "cve_id": "CVE-2024-38816",
+      "component": "org.springframework:spring-webmvc",
+      "ecosystem": "MAVEN",
+      "cvss": 7.5,
+      "cisa_kev": false,
+      "cwe": "CWE-22",
+      "published_date": "2024-09-13",
+      "pre_nvd": false,
+      "fixed_in_version": "6.1.13",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "PathResourceResolver.java",
+        "PathResourceResolver.class"
+      ],
+      "vulnerable_anchor_regex": "boolean\\s+isResourceUnderLocation\\s*\\([\\s\\S]{0,1200}?resourcePath\\.contains\\s*\\(\\s*\"%\"\\s*\\)",
+      "patch_guard_regex": "StringUtils\\.cleanPath\\s*\\(\\s*resourcePath\\s*\\)\\.contains\\s*\\(\\s*\"\\.\\.\"|checkResourcePathNormalized",
+      "actionable_remedy": "Upgrade spring-webmvc / spring-webflux to 6.1.13+ / 6.0.24+ / 5.3.40+ (fixes static resource path traversal in PathResourceResolver.isResourceUnderLocation)."
+    }
+  ]
+}

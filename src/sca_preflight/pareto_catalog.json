@@ -1,0 +1,1377 @@
+{
+  "version": "1.0.0",
+  "components": [
+    {
+      "name": "OpenSSL",
+      "ecosystem": "C_CPP",
+      "family": "CRYPTO_TLS",
+      "headers": [
+        "openssl/ssl.h",
+        "openssl/evp.h",
+        "openssl/crypto.h",
+        "openssl/bio.h",
+        "openssl/err.h"
+      ],
+      "cmake_names": [
+        "openssl"
+      ],
+      "pkgconfig_names": [
+        "openssl",
+        "libssl",
+        "libcrypto"
+      ],
+      "sonames": [
+        "libssl.so",
+        "libcrypto.so",
+        "libssl.dylib",
+        "libcrypto.dylib",
+        "libeay32.dll",
+        "ssleay32.dll"
+      ],
+      "dir_markers": [
+        "openssl",
+        "libssl"
+      ],
+      "copyright_banners": [
+        "The OpenSSL Project",
+        "OpenSSL Toolkit",
+        "Eric Young"
+      ],
+      "binary_version_regex": "OpenSSL\\s+(\\d+\\.\\d+\\.\\d+[a-z]?)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "wolfSSL",
+      "ecosystem": "C_CPP",
+      "family": "CRYPTO_TLS",
+      "headers": [
+        "wolfssl/ssl.h",
+        "wolfssl/wolfcrypt/settings.h",
+        "cyassl/ssl.h"
+      ],
+      "cmake_names": [
+        "wolfssl"
+      ],
+      "pkgconfig_names": [
+        "wolfssl"
+      ],
+      "sonames": [
+        "libwolfssl.so",
+        "libcyassl.so"
+      ],
+      "dir_markers": [
+        "wolfssl",
+        "cyassl"
+      ],
+      "copyright_banners": [
+        "wolfSSL Inc.",
+        "CyaSSL"
+      ],
+      "binary_version_regex": "wolfSSL\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "mbedTLS",
+      "ecosystem": "C_CPP",
+      "family": "CRYPTO_TLS",
+      "headers": [
+        "mbedtls/ssl.h",
+        "mbedtls/entropy.h",
+        "polarssl/ssl.h"
+      ],
+      "cmake_names": [
+        "mbedtls"
+      ],
+      "pkgconfig_names": [
+        "mbedtls",
+        "mbedcrypto",
+        "mbedx509"
+      ],
+      "sonames": [
+        "libmbedtls.so",
+        "libmbedcrypto.so",
+        "libmbedx509.so"
+      ],
+      "dir_markers": [
+        "mbedtls",
+        "polarssl"
+      ],
+      "copyright_banners": [
+        "ARM Limited",
+        "mbed TLS",
+        "PolarSSL"
+      ],
+      "binary_version_regex": "mbed\\s*TLS\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "zlib",
+      "ecosystem": "C_CPP",
+      "family": "COMPRESSION",
+      "headers": [
+        "zlib.h",
+        "zconf.h"
+      ],
+      "cmake_names": [
+        "zlib"
+      ],
+      "pkgconfig_names": [
+        "zlib"
+      ],
+      "sonames": [
+        "libz.so",
+        "libz.dylib",
+        "zlib1.dll"
+      ],
+      "dir_markers": [
+        "zlib"
+      ],
+      "copyright_banners": [
+        "Jean-loup Gailly",
+        "Mark Adler",
+        "zlib"
+      ],
+      "binary_version_regex": "zlib\\s+version\\s+(\\d+\\.\\d+\\.\\d+)|deflate\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "zstd",
+      "ecosystem": "C_CPP",
+      "family": "COMPRESSION",
+      "headers": [
+        "zstd.h",
+        "zdict.h"
+      ],
+      "cmake_names": [
+        "zstd"
+      ],
+      "pkgconfig_names": [
+        "libzstd"
+      ],
+      "sonames": [
+        "libzstd.so",
+        "libzstd.dylib",
+        "zstd.dll"
+      ],
+      "dir_markers": [
+        "zstd"
+      ],
+      "copyright_banners": [
+        "Yann Collet",
+        "Meta Platforms",
+        "Facebook"
+      ],
+      "binary_version_regex": "Zstandard\\s+CLI.*v(\\d+\\.\\d+\\.\\d+)|zstd\\s+v?(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "lz4",
+      "ecosystem": "C_CPP",
+      "family": "COMPRESSION",
+      "headers": [
+        "lz4.h",
+        "lz4hc.h",
+        "lz4frame.h"
+      ],
+      "cmake_names": [
+        "lz4"
+      ],
+      "pkgconfig_names": [
+        "liblz4"
+      ],
+      "sonames": [
+        "liblz4.so",
+        "liblz4.dylib"
+      ],
+      "dir_markers": [
+        "lz4"
+      ],
+      "copyright_banners": [
+        "Yann Collet",
+        "LZ4"
+      ],
+      "binary_version_regex": "LZ4\\s+CLI.*v(\\d+\\.\\d+\\.\\d+)|lz4\\s+v?(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "xz-utils",
+      "ecosystem": "C_CPP",
+      "family": "COMPRESSION",
+      "headers": [
+        "lzma.h",
+        "lzma/version.h"
+      ],
+      "cmake_names": [
+        "liblzma",
+        "xz"
+      ],
+      "pkgconfig_names": [
+        "liblzma"
+      ],
+      "sonames": [
+        "liblzma.so",
+        "liblzma.dylib"
+      ],
+      "dir_markers": [
+        "xz",
+        "liblzma"
+      ],
+      "copyright_banners": [
+        "Lasse Collin",
+        "The XZ Utils authors"
+      ],
+      "binary_version_regex": "xz\\s+\\(XZ\\s+Utils\\)\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "bzip2",
+      "ecosystem": "C_CPP",
+      "family": "COMPRESSION",
+      "headers": [
+        "bzlib.h"
+      ],
+      "cmake_names": [
+        "bzip2"
+      ],
+      "pkgconfig_names": [
+        "bzip2"
+      ],
+      "sonames": [
+        "libbz2.so",
+        "libbz2.dylib",
+        "bz2.dll"
+      ],
+      "dir_markers": [
+        "bzip2"
+      ],
+      "copyright_banners": [
+        "Julian R Seward",
+        "bzip2"
+      ],
+      "binary_version_regex": "bzip2.*Version\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "cURL",
+      "ecosystem": "C_CPP",
+      "family": "NETWORK_RPC",
+      "headers": [
+        "curl/curl.h",
+        "curl/easy.h",
+        "curl/multi.h"
+      ],
+      "cmake_names": [
+        "curl"
+      ],
+      "pkgconfig_names": [
+        "libcurl"
+      ],
+      "sonames": [
+        "libcurl.so",
+        "libcurl.dylib",
+        "libcurl.dll"
+      ],
+      "dir_markers": [
+        "curl"
+      ],
+      "copyright_banners": [
+        "Daniel Stenberg",
+        "cURL"
+      ],
+      "binary_version_regex": "curl\\s+(\\d+\\.\\d+\\.\\d+)|libcurl/(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "nghttp2",
+      "ecosystem": "C_CPP",
+      "family": "NETWORK_RPC",
+      "headers": [
+        "nghttp2/nghttp2.h",
+        "nghttp2/nghttp2ver.h"
+      ],
+      "cmake_names": [
+        "nghttp2"
+      ],
+      "pkgconfig_names": [
+        "libnghttp2"
+      ],
+      "sonames": [
+        "libnghttp2.so",
+        "libnghttp2.dylib"
+      ],
+      "dir_markers": [
+        "nghttp2"
+      ],
+      "copyright_banners": [
+        "Tatsuhiro Tsujikawa",
+        "nghttp2"
+      ],
+      "binary_version_regex": "nghttp2[/ ](\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "c-ares",
+      "ecosystem": "C_CPP",
+      "family": "NETWORK_RPC",
+      "headers": [
+        "ares.h",
+        "ares_version.h"
+      ],
+      "cmake_names": [
+        "c-ares",
+        "cares"
+      ],
+      "pkgconfig_names": [
+        "libcares"
+      ],
+      "sonames": [
+        "libcares.so",
+        "libcares.dylib"
+      ],
+      "dir_markers": [
+        "c-ares",
+        "cares"
+      ],
+      "copyright_banners": [
+        "c-ares",
+        "Daniel Stenberg",
+        "Massachusetts Institute of Technology"
+      ],
+      "binary_version_regex": "c-ares\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "libuv",
+      "ecosystem": "C_CPP",
+      "family": "NETWORK_RPC",
+      "headers": [
+        "uv.h",
+        "uv/version.h"
+      ],
+      "cmake_names": [
+        "libuv"
+      ],
+      "pkgconfig_names": [
+        "libuv"
+      ],
+      "sonames": [
+        "libuv.so",
+        "libuv.dylib"
+      ],
+      "dir_markers": [
+        "libuv"
+      ],
+      "copyright_banners": [
+        "libuv project contributors",
+        "Joyent, Inc."
+      ],
+      "binary_version_regex": "libuv\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "libevent",
+      "ecosystem": "C_CPP",
+      "family": "NETWORK_RPC",
+      "headers": [
+        "event2/event.h",
+        "event.h",
+        "event2/buffer.h"
+      ],
+      "cmake_names": [
+        "libevent",
+        "event"
+      ],
+      "pkgconfig_names": [
+        "libevent",
+        "libevent_core",
+        "libevent_extra"
+      ],
+      "sonames": [
+        "libevent.so",
+        "libevent_core.so",
+        "libevent.dylib"
+      ],
+      "dir_markers": [
+        "libevent"
+      ],
+      "copyright_banners": [
+        "Niels Provos",
+        "Nick Mathewson",
+        "libevent"
+      ],
+      "binary_version_regex": "libevent\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "SQLite",
+      "ecosystem": "C_CPP",
+      "family": "DATABASE_STORAGE",
+      "headers": [
+        "sqlite3.h",
+        "sqlite3ext.h"
+      ],
+      "cmake_names": [
+        "sqlite3",
+        "sqlite"
+      ],
+      "pkgconfig_names": [
+        "sqlite3"
+      ],
+      "sonames": [
+        "libsqlite3.so",
+        "libsqlite3.dylib",
+        "sqlite3.dll"
+      ],
+      "dir_markers": [
+        "sqlite",
+        "sqlite3"
+      ],
+      "copyright_banners": [
+        "D. Richard Hipp",
+        "SQLite"
+      ],
+      "binary_version_regex": "SQLite\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "RocksDB",
+      "ecosystem": "C_CPP",
+      "family": "DATABASE_STORAGE",
+      "headers": [
+        "rocksdb/db.h",
+        "rocksdb/options.h",
+        "rocksdb/slice.h"
+      ],
+      "cmake_names": [
+        "rocksdb"
+      ],
+      "pkgconfig_names": [
+        "rocksdb"
+      ],
+      "sonames": [
+        "librocksdb.so",
+        "librocksdb.dylib"
+      ],
+      "dir_markers": [
+        "rocksdb"
+      ],
+      "copyright_banners": [
+        "Facebook, Inc.",
+        "RocksDB"
+      ],
+      "binary_version_regex": "RocksDB\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "LevelDB",
+      "ecosystem": "C_CPP",
+      "family": "DATABASE_STORAGE",
+      "headers": [
+        "leveldb/db.h",
+        "leveldb/options.h"
+      ],
+      "cmake_names": [
+        "leveldb"
+      ],
+      "pkgconfig_names": [
+        "leveldb"
+      ],
+      "sonames": [
+        "libleveldb.so",
+        "libleveldb.dylib"
+      ],
+      "dir_markers": [
+        "leveldb"
+      ],
+      "copyright_banners": [
+        "Google Inc.",
+        "LevelDB"
+      ],
+      "binary_version_regex": "LevelDB\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "Protobuf",
+      "ecosystem": "C_CPP",
+      "family": "SERIALIZATION_XML_JSON",
+      "headers": [
+        "google/protobuf/message.h",
+        "google/protobuf/stubs/common.h"
+      ],
+      "cmake_names": [
+        "protobuf"
+      ],
+      "pkgconfig_names": [
+        "protobuf"
+      ],
+      "sonames": [
+        "libprotobuf.so",
+        "libprotobuf.dylib"
+      ],
+      "dir_markers": [
+        "protobuf",
+        "google/protobuf"
+      ],
+      "copyright_banners": [
+        "Google Inc.",
+        "Protocol Buffers"
+      ],
+      "binary_version_regex": "libprotobuf\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "gRPC",
+      "ecosystem": "C_CPP",
+      "family": "NETWORK_RPC",
+      "headers": [
+        "grpcpp/grpcpp.h",
+        "grpc/grpc.h"
+      ],
+      "cmake_names": [
+        "grpc"
+      ],
+      "pkgconfig_names": [
+        "grpc",
+        "grpc++"
+      ],
+      "sonames": [
+        "libgrpc.so",
+        "libgrpc++.so"
+      ],
+      "dir_markers": [
+        "grpc"
+      ],
+      "copyright_banners": [
+        "The gRPC Authors",
+        "Google Inc."
+      ],
+      "binary_version_regex": "grpc[/ ](\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "Boost",
+      "ecosystem": "C_CPP",
+      "family": "C_CPP",
+      "headers": [
+        "boost/version.hpp",
+        "boost/config.hpp",
+        "boost/asio.hpp"
+      ],
+      "cmake_names": [
+        "boost"
+      ],
+      "pkgconfig_names": [
+        "boost"
+      ],
+      "sonames": [
+        "libboost_system.so",
+        "libboost_filesystem.so"
+      ],
+      "dir_markers": [
+        "boost"
+      ],
+      "copyright_banners": [
+        "Boost Software License",
+        "Beman Dawes"
+      ],
+      "binary_version_regex": "Boost\\s+(\\d+_\\d+_\\d+|\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "Abseil",
+      "ecosystem": "C_CPP",
+      "family": "C_CPP",
+      "headers": [
+        "absl/base/config.h",
+        "absl/strings/string_view.h"
+      ],
+      "cmake_names": [
+        "absl"
+      ],
+      "pkgconfig_names": [
+        "absl_base",
+        "absl_strings"
+      ],
+      "sonames": [
+        "libabsl_base.so",
+        "libabsl_strings.so"
+      ],
+      "dir_markers": [
+        "abseil-cpp",
+        "absl"
+      ],
+      "copyright_banners": [
+        "The Abseil Authors",
+        "Google LLC"
+      ],
+      "binary_version_regex": "abseil-cpp[/ ](\\d{8}(?:\\.\\d+)?)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "Expat",
+      "ecosystem": "C_CPP",
+      "family": "SERIALIZATION_XML_JSON",
+      "headers": [
+        "expat.h"
+      ],
+      "cmake_names": [
+        "expat"
+      ],
+      "pkgconfig_names": [
+        "expat"
+      ],
+      "sonames": [
+        "libexpat.so",
+        "libexpat.dylib"
+      ],
+      "dir_markers": [
+        "expat",
+        "libexpat"
+      ],
+      "copyright_banners": [
+        "James Clark",
+        "Thai Open Source Software Center",
+        "Expat"
+      ],
+      "binary_version_regex": "expat_(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "libxml2",
+      "ecosystem": "C_CPP",
+      "family": "SERIALIZATION_XML_JSON",
+      "headers": [
+        "libxml/parser.h",
+        "libxml/tree.h",
+        "libxml/xmlversion.h"
+      ],
+      "cmake_names": [
+        "libxml2"
+      ],
+      "pkgconfig_names": [
+        "libxml-2.0"
+      ],
+      "sonames": [
+        "libxml2.so",
+        "libxml2.dylib"
+      ],
+      "dir_markers": [
+        "libxml2",
+        "libxml"
+      ],
+      "copyright_banners": [
+        "Daniel Veillard",
+        "libxml2"
+      ],
+      "binary_version_regex": "libxml2\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "PCRE2",
+      "ecosystem": "C_CPP",
+      "family": "SYSTEM",
+      "headers": [
+        "pcre2.h"
+      ],
+      "cmake_names": [
+        "pcre2"
+      ],
+      "pkgconfig_names": [
+        "libpcre2-8",
+        "libpcre2-16",
+        "libpcre2-32"
+      ],
+      "sonames": [
+        "libpcre2-8.so",
+        "libpcre2-8.dylib"
+      ],
+      "dir_markers": [
+        "pcre2"
+      ],
+      "copyright_banners": [
+        "Philip Hazel",
+        "University of Cambridge",
+        "PCRE2"
+      ],
+      "binary_version_regex": "PCRE2\\s+(\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "Jansson",
+      "ecosystem": "C_CPP",
+      "family": "SERIALIZATION_XML_JSON",
+      "headers": [
+        "jansson.h",
+        "jansson_config.h"
+      ],
+      "cmake_names": [
+        "jansson"
+      ],
+      "pkgconfig_names": [
+        "jansson"
+      ],
+      "sonames": [
+        "libjansson.so",
+        "libjansson.dylib"
+      ],
+      "dir_markers": [
+        "jansson"
+      ],
+      "copyright_banners": [
+        "Petri Lehtinen",
+        "Jansson"
+      ],
+      "binary_version_regex": "jansson\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "nlohmann-json",
+      "ecosystem": "C_CPP",
+      "family": "SERIALIZATION_XML_JSON",
+      "headers": [
+        "nlohmann/json.hpp",
+        "nlohmann/json_fwd.hpp"
+      ],
+      "cmake_names": [
+        "nlohmann_json"
+      ],
+      "pkgconfig_names": [
+        "nlohmann_json"
+      ],
+      "sonames": [],
+      "dir_markers": [
+        "nlohmann"
+      ],
+      "copyright_banners": [
+        "Niels Lohmann",
+        "JSON for Modern C++"
+      ],
+      "binary_version_regex": "nlohmann/json\\s+version\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "libyaml",
+      "ecosystem": "C_CPP",
+      "family": "SERIALIZATION_XML_JSON",
+      "headers": [
+        "yaml.h"
+      ],
+      "cmake_names": [
+        "yaml"
+      ],
+      "pkgconfig_names": [
+        "yaml-0.1"
+      ],
+      "sonames": [
+        "libyaml.so",
+        "libyaml-0.so",
+        "libyaml.dylib"
+      ],
+      "dir_markers": [
+        "libyaml"
+      ],
+      "copyright_banners": [
+        "Kirill Simonov",
+        "LibYAML"
+      ],
+      "binary_version_regex": "LibYAML\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "libarchive",
+      "ecosystem": "C_CPP",
+      "family": "COMPRESSION",
+      "headers": [
+        "archive.h",
+        "archive_entry.h"
+      ],
+      "cmake_names": [
+        "libarchive"
+      ],
+      "pkgconfig_names": [
+        "libarchive"
+      ],
+      "sonames": [
+        "libarchive.so",
+        "libarchive.dylib"
+      ],
+      "dir_markers": [
+        "libarchive"
+      ],
+      "copyright_banners": [
+        "Tim Kientzle",
+        "libarchive"
+      ],
+      "binary_version_regex": "libarchive\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "Net-SNMP",
+      "ecosystem": "C_CPP",
+      "family": "NETWORK_RPC",
+      "headers": [
+        "net-snmp/net-snmp-config.h",
+        "net-snmp/net-snmp-includes.h"
+      ],
+      "cmake_names": [
+        "netsnmp"
+      ],
+      "pkgconfig_names": [
+        "netsnmp"
+      ],
+      "sonames": [
+        "libnetsnmp.so",
+        "libnetsnmpagent.so"
+      ],
+      "dir_markers": [
+        "net-snmp"
+      ],
+      "copyright_banners": [
+        "Net-SNMP",
+        "Wes Hardaker"
+      ],
+      "binary_version_regex": "NET-SNMP\\s+version:\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "OpenLDAP",
+      "ecosystem": "C_CPP",
+      "family": "NETWORK_RPC",
+      "headers": [
+        "ldap.h",
+        "lber.h"
+      ],
+      "cmake_names": [
+        "openldap"
+      ],
+      "pkgconfig_names": [
+        "ldap",
+        "lber"
+      ],
+      "sonames": [
+        "libldap.so",
+        "liblber.so"
+      ],
+      "dir_markers": [
+        "openldap"
+      ],
+      "copyright_banners": [
+        "OpenLDAP Foundation",
+        "Kurt D. Zeilenga"
+      ],
+      "binary_version_regex": "OpenLDAP:\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "Kerberos-krb5",
+      "ecosystem": "C_CPP",
+      "family": "CRYPTO_TLS",
+      "headers": [
+        "krb5.h",
+        "krb5/krb5.h",
+        "gssapi/gssapi.h"
+      ],
+      "cmake_names": [
+        "krb5"
+      ],
+      "pkgconfig_names": [
+        "krb5",
+        "gssapi"
+      ],
+      "sonames": [
+        "libkrb5.so",
+        "libgssapi_krb5.so"
+      ],
+      "dir_markers": [
+        "krb5",
+        "kerberos"
+      ],
+      "copyright_banners": [
+        "Massachusetts Institute of Technology",
+        "Kerberos"
+      ],
+      "binary_version_regex": "Kerberos\\s+5\\s+release\\s+(\\d+\\.\\d+(?:\\.\\d+)?)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "Cyrus-SASL",
+      "ecosystem": "C_CPP",
+      "family": "CRYPTO_TLS",
+      "headers": [
+        "sasl/sasl.h",
+        "sasl/saslutil.h"
+      ],
+      "cmake_names": [
+        "sasl2"
+      ],
+      "pkgconfig_names": [
+        "libsasl2"
+      ],
+      "sonames": [
+        "libsasl2.so",
+        "libsasl2.dylib"
+      ],
+      "dir_markers": [
+        "cyrus-sasl",
+        "sasl"
+      ],
+      "copyright_banners": [
+        "Carnegie Mellon University",
+        "Cyrus SASL"
+      ],
+      "binary_version_regex": "Cyrus\\s+SASL\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "libpcap",
+      "ecosystem": "C_CPP",
+      "family": "NETWORK_RPC",
+      "headers": [
+        "pcap.h",
+        "pcap/pcap.h"
+      ],
+      "cmake_names": [
+        "libpcap"
+      ],
+      "pkgconfig_names": [
+        "libpcap"
+      ],
+      "sonames": [
+        "libpcap.so",
+        "libpcap.dylib"
+      ],
+      "dir_markers": [
+        "libpcap"
+      ],
+      "copyright_banners": [
+        "The Regents of the University of California",
+        "libpcap"
+      ],
+      "binary_version_regex": "libpcap\\s+version\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "DPDK",
+      "ecosystem": "C_CPP",
+      "family": "NETWORK_RPC",
+      "headers": [
+        "rte_config.h",
+        "rte_eal.h",
+        "rte_ethdev.h"
+      ],
+      "cmake_names": [
+        "dpdk"
+      ],
+      "pkgconfig_names": [
+        "libdpdk"
+      ],
+      "sonames": [
+        "librte_eal.so",
+        "librte_ethdev.so"
+      ],
+      "dir_markers": [
+        "dpdk"
+      ],
+      "copyright_banners": [
+        "Intel Corporation",
+        "Data Plane Development Kit"
+      ],
+      "binary_version_regex": "DPDK\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "SPDK",
+      "ecosystem": "C_CPP",
+      "family": "DATABASE_STORAGE",
+      "headers": [
+        "spdk/nvme.h",
+        "spdk/bdev.h",
+        "spdk/env.h"
+      ],
+      "cmake_names": [
+        "spdk"
+      ],
+      "pkgconfig_names": [
+        "spdk_nvme",
+        "spdk_bdev"
+      ],
+      "sonames": [
+        "libspdk.so",
+        "libspdk_nvme.so"
+      ],
+      "dir_markers": [
+        "spdk"
+      ],
+      "copyright_banners": [
+        "Intel Corporation",
+        "Storage Performance Development Kit"
+      ],
+      "binary_version_regex": "SPDK\\s+v?(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "Intel-ISA-L",
+      "ecosystem": "C_CPP",
+      "family": "COMPRESSION",
+      "headers": [
+        "isa-l.h",
+        "isa-l/igzip_lib.h"
+      ],
+      "cmake_names": [
+        "isal"
+      ],
+      "pkgconfig_names": [
+        "libisal"
+      ],
+      "sonames": [
+        "libisal.so",
+        "libisal.dylib"
+      ],
+      "dir_markers": [
+        "isa-l"
+      ],
+      "copyright_banners": [
+        "Intel Corporation",
+        "Storage Acceleration Library"
+      ],
+      "binary_version_regex": "ISA-L\\s+v?(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "jemalloc",
+      "ecosystem": "C_CPP",
+      "family": "SYSTEM",
+      "headers": [
+        "jemalloc/jemalloc.h"
+      ],
+      "cmake_names": [
+        "jemalloc"
+      ],
+      "pkgconfig_names": [
+        "jemalloc"
+      ],
+      "sonames": [
+        "libjemalloc.so",
+        "libjemalloc.dylib"
+      ],
+      "dir_markers": [
+        "jemalloc"
+      ],
+      "copyright_banners": [
+        "Jason Evans",
+        "jemalloc"
+      ],
+      "binary_version_regex": "jemalloc\\s+(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "tcmalloc",
+      "ecosystem": "C_CPP",
+      "family": "SYSTEM",
+      "headers": [
+        "gperftools/tcmalloc.h",
+        "gperftools/malloc_extension.h"
+      ],
+      "cmake_names": [
+        "gperftools",
+        "tcmalloc"
+      ],
+      "pkgconfig_names": [
+        "libtcmalloc"
+      ],
+      "sonames": [
+        "libtcmalloc.so",
+        "libtcmalloc.dylib"
+      ],
+      "dir_markers": [
+        "gperftools",
+        "tcmalloc"
+      ],
+      "copyright_banners": [
+        "Google Inc.",
+        "gperftools"
+      ],
+      "binary_version_regex": "gperftools\\s+(\\d+\\.\\d+)",
+      "default_external_id_namespace": "centos"
+    },
+    {
+      "name": "BusyBox",
+      "ecosystem": "SYSTEM",
+      "family": "EMBEDDED_OS",
+      "headers": [
+        "busybox.h",
+        "libbb.h"
+      ],
+      "cmake_names": [
+        "busybox"
+      ],
+      "pkgconfig_names": [],
+      "sonames": [
+        "busybox"
+      ],
+      "dir_markers": [
+        "busybox"
+      ],
+      "copyright_banners": [
+        "Erik Andersen",
+        "Denys Vlasenko",
+        "BusyBox"
+      ],
+      "binary_version_regex": "BusyBox\\s+v(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "alpine"
+    },
+    {
+      "name": "U-Boot",
+      "ecosystem": "SYSTEM",
+      "family": "EMBEDDED_OS",
+      "headers": [
+        "image.h",
+        "u-boot/zlib.h"
+      ],
+      "cmake_names": [
+        "uboot"
+      ],
+      "pkgconfig_names": [],
+      "sonames": [
+        "u-boot"
+      ],
+      "dir_markers": [
+        "u-boot"
+      ],
+      "copyright_banners": [
+        "Wolfgang Denk",
+        "DENX Software Engineering"
+      ],
+      "binary_version_regex": "U-Boot\\s+(\\d{4}\\.\\d{2}(?:\\.\\d+)?)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "Log4j",
+      "ecosystem": "MAVEN",
+      "family": "LOGGING",
+      "headers": [],
+      "cmake_names": [],
+      "pkgconfig_names": [],
+      "sonames": [],
+      "dir_markers": [
+        "log4j"
+      ],
+      "copyright_banners": [
+        "Apache Software Foundation",
+        "Apache Log4j"
+      ],
+      "binary_version_regex": "log4j-core-(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "maven"
+    },
+    {
+      "name": "Jackson",
+      "ecosystem": "MAVEN",
+      "family": "SERIALIZATION_XML_JSON",
+      "headers": [],
+      "cmake_names": [],
+      "pkgconfig_names": [],
+      "sonames": [],
+      "dir_markers": [
+        "jackson"
+      ],
+      "copyright_banners": [
+        "FasterXML",
+        "Jackson JSON processor"
+      ],
+      "binary_version_regex": "jackson-databind-(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "maven"
+    },
+    {
+      "name": "Netty",
+      "ecosystem": "MAVEN",
+      "family": "NETWORK_RPC",
+      "headers": [],
+      "cmake_names": [],
+      "pkgconfig_names": [],
+      "sonames": [],
+      "dir_markers": [
+        "netty"
+      ],
+      "copyright_banners": [
+        "The Netty Project"
+      ],
+      "binary_version_regex": "netty-all-(\\d+\\.\\d+\\.\\d+\\.[A-Za-z0-9]+)",
+      "default_external_id_namespace": "maven"
+    },
+    {
+      "name": "Spring-Framework",
+      "ecosystem": "MAVEN",
+      "family": "WEB_FRAMEWORK",
+      "headers": [],
+      "cmake_names": [],
+      "pkgconfig_names": [],
+      "sonames": [],
+      "dir_markers": [
+        "springframework"
+      ],
+      "copyright_banners": [
+        "Pivotal Software, Inc.",
+        "VMware, Inc.",
+        "Spring Framework"
+      ],
+      "binary_version_regex": "spring-core-(\\d+\\.\\d+\\.\\d+(?:\\.[A-Za-z0-9]+)?)",
+      "default_external_id_namespace": "maven"
+    },
+    {
+      "name": "BouncyCastle",
+      "ecosystem": "MAVEN",
+      "family": "CRYPTO_TLS",
+      "headers": [],
+      "cmake_names": [],
+      "pkgconfig_names": [],
+      "sonames": [],
+      "dir_markers": [
+        "bouncycastle"
+      ],
+      "copyright_banners": [
+        "The Legion of the Bouncy Castle Inc."
+      ],
+      "binary_version_regex": "bcprov-jdk\\w+-(\\d+)",
+      "default_external_id_namespace": "maven"
+    },
+    {
+      "name": "Commons-Text",
+      "ecosystem": "MAVEN",
+      "family": "SYSTEM",
+      "headers": [],
+      "cmake_names": [],
+      "pkgconfig_names": [],
+      "sonames": [],
+      "dir_markers": [
+        "commons-text"
+      ],
+      "copyright_banners": [
+        "Apache Software Foundation",
+        "Apache Commons Text"
+      ],
+      "binary_version_regex": "commons-text-(\\d+\\.\\d+(?:\\.\\d+)?)",
+      "default_external_id_namespace": "maven"
+    },
+    {
+      "name": "PHP",
+      "ecosystem": "C_CPP",
+      "family": "INTERPRETER_RUNTIME",
+      "headers": [
+        "php_version.h",
+        "php.h"
+      ],
+      "cmake_names": [
+        "php"
+      ],
+      "pkgconfig_names": [
+        "php"
+      ],
+      "sonames": [
+        "libphp.so",
+        "php-cgi"
+      ],
+      "dir_markers": [
+        "php"
+      ],
+      "copyright_banners": [
+        "The PHP Group"
+      ],
+      "binary_version_regex": "PHP(?:/|\\s+)(\\d+\\.\\d+\\.\\d+)",
+      "default_external_id_namespace": "generic"
+    },
+    {
+      "name": "expat",
+      "ecosystem": "C_CPP",
+      "family": "PARSER_XML",
+      "headers": [
+        "expat.h",
+        "expat_config.h"
+      ],
+      "cmake_names": [
+        "expat",
+        "EXPAT"
+      ],
+      "pkgconfig_names": [
+        "expat"
+      ],
+      "sonames": [
+        "libexpat.so.1",
+        "libexpat.so"
+      ],
+      "dir_markers": [
+        "expat",
+        "libexpat"
+      ],
+      "copyright_banners": [
+        "Expat maintainers",
+        "Thai Open Source Software Center Ltd"
+      ],
+      "binary_version_regex": "EXPAT_VERSION\\s+\"(\\d+\\.\\d+\\.\\d+)\"",
+      "default_external_id_namespace": "github"
+    }
+  ],
+  "disaster_smells": [
+    {
+      "id": "CVE-2021-44228",
+      "name": "CVE-2021-44228 (Log4Shell)",
+      "type": "archive_member_suffix",
+      "pattern": "org/apache/logging/log4j/core/lookup/JndiLookup.class",
+      "vulnerable_version_regex": "^2\\.(?:[0-9]|1[0-6]|17\\.0)(?:$|[^0-9])",
+      "severity": "CRITICAL",
+      "description": "Log4Shell vulnerable JndiLookup class present in archive."
+    },
+    {
+      "id": "CVE-2024-3094",
+      "name": "CVE-2024-3094 (XZ / liblzma Backdoor)",
+      "type": "filename_binary_regex",
+      "pattern": "xz-5\\.6\\.[01]|liblzma\\.so\\.5\\.6\\.[01]",
+      "severity": "CRITICAL",
+      "description": "Compromised XZ / liblzma version (5.6.0 or 5.6.1) containing malicious backdoor."
+    },
+    {
+      "id": "CVE-2022-42889",
+      "name": "CVE-2022-42889 (Text4Shell)",
+      "type": "archive_member_suffix",
+      "pattern": "org/apache/commons/text/StringSubstitutor.class",
+      "vulnerable_version_regex": "^1\\.(?:[5-9]|10\\.0-alpha)(?:$|[^0-9])",
+      "severity": "CRITICAL",
+      "description": "Text4Shell vulnerable Commons Text StringSubstitutor class present in archive."
+    },
+    {
+      "id": "CVE-2022-22965",
+      "name": "CVE-2022-22965 (Spring4Shell)",
+      "type": "archive_member_suffix",
+      "pattern": "org/springframework/beans/CachedIntrospectionResults.class",
+      "vulnerable_version_regex": "^5\\.(?:[0-2]\\.|3\\.(?:[0-9]|1[0-7])(?:$|[^0-9]))",
+      "severity": "CRITICAL",
+      "description": "Spring4Shell vulnerable CachedIntrospectionResults class present in archive."
+    },
+    {
+      "id": "EOL_OPENSSL_1_0_X",
+      "name": "EOL_OPENSSL_1_0_X (Heartbleed / Legacy OpenSSL)",
+      "type": "binary_source_regex",
+      "pattern": "OpenSSL\\s+(?:0\\.9\\.8|1\\.0\\.[012])[a-z]?",
+      "severity": "HIGH",
+      "description": "Legacy end-of-life OpenSSL version (0.9.8 / 1.0.x) detected."
+    },
+    {
+      "id": "EMBEDDED_PRIVATE_KEY_HEADER",
+      "name": "EMBEDDED_PRIVATE_KEY_HEADER",
+      "type": "source_content_regex",
+      "pattern": "-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----",
+      "severity": "HIGH",
+      "description": "Embedded private key header detected in source file."
+    },
+    {
+      "id": "CVE-2022-21724",
+      "name": "CVE-2022-21724 (PgJDBC SocketFactory RCE)",
+      "type": "archive_member_suffix",
+      "pattern": "org/postgresql/Driver.class",
+      "archive_member_suffix": "org/postgresql/Driver.class",
+      "archive_member_regex": "org/postgresql/Driver\\.class$",
+      "vulnerable_version_regex": "^42\\.(?:2\\.(?:[0-9]|1[0-9]|2[0-4])|3\\.[0-2])(?:\\.jre[67])?$",
+      "severity": "CRITICAL",
+      "description": "PgJDBC unauthenticated arbitrary class instantiation RCE via AuthenticationPluginClassName / SocketFactory"
+    }
+  ]
+}

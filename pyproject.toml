@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sca-preflight"
+version = "0.5.0"
+description = "Open-source SCA pre-flight analyzer, file disposition accounting, and BOM calibration tool."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  { name = "Emil Walter \"Pete\" Jalajas", email = "pjalajas@gmail.com" }
+]
+license = { file = "LICENSE" }
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "Topic :: Software Development :: Quality Assurance",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = []
+
+[project.scripts]
+sca-prescan = "sca_preflight.prescan:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+sca_preflight = ["*.json"]
+
+[tool.ruff]
+line-length = 105
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "SIM", "B", "BLE"]
+ignore = [
+  "E501",  # Line length handled by formatter
+]

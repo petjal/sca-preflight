@@ -1,10 +1,10 @@
 {
   "schema": "sca-ops-reference-ground-truth/v1",
   "scale_factor": 1,
-  "multilayer_codebase_signature": "sca-sig:v2:L0=d22a5e6a2a05:L1=13a4e95c91ad:L2=f5de118557c1:CFG=2adcf6e44988@d3(100.0%)",
-  "topology_skeleton_sha256": "d22a5e6a2a050262187f12a85ab22b65731e157f690c6d93b3cbe6f753d10cbc",
-  "workspace_tree_merkle_sha256": "f5de118557c17dc8e7aa25f1380172726830e7dd2e8f6bf776ff38dcd8ac50e5",
-  "dependency_inputs_merkle_sha256": "13a4e95c91ad7fdc24139b84425ed2f2a75eb6bb4fc5e6c7131d465a6fb02ce0",
+  "multilayer_codebase_signature": "sca-sig:v2:L0=aee4bb9faf9b:L1=ba3b42126cb9:L2=a4a383a32900:CFG=2adcf6e44988@d3(100.0%)",
+  "topology_skeleton_sha256": "aee4bb9faf9bc2882107b40c3aecf69054f83939d282704e6cf41cf5508bacce",
+  "workspace_tree_merkle_sha256": "a4a383a3290092ea0fd74660d93c6738b2a1d3dc8e1dbcf58626fb931ce668c8",
+  "dependency_inputs_merkle_sha256": "ba3b42126cb90ee851d9ac21e1ec40c91e73d2a82b76ebb51a88e12bc11d094d",
   "effective_detect_config_sha256": "2adcf6e44988ff2a5c42cefade661dd8c321d5c11369e759349879c0ad4647a0",
   "expected_vulnerability_matches_count": 37,
   "expected_cves": [

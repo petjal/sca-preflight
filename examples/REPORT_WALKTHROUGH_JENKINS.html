@@ -116,7 +116,7 @@
     "bucket_2b_provenance_only_l2_files": {
       "count": 5000,
       "size_mb": 29.95,
-      "prescan_action": "Hashed 5000 first-party source/doc files into Layer 2 (L2), scanned for DiffWatch Dual-Polarity code hunks (1 source-hunk verification(s)) and embedded private keys (0 third-party BOM declarations).",
+      "prescan_action": "Hashed 5000 first-party source/doc files into Layer 2 (L2), scanned for unpatched code snippets (1 source-snippet verification(s)) and embedded private keys (0 third-party BOM declarations).",
       "default_detect_action": "Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole."
     },
     "bucket_3_early_stop_unhashed_files": {
@@ -669,10 +669,10 @@
       "published_date": "",
       "pre_nvd": false,
       "evidence_source": "manifest:core/pom.xml (+4 locations)",
-      "actionable_remedy": "Upgrade jenkins-core to 2.441 (weekly) or 2.426.3 (LTS) or higher. [DIFFWATCH-VERIFIED: unpatched code in core/src/main/java/hudson/cli/CLICommand.java]",
+      "actionable_remedy": "Upgrade jenkins-core to 2.441 (weekly) or 2.426.3 (LTS) or higher. [UNPATCHED-SNIPPET-VERIFIED: unpatched code in core/src/main/java/hudson/cli/CLICommand.java]",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
-      "diffwatch_verified": true,
-      "diffwatch_location": "core/src/main/java/hudson/cli/CLICommand.java",
+      "snippet_verified": true,
+      "snippet_location": "core/src/main/java/hudson/cli/CLICommand.java",
       "all_evidence_sources": [
         "manifest:core/pom.xml",
         "manifest:coverage/pom.xml",
@@ -693,7 +693,7 @@
       "published_date": "2026-10-08",
       "pre_nvd": false,
       "evidence_source": "lockfile:war/yarn.lock",
-      "actionable_remedy": "Upgrade handlebars to 4.7.10 or higher. [HOT 2026-10-08]",
+      "actionable_remedy": "Upgrade handlebars to 4.7.10 or higher. [HOT 2026-10-08 / GHSA-p8wg-vrv2-v86f]",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
       "all_evidence_sources": [
         "lockfile:war/yarn.lock"
@@ -711,7 +711,7 @@
       "published_date": "2026-10-08",
       "pre_nvd": false,
       "evidence_source": "lockfile:war/yarn.lock",
-      "actionable_remedy": "Upgrade handlebars to 4.7.10 or higher. [HOT 2026-10-08]",
+      "actionable_remedy": "Upgrade handlebars to 4.7.10 or higher. [HOT 2026-10-08 / GHSA-8r5x-fm3f-whwj]",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
       "all_evidence_sources": [
         "lockfile:war/yarn.lock"
@@ -729,7 +729,7 @@
       "published_date": "2026-03-04",
       "pre_nvd": false,
       "evidence_source": "lockfile:war/yarn.lock",
-      "actionable_remedy": "Upgrade immutable to 4.3.8 or higher. [HOT 2026-03-04]",
+      "actionable_remedy": "Upgrade immutable to 4.3.8 or higher. [HOT 2026-03-04 / GHSA-wf6x-7x77-mvgw]",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
       "all_evidence_sources": [
         "lockfile:war/yarn.lock"
@@ -747,7 +747,7 @@
       "published_date": "2026-03-27",
       "pre_nvd": false,
       "evidence_source": "lockfile:war/yarn.lock",
-      "actionable_remedy": "Upgrade handlebars to 4.7.9 or higher. [HOT 2026-03-27]",
+      "actionable_remedy": "Upgrade handlebars to 4.7.9 or higher. [HOT 2026-03-27 / GHSA-2w6w-674q-4c4q]",
       "confirmation_guidance": "Confirm vulnerability presence, CVSS score, and affected component version using your licensed SCA Server and KnowledgeBase.",
       "all_evidence_sources": [
         "lockfile:war/yarn.lock"
@@ -816,8 +816,7 @@
       <li><a href="#bom-baseline">5. Expected BOM Baseline</a></li>
       <li><a href="#vulnerabilities">6. High-Severity Vulnerabilities (6)</a></li>
       <li><a href="#licenses">7. License &amp; Rugpull Risks (0)</a></li>
-      <li><a href="#llm-prompts">8. Enterprise LLM Prompts</a></li>
-      <li><a href="#embedded-json">9. Embedded JSON Copy (For LLMs)</a></li>
+      <li><a href="#embedded-json">8. Embedded JSON Copy (For LLMs)</a></li>
     </ul>
   </nav>
   <main>
@@ -828,7 +827,7 @@
       </header>
 
       <section id="provenance">
-        <h2>1. Stratified Multilayer Codebase Signature (<code>L0 / L1 / L2 / CFG</code>)</h2>
+        <h2>1. Workspace Input &amp; Config Hashes (<code>L0 / L1 / L2 / CFG</code>)</h2>
         <table>
           <thead><tr><th>Layer</th><th>Digest / Signature</th><th>Operational Meaning</th></tr></thead>
           <tbody>
@@ -847,7 +846,7 @@
           <tbody>
             <tr><td><strong>Bucket 1: Excluded Dirs</strong></td><td>1 dir(s)</td><td>Saw 1 non-shipping folder(s) (.git), skipped traversal, and added to --detect.excluded.directories.</td><td>Skips .git by default, but traverses .venv, venv, or unlocked node_modules unless explicitly excluded.</td></tr>
             <tr><td><strong>Bucket 2a: Actionable BOM / Vuln / Calibration Files (<code>L1</code>)</strong></td><td><strong>49 file(s)</strong> (1.08 MB)</td><td>Hashed 100% into Layer 1 (L1) and extracted BOM baselines, C/C++ header versions, archive/binary metadata, and 6 CVE / 0 license hit(s).</td><td>DETECTOR only processes root (depth=0) package manifests; SILENTLY IGNORES depth&gt;=1 manifests, UTF-16 manifests, C/C++ version headers, CMake/Makefiles, and standalone binaries (--individualFileMatching=NONE).</td></tr>
-            <tr><td><strong>Bucket 2b: Source &amp; Doc Provenance Only (<code>L2 - L1</code>)</strong></td><td>5000 file(s) (29.95 MB)</td><td>Hashed 5000 first-party source/doc files into Layer 2 (L2), scanned for DiffWatch Dual-Polarity code hunks (1 source-hunk verification(s)) and embedded private keys (0 third-party BOM declarations).</td><td>Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole.</td></tr>
+            <tr><td><strong>Bucket 2b: Source &amp; Doc Provenance Only (<code>L2 - L1</code>)</strong></td><td>5000 file(s) (29.95 MB)</td><td>Hashed 5000 first-party source/doc files into Layer 2 (L2), scanned for unpatched code snippets (1 source-snippet verification(s)) and embedded private keys (0 third-party BOM declarations).</td><td>Ignored by DETECTOR; Signature Scanner hashes directory structure as a whole.</td></tr>
             <tr><td><strong>Bucket 3: Monorepo Early-Stop Cap</strong></td><td>6997 file(s)</td><td>Skipped L2 content hashing on 6997 deep source files beyond 5,000-file cap (L0 and L1 still 100% complete).</td><td>Signature Scanner hashes all files; &gt;10,000 files or &gt;1 GB in one scan risks server queue timeouts.</td></tr>
           </tbody>
         </table>
@@ -896,11 +895,11 @@
 
       <section id="vulnerabilities">
         <h2>6. Actionable High-Severity Vulnerabilities (6)</h2>
-        <p class="muted"><strong>Honest Scope (Hot-Off-The-Presses, CISA-KEV &amp; DiffWatch Dual-Polarity Hit-List, Zero Promises)</strong>: <code>sca-prescan</code>'s built-in check is not a replacement for a full SCA vulnerability database and promises nothing for comprehensive CVE coverage. It checks an offline hit-list of <code>3,910</code> version/range rules plus <code>32</code> <strong>DiffWatch Dual-Polarity Hunk &amp; Shaded-Bytecode</strong> signatures (<code>vulnerable_anchor_regex</code> PRESENT + <code>patch_guard_regex</code> ABSENT) to catch CISA-KEV, hot-off-the-presses 2025-2026 critical advisories (including pre-NVD <code>GHSA</code>/<code>GO</code>/<code>RUSTSEC</code> advisories), shaded uber-JARs, unversioned vendor code, and backport guards in seconds before your main SCA scanner runs.</p>
+        <p class="muted"><strong>Scope Note (Free 5-Second Worst-of-the-Worst Check, Not a Full SCA Database)</strong>: <code>sca-prescan</code>'s main job is tuning your Detect CLI flags and catching BOM blind spots before your scan starts. As a free 5-second side dish while walking the tree, it also checks an offline hit-list (<code>3,910</code> version/range rules + <code>32</code> unpatched code-snippet and shaded-bytecode patterns) focused strictly on <strong>must-catch disasters</strong>: actively exploited <strong>CISA-KEV</strong> flaws, <strong>recent 2025-2026 critical advisories</strong> (including pre-NVD <code>GHSA</code>/<code>GO</code>/<code>RUSTSEC</code> advisories), <code>CVSS 9.8-10.0</code> RCEs, and major open-source license rugpulls (<code>AGPL-3.0</code>, <code>SSPL-1.0</code>, <code>RSALv2</code>, <code>BSL-1.1</code>). When version strings are missing or stripped from shaded uber-JARs, it checks source files and in-memory <code>.class</code> constant pools directly (<code>[UNPATCHED-SNIPPET-VERIFIED]</code> / <code>[PATCH-GUARD-DETECTED]</code>). Always rely on your full SCA server and AST/SAST tools for comprehensive vulnerability coverage.</p>
         <table>
           <thead><tr><th>CVE ID</th><th>CVSS</th><th>KEV</th><th>Component &amp; Version</th><th>Evidence Source</th><th>Actionable Remedy</th></tr></thead>
           <tbody>
-            <tr><td><code>CVE-2024-21538</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>cross-spawn 7.0.3</code></td><td><code>lockfile:war/yarn.lock</code></td><td>Upgrade cross-spawn to 7.0.5 or higher.</td></tr><tr><td><code>CVE-2024-23897</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>jenkins-core 2.440</code></td><td><code>manifest:core/pom.xml (+4 locations)</code></td><td>Upgrade jenkins-core to 2.441 (weekly) or 2.426.3 (LTS) or higher. [DIFFWATCH-VERIFIED: unpatched code in core/src/main/java/hudson/cli/CLICommand.java]</td></tr><tr><td><code>CVE-2026-106445</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>handlebars 4.7.8</code></td><td><code>lockfile:war/yarn.lock</code></td><td>Upgrade handlebars to 4.7.10 or higher. [HOT 2026-10-08]</td></tr><tr><td><code>CVE-2026-106446</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>handlebars 4.7.8</code></td><td><code>lockfile:war/yarn.lock</code></td><td>Upgrade handlebars to 4.7.10 or higher. [HOT 2026-10-08]</td></tr><tr><td><code>CVE-2026-29063</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>immutable 4.3.0</code></td><td><code>lockfile:war/yarn.lock</code></td><td>Upgrade immutable to 4.3.8 or higher. [HOT 2026-03-04]</td></tr><tr><td><code>CVE-2026-33937</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>handlebars 4.7.8</code></td><td><code>lockfile:war/yarn.lock</code></td><td>Upgrade handlebars to 4.7.9 or higher. [HOT 2026-03-27]</td></tr>
+            <tr><td><code>CVE-2024-21538</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>cross-spawn 7.0.3</code></td><td><code>lockfile:war/yarn.lock</code></td><td>Upgrade cross-spawn to 7.0.5 or higher.</td></tr><tr><td><code>CVE-2024-23897</code></td><td><strong>9.8</strong></td><td><span class="badge badge-danger">YES (KEV)</span></td><td><code>jenkins-core 2.440</code></td><td><code>manifest:core/pom.xml (+4 locations)</code></td><td>Upgrade jenkins-core to 2.441 (weekly) or 2.426.3 (LTS) or higher. [UNPATCHED-SNIPPET-VERIFIED: unpatched code in core/src/main/java/hudson/cli/CLICommand.java]</td></tr><tr><td><code>CVE-2026-106445</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>handlebars 4.7.8</code></td><td><code>lockfile:war/yarn.lock</code></td><td>Upgrade handlebars to 4.7.10 or higher. [HOT 2026-10-08 / GHSA-p8wg-vrv2-v86f]</td></tr><tr><td><code>CVE-2026-106446</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>handlebars 4.7.8</code></td><td><code>lockfile:war/yarn.lock</code></td><td>Upgrade handlebars to 4.7.10 or higher. [HOT 2026-10-08 / GHSA-8r5x-fm3f-whwj]</td></tr><tr><td><code>CVE-2026-29063</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>immutable 4.3.0</code></td><td><code>lockfile:war/yarn.lock</code></td><td>Upgrade immutable to 4.3.8 or higher. [HOT 2026-03-04 / GHSA-wf6x-7x77-mvgw]</td></tr><tr><td><code>CVE-2026-33937</code></td><td><strong>9.8</strong></td><td>NO</td><td><code>handlebars 4.7.8</code></td><td><code>lockfile:war/yarn.lock</code></td><td>Upgrade handlebars to 4.7.9 or higher. [HOT 2026-03-27 / GHSA-2w6w-674q-4c4q]</td></tr>
           </tbody>
         </table>
       </section>
@@ -915,26 +914,8 @@
         </table>
       </section>
 
-      <section id="llm-prompts">
-        <h2>8. Ready-to-Copy Prompts for Your Enterprise LLM</h2>
-        <h3>8.1 Prompts to Point at This AI-Intended Report (<code>A1-A4</code>)</h3>
-        <ul>
-          <li><strong>Prompt A1 (CI Pipeline Calibration PR)</strong>: <em>"Using this brief, write a pull-request description for our DevSecOps pipeline explaining which Detect CLI flags we are adding, which uncalibrated coverage gaps they close, and how the multilayer codebase signature (<code>L0/L1/L2/CFG</code>) works."</em></li>
-          <li><strong>Prompt A2 (Legal &amp; License Rugpull Triage)</strong>: <em>"Group all AGPL-3.0, SSPL-1.0, RSALv2, BSL-1.1, and GPL findings in this brief by distribution risk for a shipped commercial appliance vs. internal tool, and list the non-copyleft drop-in replacements."</em></li>
-          <li><strong>Prompt A3 (Security Remediation Plan)</strong>: <em>"Prioritize all CISA-KEV and CVSS 9.8-10.0 vulnerabilities in this brief by artifact location (standard manifests vs. shaded uber-JARs, nested vendor archives, and native binaries) and output a step-by-step upgrade plan."</em></li>
-          <li><strong>Prompt A4 (BOM Delta Cross-Examination)</strong>: <em>"Compare the Expected BOM Baseline and Deep Packet Inspection findings in this brief against our current Project Version BOM export, and list every component that default detector settings omitted."</em></li>
-        </ul>
-        <h3>8.2 InfoSec Self-Audit Prompts (<code>B1-B3</code>: Point at the Python Source or This Report)</h3>
-        <p class="muted"><strong>Where is the Python source code?</strong> It lives in a separate, private diagnostic workbench repo (<code>sca-ops-toolkit</code>). When Pete uses these scripts during a short-duration advisory engagement (or if you email <strong>Pete (<code>pjalajas+sca-preflight@gmail.com</code>)</strong> to inspect the plain, zero-dependency Python source), your InfoSec reviewer can run Prompts B1-B3 against the source tree or this generated brief.</p>
-        <ul>
-          <li><strong>Prompt B1 (Zero-Exfiltration &amp; Network Boundary Audit)</strong>: <em>"Audit all Python modules in the toolkit (<code>src/</code>). Enumerate every import or call involving network sockets, HTTP clients (<code>urllib</code>, <code>http</code>, <code>socket</code>), or subprocess execution. Verify that <code>sca-prescan</code>, <code>sca-tealeaves</code>, and <code>sca-log-sanitize</code> make zero outbound network connections during workspace analysis unless <code>--bd-url</code> is explicitly passed by the operator."</em></li>
-          <li><strong>Prompt B2 (Read-Only Workspace &amp; Dry-Run Mutation Safety Audit)</strong>: <em>"Audit <code>prescan.py</code>, <code>completeness.py</code>, and <code>bom_ifttt.py</code>. Verify that workspace scanning is strictly read-only on the target source tree, never executes untrusted build scripts (<code>mvn</code>, <code>gradle</code>, <code>npm</code>, <code>pip</code>), and that <code>BomIftttEngine</code> defaults to <code>dry_run=True</code> unless <code>--apply</code> is explicitly supplied."</em></li>
-          <li><strong>Prompt B3 (DLP &amp; Output Sanitization Audit)</strong>: <em>"Audit <code>log_sanitize.py</code> and this generated report file. Verify that workstation paths, internal hostnames, private IPv4 addresses, and credentials (<code>--blackduck.api.token</code>, Bearer tokens, URI passwords) are stripped or tokenized before external sharing."</em></li>
-        </ul>
-      </section>
-
       <section id="embedded-json">
-        <h2>9. Embedded Machine-Readable JSON Copy (<code>#sca-ops-ai-brief-json</code>)</h2>
+        <h2>8. Embedded Machine-Readable JSON Copy (<code>#sca-ops-ai-brief-json</code>)</h2>
         <p>This HTML file embeds valid Schema.org <code>TechArticle</code> JSON-LD alongside a complete, DLP-sanitized JSON copy inside <code>&lt;script type="application/json" id="sca-ops-ai-brief-json"&gt;</code> in the document <code>&lt;head&gt;</code> so enterprise LLMs and automation scripts can parse exact counts and SHA-256 digests directly from this single HTML file.</p>
       </section>
     </article>

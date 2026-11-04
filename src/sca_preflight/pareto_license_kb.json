@@ -1,0 +1,113 @@
+{
+  "version": "1.0.0",
+  "license_rules": [
+    {
+      "rule_id": "LIC-RUGPULL-BERKELEY-DB-AGPL",
+      "component": "berkeley-db",
+      "aliases": ["db", "libdb", "berkeley-db", "berkeleydb", "com.sleepycat:je"],
+      "ecosystem": "C_CPP",
+      "license_id": "AGPL-3.0-only",
+      "previous_license": "Sleepycat (Permissive)",
+      "severity": "CRITICAL",
+      "affected_version_regex": "^(?:[6-9]|[1-9][0-9])\\.",
+      "safe_version_hint": "5.3.28 (last Sleepycat-licensed release) or migrate to LMDB (OpenLDAP Public License) / SQLite (Public Domain)",
+      "summary": "Oracle Berkeley DB 6.0.20+ relicensed from permissive Sleepycat to AGPL-3.0-only; embedding in commercial storage/appliance firmware triggers network copyleft source disclosure."
+    },
+    {
+      "rule_id": "LIC-RUGPULL-REDIS-RSAL-SSPL",
+      "component": "redis",
+      "aliases": ["redis", "redis-server"],
+      "ecosystem": "C_CPP",
+      "license_id": "RSALv2 / SSPL-1.0",
+      "previous_license": "BSD-3-Clause",
+      "severity": "CRITICAL",
+      "affected_version_regex": "^(?:7\\.[4-9]|[8-9]\\.|[1-9][0-9]\\.)",
+      "safe_version_hint": "Redis <= 7.2.x (BSD-3-Clause) or Valkey (BSD-3-Clause)",
+      "summary": "Redis 7.4.0+ relicensed from BSD-3-Clause to dual RSALv2 / SSPL-1.0; restricts commercial managed/embedded distribution."
+    },
+    {
+      "rule_id": "LIC-RUGPULL-MINIO-AGPL",
+      "component": "minio",
+      "aliases": ["minio", "github.com/minio/minio"],
+      "ecosystem": "GO",
+      "license_id": "AGPL-3.0-only",
+      "previous_license": "Apache-2.0",
+      "severity": "CRITICAL",
+      "affected_version_regex": ".*",
+      "safe_version_hint": "Verify commercial license agreement or isolate via strict out-of-process network boundary per legal review",
+      "summary": "MinIO relicensed from Apache-2.0 to AGPL-3.0-only; embedding or modifying in commercial storage appliances carries strict network copyleft obligations."
+    },
+    {
+      "rule_id": "LIC-RUGPULL-ITEXT-AGPL",
+      "component": "itextpdf",
+      "aliases": ["itextpdf", "itext", "itext7-core", "com.itextpdf:itextpdf", "com.itextpdf:kernel"],
+      "ecosystem": "MAVEN",
+      "license_id": "AGPL-3.0-only",
+      "previous_license": "MPL-1.1 / LGPL-2.0 (iText 2.1.7)",
+      "severity": "CRITICAL",
+      "affected_version_regex": "^(?:[5-9]|[1-9][0-9])\\.",
+      "safe_version_hint": "OpenPDF (LGPL/MPL fork of iText 2.1.7) or Apache PDFBox (Apache-2.0)",
+      "summary": "iText 5.x/7.x/8.x is licensed under AGPL-3.0-only unless a paid commercial iText license is held."
+    },
+    {
+      "rule_id": "LIC-RUGPULL-GRAFANA-AGPL",
+      "component": "grafana",
+      "aliases": ["grafana", "github.com/grafana/grafana", "loki", "github.com/grafana/loki"],
+      "ecosystem": "GO",
+      "license_id": "AGPL-3.0-only",
+      "previous_license": "Apache-2.0 (Grafana < 8.0)",
+      "severity": "HIGH",
+      "affected_version_regex": "^v?(?:[8-9]|[1-9][0-9])\\.",
+      "safe_version_hint": "Grafana <= 7.5.x (Apache-2.0) or avoid code modification/static linking",
+      "summary": "Grafana 8.0+ relicensed from Apache-2.0 to AGPL-3.0-only."
+    },
+    {
+      "rule_id": "LIC-RUGPULL-HASHICORP-BSL",
+      "component": "vault",
+      "aliases": ["github.com/hashicorp/vault", "github.com/hashicorp/consul", "github.com/hashicorp/nomad"],
+      "ecosystem": "GO",
+      "license_id": "BSL-1.1",
+      "previous_license": "MPL-2.0",
+      "severity": "HIGH",
+      "affected_version_regex": "^v?1\\.(?:1[5-9]|[2-9][0-9])\\.",
+      "safe_version_hint": "OpenBao (MPL-2.0 fork of Vault) or pre-BSL MPL-2.0 releases",
+      "summary": "HashiCorp Vault/Consul/Nomad 1.15+ relicensed from MPL-2.0 to Business Source License (BSL-1.1)."
+    },
+    {
+      "rule_id": "LIC-COPYLEFT-GNU-READLINE-GPL3",
+      "component": "readline",
+      "aliases": ["readline", "libreadline"],
+      "ecosystem": "C_CPP",
+      "license_id": "GPL-3.0-only",
+      "previous_license": "GPL-3.0-only (not LGPL)",
+      "severity": "HIGH",
+      "affected_version_regex": "^[6-9]\\.",
+      "safe_version_hint": "Replace libreadline with BSD-licensed libedit (editline) or linenoise",
+      "summary": "GNU Readline is licensed under full GPL-3.0 (NOT LGPL); linking libreadline.so into a proprietary CLI binary requires full source disclosure."
+    },
+    {
+      "rule_id": "LIC-COPYLEFT-BINUTILS-LIBBFD-GPL3",
+      "component": "binutils",
+      "aliases": ["binutils", "libbfd", "bfd"],
+      "ecosystem": "C_CPP",
+      "license_id": "GPL-3.0-or-later",
+      "previous_license": "GPL-3.0-or-later",
+      "severity": "HIGH",
+      "affected_version_regex": "^2\\.",
+      "safe_version_hint": "Replace libbfd with BSD-licensed libbacktrace, libunwind, or llvm-symbolizer",
+      "summary": "GNU libbfd (binutils) is GPL-3.0-or-later; linking into proprietary C/C++ daemons for stack traces contaminates the binary with GPL-3.0."
+    },
+    {
+      "rule_id": "LIC-COPYLEFT-MYSQL-CONNECTOR-GPL2",
+      "component": "mysql-connector-java",
+      "aliases": ["mysql-connector-java", "mysql-connector-j", "mysql:mysql-connector-java", "com.mysql:mysql-connector-j"],
+      "ecosystem": "MAVEN",
+      "license_id": "GPL-2.0-only (Universal FOSS Exception)",
+      "previous_license": "GPL-2.0-only",
+      "severity": "HIGH",
+      "affected_version_regex": "^[5-9]\\.",
+      "safe_version_hint": "Replace with MariaDB Connector/J (LGPL-2.1) or verify Oracle commercial/FOSS exception eligibility",
+      "summary": "MySQL Connector/J is licensed under GPL-2.0-only; shipping in a closed-source commercial product without an Oracle commercial license or qualifying FOSS exception violates GPL-2.0."
+    }
+  ]
+}
