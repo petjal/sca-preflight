@@ -19,6 +19,7 @@ bucket_2b_provenance_only_l2_files_count: 0
 bucket_3_early_stop_unhashed_files_count: 0
 dependency_inputs_hashed_count: 24
 lockfiles_count: 0
+lockfile_paired_manifests_count: 0
 unpinned_manifests_count: 3
 expected_min_bom_components: 8
 actionable_vulnerabilities_count: 27
@@ -44,7 +45,7 @@ operational_warnings_count: 10
 
 ### What `sca-prescan` Actually Inspected (`15` dirs, `24` files, `0.01` MB)
 - **Pass 1 (Directory, Manifest & Encoding Walk)**: Traversed `15` directories and `24` files (`0.01` MB), classified `0` lockfile(s), `3` unpinned manifest(s), and `0` native/container build script(s), verified manifest character encodings (`UTF-8` vs `UTF-16LE/BE`), and measured max directory depths for detectors, binaries, and exclusions.
-- **Pass 2 (In-Memory Archive, Binary & Header Inspection)**: Inspected `19` archive(s) and `2` compiled binary file(s) in memory without disk extraction, parsed `1` internal version headers/manifests (`META-INF/maven`, `MANIFEST.MF`, `PKG-INFO`, C `zlib.h`/`opensslv.h`/`VERSION.dat`), and checked `0` legal/SPDX attribution file(s).
+- **Pass 2 (In-Memory Archive, Binary & Header Inspection)**: Inspected `19` archive(s) and `2` compiled binary file(s) in memory without disk extraction, parsed `29` internal version headers/manifests (`META-INF/maven`, `MANIFEST.MF`, `PKG-INFO`, C `zlib.h`/`opensslv.h`/`VERSION.dat`), and checked `0` legal/SPDX attribution file(s).
 - **Pass 3 (3-Layer Cryptographic Provenance Hashing)**: Hashed `15` directory skeletons (`L0`, 0 file reads), 100% of `24` dependency-bearing inputs (`L1`), and `24/24` source files (`L2`, `100.0%` coverage).
 - **Pass 4 (100% Offline Version-Range & Rugpull Matching)**: Evaluated all discovered `(component, version)` pairs offline against the built-in Pareto CVE (`pareto_vuln_kb.json`) and license-rugpull (`pareto_license_kb.json`) catalogs (`0` outbound network calls).
 
@@ -121,7 +122,7 @@ java -jar detect.jar \
 ## 3. Expected BOM Baseline & Post-Scan Completeness Gate
 
 - **Expected Minimum BOM Components**: `>= 8` across `3` code location(s)
-- **Baseline Summary**: You should expect a BOM of at least 8 component version(s) across 3 code location(s) (0 locked + 8 direct unpinned), and here is why:
+- **Baseline Summary**: You should expect a BOM of at least 8 component version(s) across 3 code location(s) (0 locked + 8 direct unpinned; per-subproject sum prior to cross-module BOM deduplication), and here is why:
   - `[GO] mode_1_knowns/services/ingress_proxy`: `>= 2` component(s) (mode_1_knowns/services/ingress_proxy/go.mod declares 2 direct dependency(s); no lockfile)
   - `[PYTHON] mode_2_unknowns/services/auth_worker`: `>= 3` component(s) (mode_2_unknowns/services/auth_worker/requirements.txt declares 3 direct dependency(s); no lockfile)
   - `[GO] mode_2_unknowns/services/ingress_proxy`: `>= 3` component(s) (mode_2_unknowns/services/ingress_proxy/go.mod declares 3 direct dependency(s); no lockfile)

@@ -62,7 +62,7 @@ it creates two top-level test directories:
 
 | Unpacked Relative File Path | Size (Bytes) | What It Tests |
 | :--- | :---: | :--- |
-| `GROUND_TRUTH_MANIFEST.json` | 1,823 | Answer key (expected CVEs, license rules, traps, and `sca-sig:v2` digests) |
+| `GROUND_TRUTH_MANIFEST.json` | 1,847 | Answer key (22 expected CVEs, 8 license rules, 4 unique blind-spot trap IDs across 6 locations, and `sca-sig:v2` digests) |
 | `mode_1_knowns/lib/activemq-client-5.18.2.jar` | 778 | `CVE-2023-46604` (CVSS 10.0, CISA-KEV) |
 | `mode_1_knowns/lib/bcprov-jdk15on-1.66.jar` | 734 | `CVE-2020-28052` (BouncyCastle auth bypass) |
 | `mode_1_knowns/lib/commons-text-1.9.jar` | 709 | `CVE-2022-42889` (Text4Shell, CVSS 9.8) |
@@ -80,9 +80,9 @@ it creates two top-level test directories:
 | `mode_2_unknowns/vendor/archives/openssl-3.0.4.tar.gz` | 165 | `CVE-2022-2274` (CVSS 9.8) & `CVE-2022-3602` |
 | `mode_2_unknowns/vendor/archives/PyYAML-5.3.1.tar.gz` | 150 | `CVE-2020-14343` (PyYAML arbitrary code execution, CVSS 9.8) |
 | `mode_2_unknowns/vendor/archives/readline-8.2.tar.gz` | 168 | `LIC-COPYLEFT-GNU-READLINE-GPL3` & `LIC-DPI-GPL-3_0` (`GPL-3.0-only`, not LGPL) |
-| `mode_2_unknowns/vendor/archives/zlib-1.2.11.tar.gz` | 151 | `CVE-2022-37434` (zlib heap overflow, CVSS 9.8) |
+| `mode_2_unknowns/vendor/archives/zlib-1.2.11.tar.gz` | 151 | `CVE-2022-37434` (zlib heap overflow, CVSS 9.8, CISA-KEV) & `CVE-2023-45853` (MiniZip integer overflow, CVSS 9.8) |
 | `mode_2_unknowns/vendor/native/libdb_storage_kv.so` | 52 | Stripped ELF `.so` embedding Redis `7.4.0` (`LIC-RUGPULL-REDIS-RSAL-SSPL`) |
-| `mode_2_unknowns/vendor/native/libstorage_compress.so` | 107 | Stripped ELF `.so` embedding zlib `1.2.11` (`CVE-2022-37434`) |
+| `mode_2_unknowns/vendor/native/libstorage_compress.so` | 107 | Stripped ELF `.so` embedding zlib `1.2.11` (`CVE-2022-37434` & `CVE-2023-45853`) |
 | `mode_2_unknowns/vendor/npm_cache/cross-spawn-7.0.4.tgz` | 151 | Cached npm tarball (`CVE-2024-21538`, CVSS 9.8) |
 | `mode_2_unknowns/vendor/npm_cache/lodash-4.17.19.tgz` | 147 | Cached npm tarball (`CVE-2021-23337`) |
 | `mode_2_unknowns/vendor/nuget_feed/newtonsoft.json.12.0.3.nupkg` | 231 | Cached NuGet `.nupkg` (`CVE-2024-21907`) |

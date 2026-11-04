@@ -22,6 +22,7 @@
     "CVE-2023-39325",
     "CVE-2023-45288",
     "CVE-2023-45803",
+    "CVE-2023-45853",
     "CVE-2023-46604",
     "CVE-2023-49083",
     "CVE-2024-21538",
@@ -47,7 +48,7 @@
   ],
   "recommended_detect_arguments": [
     "--detect.detector.search.depth=3",
-    "--detect.blackduck.signature.scanner.memory=6144",
+    "--detect.blackduck.signature.scanner.memory=4096",
     "--detect.blackduck.signature.scanner.parallel.processors=1",
     "--detect.binary.scan.search.depth=3",
     "--detect.blackduck.signature.scanner.individual.file.matching=BINARY"

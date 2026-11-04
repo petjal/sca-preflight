@@ -175,8 +175,9 @@ Every `LLM_INGESTION_REPORT.md` starts with a flat YAML block so scripts, CI gat
 | `bucket_3_early_stop_unhashed_files_count` | `0` | Count of source files skipped by `L2` hashing due to the 5,000-file / 5.0-second monorepo budget cap. | `== 0` when `early_stop_triggered: false`. |
 | `dependency_inputs_hashed_count` | `11` | Total count of dependency-bearing files hashed into Layer 1 (`L1` / `Bucket 2a`). | Shows how many distinct files control the BOM and version detection for this workspace. |
 | `lockfiles_count` | `0` | Number of pinned lockfiles found (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `go.sum`, `Cargo.lock`, `poetry.lock`, `uv.lock`, `gradle.lockfile`, etc.). | Ideally `>= unpinned_manifests_count`. Lockfiles let buildless scans resolve exact transitive dependency trees without running a compiler. |
-| `unpinned_manifests_count` | `1` | Number of unpinned project manifests found (`pom.xml`, `build.gradle`, `package.json`, `requirements.txt`, `pyproject.toml`, `.csproj`, `conanfile.py`, etc.). In `zlib`, this was `contrib/dotzlib/DotZLib/DotZLib.csproj`. | If `> 0` without matching lockfiles, your CI runner must either have the matching build tool installed (`mvn`, `gradle`, `dotnet`, `pip`) or pass `--detect.accuracy.required=NONE`. |
-| `expected_min_bom_components` | `0` | **Pre-Scan BOM Floor**: Sum of unique direct dependencies declared in manifests plus locked entries in lockfiles across all subprojects (`0` for `zlib` because `DotZLib.csproj` declares zero external NuGet packages and C code has no package lockfile). | **Post-Scan Completeness Check**: After your scanner finishes, check that `actual_bom_components >= expected_min_bom_components`. If your scanner reports `0` components when `expected_min_bom_components` is `350`, a detector failed silently. |
+| `lockfile_paired_manifests_count` | `0` | Number of manifests (`go.mod`, `package.json`, `Cargo.toml`, `pyproject.toml`) that sit alongside a sibling lockfile (`go.sum`, `package-lock.json`, `Cargo.lock`, `poetry.lock`) in the same directory. | Paired manifests are resolved via their sibling lockfile (`Bucket 2a-i Manifest (Lockfile-Paired)`) rather than treated as unpinned. |
+| `unpinned_manifests_count` | `1` | Number of standalone unpinned project manifests found without a sibling lockfile (`pom.xml`, `build.gradle`, `package.json`, `requirements.txt`, `pyproject.toml`, `.csproj`, `conanfile.py`, etc.). In `zlib`, this was `contrib/dotzlib/DotZLib/DotZLib.csproj`. | If `> 0`, your CI runner must either have the matching build tool installed (`mvn`, `gradle`, `dotnet`, `pip`) or pass `--detect.accuracy.required=NONE`. |
+| `expected_min_bom_components` | `0` | **Pre-Scan BOM Floor (Per-Subproject Sum)**: Per-subproject sum of direct dependencies declared in manifests plus locked entries in lockfiles across all discovered subprojects (`0` for `zlib` because `DotZLib.csproj` declares zero external NuGet packages and C code has no package lockfile; note that in multi-module monorepos sharing common libraries across subprojects, the server-side Project Version BOM will deduplicate shared components across code locations). | **Post-Scan Completeness Check**: After your scanner finishes, check each subproject's code location against its expected baseline. If your scanner reports `0` components when `expected_min_bom_components` is `264`, a detector or depth setting failed silently. |
 | `actionable_vulnerabilities_count` | `2` | Count of components on disk matching `sca-prescan`'s built-in Pareto hit-list of CVSS 9.8-10.0 / CISA-KEV vulnerabilities (`CVE-2022-37434` and `CVE-2023-45853` in `zlib 1.2.11`). | **Target: `== 0`**. Any number `> 0` means a severe, well-known vulnerability was spotted directly in a manifest, archive, or C version header before the main scan even started. |
 | `actionable_license_risks_count` | `0` | Count of components matching known open-source license rugpulls (`AGPL-3.0`, `SSPL-1.0`, `RSALv2`, `BSL-1.1`) or strict copyleft (`GPL-2.0-only`, `GPL-3.0-only`). | **Target: `== 0`** for commercial proprietary distributions; requires legal/architecture review if `> 0`. |
 | `blind_spot_traps_count` | `0` | Count of shaded uber-JAR class-path traps (e.g., shaded `JndiLookup.class` inside an application JAR with its `META-INF/maven` POM stripped) or embedded private key headers. | **Target: `== 0`**. If `> 0`, standard package-manager detectors (`--detect.tools=DETECTOR`) will miss the shaded code unless binary/deep inspection is used. |
@@ -211,7 +212,7 @@ To respect that policy and avoid nagging teams about flags they already set:
 
 Below is the complete updated `LLM_INGESTION_REPORT.md` generated for `madler/zlib` (`v1.2.11`) with `--repo-only`, showing the 4-Bucket File & Byte Disposition Accounting (`11 + 243 + 0 = 254` files) and the 11-row `Bucket 2a` Actionable File Ledger (also viewable in browser HTML format at [`REPORT_WALKTHROUGH_ZLIB.html`](REPORT_WALKTHROUGH_ZLIB.html)):
 
-```markdown
+````markdown
 ---
 schema: sca-ops-ai-brief/v1
 workspace_name: madler_zlib
@@ -233,6 +234,7 @@ bucket_2b_provenance_only_l2_files_count: 243
 bucket_3_early_stop_unhashed_files_count: 0
 dependency_inputs_hashed_count: 11
 lockfiles_count: 0
+lockfile_paired_manifests_count: 0
 unpinned_manifests_count: 1
 expected_min_bom_components: 0
 actionable_vulnerabilities_count: 2
@@ -257,7 +259,7 @@ operational_warnings_count: 2
 | **SCA Web UI Provenance Flag** | `--detect.project.version.notes=sca-ops-provenance:sca-sig:v2:L0=40f8b280f9ff:L1=aa17566a05ee:L2=067c3d506457:CFG=98b04404b51e@d3(100.0%);tree_merkle=sha256:067c3d506457baf7;dep_merkle=sha256:aa17566a05ee6a77;cfg_sha256=98b04404b51ee40a;files=254/254;dep_inputs=11` | Pass this flag to Detect to stamp exact input/config provenance into the Project Version Notes UI. |
 
 ### What `sca-prescan` Actually Inspected (`40` dirs, `254` files, `2.85` MB)
-- **Pass 1 (Directory, Manifest & Encoding Walk)**: Traversed `40` directories and `254` files (`2.85` MB), classified `0` lockfile(s), `1` unpinned manifest(s), and `24` native/container build script(s), verified manifest character encodings (`UTF-8` vs `UTF-16LE/BE`), and measured max directory depths for detectors, binaries, and exclusions.
+- **Pass 1 (Directory, Manifest & Encoding Walk)**: Traversed `40` directories and `254` files (`2.85` MB), classified `0` lockfile(s), `1` unpinned manifest(s), and `8` native/container build script(s), verified manifest character encodings (`UTF-8` vs `UTF-16LE/BE`), and measured max directory depths for detectors, binaries, and exclusions.
 - **Pass 2 (In-Memory Archive, Binary & Header Inspection)**: Inspected `0` archive(s) and `0` compiled binary file(s) in memory without disk extraction, parsed `1` internal version headers/manifests (`META-INF/maven`, `MANIFEST.MF`, `PKG-INFO`, C `zlib.h`/`opensslv.h`/`VERSION.dat`), and checked `1` legal/SPDX attribution file(s).
 - **Pass 3 (3-Layer Cryptographic Provenance Hashing)**: Hashed `40` directory skeletons (`L0`, 0 file reads), 100% of `11` dependency-bearing inputs (`L1`), and `254/254` source files (`L2`, `100.0%` coverage).
 - **Pass 4 (100% Offline Version-Range & Rugpull Matching)**: Evaluated all discovered `(component, version)` pairs offline against the built-in Pareto CVE (`pareto_vuln_kb.json`) and license-rugpull (`pareto_license_kb.json`) catalogs (`0` outbound network calls).
@@ -327,7 +329,28 @@ java -jar detect.jar \
 ## 5. High-Severity License & Rugpull Risks (0)
 
 _No high-severity license or rugpull risks matched._
-```
+
+## 6. Ready-to-Copy Prompts for Your Enterprise LLM
+
+### 6.1 Prompts to Point at This AI-Intended Report (`LLM_INGESTION_REPORT.md`)
+> [!NOTE]
+> **Run Right Now (No Extra Code Needed)**: Paste this `LLM_INGESTION_REPORT.md` file into your company's internal AI (Copilot, Claude, ChatGPT Enterprise) with any of Prompts A1-A4 below.
+
+- **Prompt A1 (CI Pipeline Calibration PR)**: *"Using Section 1 and Section 2 of this brief, write a pull-request description for our DevSecOps pipeline explaining which Detect CLI flags we are adding, which uncalibrated coverage gaps they close, and how the multilayer codebase signature (`L0/L1/L2/CFG`) works."*
+- **Prompt A2 (Legal & License Rugpull Triage)**: *"Using Section 5 of this brief, group all AGPL-3.0, SSPL-1.0, RSALv2, BSL-1.1, and GPL findings by distribution risk for a shipped commercial appliance vs. internal tool, and list the exact non-copyleft drop-in replacements."*
+- **Prompt A3 (Security Remediation Plan)**: *"Using Section 4 of this brief, prioritize all CISA-KEV and CVSS 9.8-10.0 vulnerabilities by artifact location (distinguishing standard manifests vs. shaded uber-JARs, nested vendor archives, and native binaries) and output a step-by-step upgrade plan."*
+- **Prompt A4 (BOM Delta Cross-Examination)**: *"Compare Section 3 (Expected BOM Baseline) and Sections 4-5 (Deep Packet Inspection findings) in this brief against our current Project Version BOM export, and list every component that default detector settings omitted."*
+
+### 6.2 InfoSec Self-Audit Prompts (For Licensed `sca-ops-toolkit` Source Code & Sample Outputs)
+> [!IMPORTANT]
+> **Where is the Python source code? It lives in a separate, private repo (`sca-ops-toolkit`)**: This public `sca-preflight` repo only has the free test project (`benchmark/`) and sample output files (`examples/`).
+>
+> If your team wants to try the Python scripts that generated this report, email **Pete (`pjalajas+sca-preflight@gmail.com`)** for access to the private `sca-ops-toolkit` repo. Because the scripts are plain, readable Python (no compiled binaries or extra pip packages), your InfoSec reviewer can drop the source folder into your internal AI with Prompts B1-B3 below to check the code before running it on your network. (You can also run the second half of **Prompt B3** on this `LLM_INGESTION_REPORT.md` file right now.)
+
+- **Prompt B1 (Zero-Exfiltration & Network Boundary Audit)**: *"Audit all Python modules in the toolkit (`src/`). Enumerate every import or call involving network sockets, HTTP clients (`urllib`, `http`, `socket`), or subprocess execution. Verify that `sca-prescan`, `sca-tealeaves`, and `sca-log-sanitize` make zero outbound network connections during workspace analysis unless `--bd-url` is explicitly passed by the operator."*
+- **Prompt B2 (Read-Only Workspace & Dry-Run Mutation Safety Audit)**: *"Audit `prescan.py`, `completeness.py`, and `bom_ifttt.py`. Verify that workspace scanning is strictly read-only on the target source tree, never executes untrusted build scripts (`mvn`, `gradle`, `npm`, `pip`), and that `BomIftttEngine` defaults to `dry_run=True` unless `--apply` is explicitly supplied."*
+- **Prompt B3 (DLP & Output Sanitization Audit)**: *"Audit `log_sanitize.py` and this generated `LLM_INGESTION_REPORT.md` file. Verify that workstation paths, internal hostnames, private IPv4 addresses, and credentials (`--blackduck.api.token`, Bearer tokens, URI passwords) are stripped or tokenized before external sharing."*
+````
 
 ---
 
@@ -340,10 +363,15 @@ To test how the 4-Bucket File & Byte Disposition Accounting and `Bucket 2a` gap 
   - **Bucket 2a (Actionable `L1` Files)**: `80` files (`1.05` MB) - `60` unpinned Maven/Gradle manifests across depths `0..4`, `19` wrapper/test `.jar` archives down to depth `6`, and `1` `LICENSE` file.
   - **Bucket 2b (Source/Doc Provenance `L2 - L1`)**: `527` files (`3.19` MB)
   - **Bucket 3 (Early-Stop Skipped)**: `0` files (`100.0%` coverage)
-- **What the `Bucket 2a` Gap Analysis Proves**:
-  - Out of `60` Maven/Gradle manifests declaring **`>= 264` direct dependencies across `51` subprojects**, Default Detect (`--detect.detector.search.depth=0`, `--detect.detector.search.continue=false`) only inspects root `pom.xml` at `d=0` (and its declared `<modules>` reactor *only* when a full `mvn dependency:tree` build environment succeeds), while **silently skipping all standalone non-reactor POMs (`spring-cloud-function-samples/*`, `src/it/*`, `docs/pom.xml`), all Gradle subprojects (`build.gradle`), and all 59 child POMs in buildless mode** (`d=1..4`).
+- **What the `Bucket 2a` Gap Analysis Proves (`1 + 34 + 16 + 9 = 60` manifests)**:
+  - Out of `60` Maven/Gradle manifests declaring a per-subproject sum of **`>= 264` direct dependencies across `51` active subprojects** (prior to cross-module BOM deduplication), the `Bucket 2a` ledger classifies:
+    - `1` root aggregator `pom.xml` (`d=0`)
+    - `34` child Maven reactor module `pom.xml` files (`d=1..2`), which Default Detect (`depth=0`) traverses *only* when a full `mvn dependency:tree` CLI build succeeds and **silently skips at `d=0` in buildless mode**
+    - `16` standalone non-reactor `pom.xml` files (`spring-cloud-function-compiler`, `spring-cloud-function-task`, `spring-cloud-function-adapter-openwhisk`, `4` sample POMs, and `9` `src/it/*` integration-test POMs at `d=1..4`), which are **always silently ignored at `d=0`** even when `mvn` succeeds because they are not listed in the root `<modules>` reactor
+    - `9` Gradle `build.gradle` files (`d=2..3`), which are **always silently ignored at `d=0`** because there is no root `build.gradle` or `settings.gradle` at `d=0`
 
 > ### Gemini UI Output #4 (Evaluating `spring-cloud/spring-cloud-function` @ `v3.2.2`)
+> *(Note: The verbatim quote below reflects Gemini Web UI's unprompted analysis of this report; as detailed in the `1 + 34 + 16 + 9 = 60` breakdown above, `34` child POMs are part of the root Maven `<modules>` reactor while `25` manifests [`16` non-reactor POMs + `9` Gradle files] are completely unreachable at `depth=0` even with Maven CLI installed, and all `59` nested manifests are skipped at `depth=0` in buildless mode.)*
 > This scan demonstrates how well the tool scales from a compact C project (`zlib`) to a massive, multi-module Java and Kotlin enterprise monorepo (`spring_cloud_function`). Testing against this codebase is a great proof point because it highlights the exact failure modes enterprise teams frequently encounter with default scanner settings.
 > - **Uncovers the actual flagship zero-days**: The pre-scan directly flags the vulnerabilities that historically defined this repository:
 >   - **`CVE-2022-22963` (CVSS 9.8 / CISA-KEV)**: The Spring Cloud Function SpEL Remote Code Execution vulnerability in `spring-cloud-function-context 3.2.2` across 13 locations.

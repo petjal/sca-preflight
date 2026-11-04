@@ -345,7 +345,7 @@
         "reason": "mode_2_unknowns/services/ingress_proxy/go.mod declares 3 direct dependency(s); no lockfile"
       }
     ],
-    "summary_statement": "You should expect a BOM of at least 8 component version(s) across 3 code location(s) (0 locked + 8 direct unpinned), and here is why:"
+    "summary_statement": "You should expect a BOM of at least 8 component version(s) across 3 code location(s) (0 locked + 8 direct unpinned; per-subproject sum prior to cross-module BOM deduplication), and here is why:"
   },
   "actionable_vulnerabilities": [
     {
@@ -1018,7 +1018,7 @@
       <section id="bom-baseline">
         <h2>5. Expected BOM Baseline &amp; Post-Scan Completeness Gate</h2>
         <p><strong>Expected Minimum BOM Components</strong>: <code>&gt;= 8</code> across <code>3</code> code location(s)</p>
-        <p><strong>Baseline Summary</strong>: You should expect a BOM of at least 8 component version(s) across 3 code location(s) (0 locked + 8 direct unpinned), and here is why:</p>
+        <p><strong>Baseline Summary</strong>: You should expect a BOM of at least 8 component version(s) across 3 code location(s) (0 locked + 8 direct unpinned; per-subproject sum prior to cross-module BOM deduplication), and here is why:</p>
         <ul><li><code>[GO] mode_1_knowns/services/ingress_proxy</code>: <code>&gt;= 2</code> component(s) (mode_1_knowns/services/ingress_proxy/go.mod declares 2 direct dependency(s); no lockfile)</li><li><code>[PYTHON] mode_2_unknowns/services/auth_worker</code>: <code>&gt;= 3</code> component(s) (mode_2_unknowns/services/auth_worker/requirements.txt declares 3 direct dependency(s); no lockfile)</li><li><code>[GO] mode_2_unknowns/services/ingress_proxy</code>: <code>&gt;= 3</code> component(s) (mode_2_unknowns/services/ingress_proxy/go.mod declares 3 direct dependency(s); no lockfile)</li></ul>
       </section>
 
@@ -1045,11 +1045,19 @@
 
       <section id="llm-prompts">
         <h2>8. Ready-to-Copy Prompts for Your Enterprise LLM</h2>
+        <h3>8.1 Prompts to Point at This AI-Intended Report (<code>A1-A4</code>)</h3>
         <ul>
           <li><strong>Prompt A1 (CI Pipeline Calibration PR)</strong>: <em>"Using this brief, write a pull-request description for our DevSecOps pipeline explaining which Detect CLI flags we are adding, which uncalibrated coverage gaps they close, and how the multilayer codebase signature (<code>L0/L1/L2/CFG</code>) works."</em></li>
           <li><strong>Prompt A2 (Legal &amp; License Rugpull Triage)</strong>: <em>"Group all AGPL-3.0, SSPL-1.0, RSALv2, BSL-1.1, and GPL findings in this brief by distribution risk for a shipped commercial appliance vs. internal tool, and list the non-copyleft drop-in replacements."</em></li>
           <li><strong>Prompt A3 (Security Remediation Plan)</strong>: <em>"Prioritize all CISA-KEV and CVSS 9.8-10.0 vulnerabilities in this brief by artifact location (standard manifests vs. shaded uber-JARs, nested vendor archives, and native binaries) and output a step-by-step upgrade plan."</em></li>
           <li><strong>Prompt A4 (BOM Delta Cross-Examination)</strong>: <em>"Compare the Expected BOM Baseline and Deep Packet Inspection findings in this brief against our current Project Version BOM export, and list every component that default detector settings omitted."</em></li>
+        </ul>
+        <h3>8.2 InfoSec Self-Audit Prompts (<code>B1-B3</code>: Point at the Python Source or This Report)</h3>
+        <p class="muted"><strong>Where is the Python source code?</strong> It lives in a separate, private repo (<code>sca-ops-toolkit</code>). Email <strong>Pete (<code>pjalajas+sca-preflight@gmail.com</code>)</strong> for access. Because the scripts are plain, readable Python (zero external pip dependencies), your InfoSec reviewer can run Prompts B1-B3 against the source tree or this generated brief.</p>
+        <ul>
+          <li><strong>Prompt B1 (Zero-Exfiltration &amp; Network Boundary Audit)</strong>: <em>"Audit all Python modules in the toolkit (<code>src/</code>). Enumerate every import or call involving network sockets, HTTP clients (<code>urllib</code>, <code>http</code>, <code>socket</code>), or subprocess execution. Verify that <code>sca-prescan</code>, <code>sca-tealeaves</code>, and <code>sca-log-sanitize</code> make zero outbound network connections during workspace analysis unless <code>--bd-url</code> is explicitly passed by the operator."</em></li>
+          <li><strong>Prompt B2 (Read-Only Workspace &amp; Dry-Run Mutation Safety Audit)</strong>: <em>"Audit <code>prescan.py</code>, <code>completeness.py</code>, and <code>bom_ifttt.py</code>. Verify that workspace scanning is strictly read-only on the target source tree, never executes untrusted build scripts (<code>mvn</code>, <code>gradle</code>, <code>npm</code>, <code>pip</code>), and that <code>BomIftttEngine</code> defaults to <code>dry_run=True</code> unless <code>--apply</code> is explicitly supplied."</em></li>
+          <li><strong>Prompt B3 (DLP &amp; Output Sanitization Audit)</strong>: <em>"Audit <code>log_sanitize.py</code> and this generated report file. Verify that workstation paths, internal hostnames, private IPv4 addresses, and credentials (<code>--blackduck.api.token</code>, Bearer tokens, URI passwords) are stripped or tokenized before external sharing."</em></li>
         </ul>
       </section>
 
