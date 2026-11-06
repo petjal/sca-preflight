@@ -637,6 +637,26 @@
       "vulnerable_anchor_regex": "boolean\\s+isResourceUnderLocation\\s*\\([\\s\\S]{0,1200}?resourcePath\\.contains\\s*\\(\\s*\"%\"\\s*\\)",
       "patch_guard_regex": "StringUtils\\.cleanPath\\s*\\(\\s*resourcePath\\s*\\)\\.contains\\s*\\(\\s*\"\\.\\.\"|checkResourcePathNormalized",
       "actionable_remedy": "Upgrade spring-webmvc / spring-webflux to 6.1.13+ / 6.0.24+ / 5.3.40+ (fixes static resource path traversal in PathResourceResolver.isResourceUnderLocation)."
+    },
+    {
+      "rule_id": "SNIP-CVE-2026-123158",
+      "cve_id": "CVE-2026-123158",
+      "component": "openssh",
+      "ecosystem": "C_CPP",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-287",
+      "published_date": "2026-11-05",
+      "pre_nvd": false,
+      "fixed_in_version": "10.6p2",
+      "target_type": "source_snippet",
+      "target_filenames": [
+        "auth-passwd.c",
+        "port-uw.c"
+      ],
+      "vulnerable_anchor_regex": "sys_auth_passwd[\\s\\S]{0,1600}?strcmp\\s*\\(\\s*encrypted_password\\s*,\\s*pw_password\\s*\\)\\s*==\\s*0",
+      "patch_guard_regex": "MIN_PASSWORD_HASH_LEN|strlen\\s*\\(\\s*pw_password\\s*\\)\\s*>=\\s*MIN_PASSWORD_HASH_LEN",
+      "actionable_remedy": "Upgrade OpenSSH to 10.6p2+ (commit 4353fdc43e enforcing strlen(pw_password) >= MIN_PASSWORD_HASH_LEN in sys_auth_passwd to block musl crypt() '*' error return collision with locked '*' shadow entries)."
     }
   ]
 }

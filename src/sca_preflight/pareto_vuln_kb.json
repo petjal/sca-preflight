@@ -1,8 +1,8 @@
 {
   "version": "2.0.0",
   "catalog_source": "Seed Hand-Curated Sizzle + CISA KEV + OSV.dev CRITICAL (CVSS >= 9.8)",
-  "total_rules": 3910,
-  "seed_rules_count": 55,
+  "total_rules": 3911,
+  "seed_rules_count": 56,
   "cisa_kev_compiled_count": 230,
   "cvss_98_critical_compiled_count": 3625,
   "vulnerabilities": [
@@ -943,6 +943,25 @@
       "fixed_in_version": "8.3.13 / 8.2.25",
       "actionable_remedy": "Upgrade PHP runtime to 8.3.13, 8.2.25, or higher (added to CISA KEV 2026-10-26).",
       "summary": "PHP stale internal request-state memory corruption exploited in the wild (CISA KEV 2026-10-26).",
+      "is_seed": true
+    },
+    {
+      "cve_id": "CVE-2026-123158",
+      "component": "openssh",
+      "aliases": [
+        "openssh",
+        "openssh-server",
+        "sshd"
+      ],
+      "ecosystem": "C_CPP|SYSTEM|ALPINE|BITBAKE",
+      "cvss": 9.8,
+      "cisa_kev": false,
+      "cwe": "CWE-287",
+      "published_date": "2026-11-05",
+      "vulnerable_version_regex": "^(?:[1-9]\\.|10\\.(?:[0-5]|6(?:_?p[01])?))(?:$|[^0-9])",
+      "fixed_in_version": "10.6p2",
+      "actionable_remedy": "Upgrade OpenSSH (sshd) to 10.6p2+ (or Alpine fixed revision) or set PasswordAuthentication no in sshd_config and restart sshd.",
+      "summary": "sshhole unauthenticated password authentication bypass on musl libc systems (Alpine/OpenWrt) without PAM via >256-byte password crypt() '*' sentinel collision.",
       "is_seed": true
     },
     {

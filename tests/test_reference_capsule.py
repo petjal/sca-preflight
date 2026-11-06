@@ -126,6 +126,43 @@ class TestReferenceCapsuleAndPrescan(unittest.TestCase):
             self.assertNotIn("\u2013", md_brief)
             self.assertIn('id="sca-ops-ai-brief-json"', html_brief)
 
+    def test_sshhole_cve_2026_123158_snippet_and_patch_guard(self) -> None:
+        """Verify CVE-2026-123158 (OpenSSH < 10.6p2 musl password auth bypass) snippet and MIN_PASSWORD_HASH_LEN guard."""
+        with tempfile.TemporaryDirectory() as td:
+            unpatched_ws = Path(td) / "openssh_unpatched"
+            unpatched_ws.mkdir(parents=True, exist_ok=True)
+            (unpatched_ws / "auth-passwd.c").write_text(
+                "int sys_auth_passwd(struct ssh *ssh, const char *password) {\n"
+                "    struct passwd *pw = ssh->authctxt->pw;\n"
+                "    char *encrypted_password, *salt = NULL;\n"
+                "    char *pw_password = ssh->authctxt->valid ? shadow_pw(pw) : pw->pw_passwd;\n"
+                "    encrypted_password = xcrypt(password, salt);\n"
+                "    return encrypted_password != NULL &&\n"
+                "        strcmp(encrypted_password, pw_password) == 0;\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            rep_unpatched = scan_workspace(unpatched_ws, repo_only=True)
+            cves_unpatched = {v["cve_id"]: v for v in rep_unpatched["actionable_vulnerabilities"]}
+            self.assertIn("CVE-2026-123158", cves_unpatched)
+            self.assertEqual(cves_unpatched["CVE-2026-123158"]["evidence_source"], "code_snippet:auth-passwd.c")
+
+            patched_ws = Path(td) / "openssh_patched"
+            patched_ws.mkdir(parents=True, exist_ok=True)
+            (patched_ws / "auth-passwd.c").write_text(
+                "#define MIN_PASSWORD_HASH_LEN 4\n"
+                "int sys_auth_passwd(struct ssh *ssh, const char *password) {\n"
+                "    int ret = encrypted_password != NULL &&\n"
+                "        strlen(pw_password) >= MIN_PASSWORD_HASH_LEN &&\n"
+                "        strcmp(encrypted_password, pw_password) == 0;\n"
+                "    return ret;\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            rep_patched = scan_workspace(patched_ws, repo_only=True)
+            cves_patched = {v["cve_id"]: v for v in rep_patched["actionable_vulnerabilities"]}
+            self.assertNotIn("CVE-2026-123158", cves_patched)
+
 
 if __name__ == "__main__":
     unittest.main()
