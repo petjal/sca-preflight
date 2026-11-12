@@ -962,6 +962,8 @@ def scan_workspace(
     spdx3_files: list[str] = []
     bitbake_recipe_discoveries: list[dict[str, str]] = []
     native_build_scripts_count = 0
+    symlink_escapes: list[dict[str, Any]] = []
+    dangling_symlinks: list[dict[str, Any]] = []
 
     # Symlink cycle protection on root
     root_stat = root.stat()
@@ -981,6 +983,38 @@ def scan_workspace(
         for entry in entries:
             try:
                 name = entry.name
+                rel_path = str(Path(entry.path).relative_to(root))
+
+                # Fatal tree flaw checks: inspect symlinks before following
+                if entry.is_symlink():
+                    try:
+                        target_path = Path(os.path.realpath(entry.path))
+                        # Check if target is outside repository root
+                        try:
+                            target_path.relative_to(root)
+                        except ValueError:
+                            symlink_escapes.append({
+                                "path": rel_path,
+                                "target": str(target_path),
+                                "depth": depth
+                            })
+                            warnings.append(
+                                f"EXTERNAL_SYMLINK_ESCAPE: Symlink '{rel_path}' targets outside workspace ('{target_path}'). "
+                                "Black Duck Detect or Signature Scanner may traverse host filesystems or hit permission failures."
+                            )
+                        if not target_path.exists():
+                            dangling_symlinks.append({
+                                "path": rel_path,
+                                "target": str(target_path),
+                                "depth": depth
+                            })
+                            warnings.append(
+                                f"DANGLING_SYMLINK: Symlink '{rel_path}' points to non-existent target ('{target_path}'). "
+                                "Detect package managers and detectors may choke or throw unhandled IOExceptions."
+                            )
+                    except OSError as e:
+                        warnings.append(f"BROKEN_SYMLINK_ERROR: Cannot resolve symlink '{rel_path}': {e}")
+
                 entry_stat = entry.stat(follow_symlinks=False)
                 inode_key = (entry_stat.st_dev, entry_stat.st_ino)
 
@@ -1667,6 +1701,8 @@ def scan_workspace(
         },
         "java_runtime": java_runtime,
         "warnings": warnings,
+        "symlink_escapes": symlink_escapes,
+        "dangling_symlinks": dangling_symlinks,
         "recommended_detect_arguments": detect_properties,
     }
 
