@@ -4,11 +4,61 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](pyproject.toml)
 
+> **Quickstart (Zero pip dependencies, Python 3.11+ standard library only):**
+> ```bash
+> git clone https://github.com/petjal/sca-preflight.git && cd sca-preflight
+> PYTHONPATH=src python3 -m sca_preflight.prescan --workspace /path/to/repo --ai-brief REPORT.md
+> ```
+> *`sca-prescan` audits your workspace in <2 seconds, catches blind spots before Black Duck Synopsys Detect runs, and outputs an AI-ready Markdown & HTML5 audit brief.*
+
 > **Engineering Advisory & Tooling Notice**: Hi, I'm **Emil Walter "Pete" Jalajas**. Over the past 16 years (including 12 years of full-time regular W2 work as a Designated Support Engineer for SCA, BDBA, and Protex), I have worked with enterprise teams to tune large-scale monorepo scans, eliminate scanner blind spots, clean up noisy BOMs, and troubleshoot server and PostgreSQL performance bottlenecks.
 >
 > I am available for focused, short-duration W2 or 1099 contracting engagements through your company's preferred staffing or consulting vendor to help your team achieve fast, reliable, and auditable SCA pipeline performance. I have open-sourced `sca-prescan` here under the MIT License as a standalone, zero-dependency working example for your team's immediate benefit.
 >
 > *Suggestions, bug reports, and tricky scan edge cases are always welcome - please let me know how I can make this tooling help your team get your job done better, faster, and cheaper.*
+
+---
+
+## ⚡ 1-Click CI Pipeline Recipe (GitHub Actions)
+
+Drop this lightweight pre-flight gate into `.github/workflows/sca-preflight.yml` to lint manifests, verify copyleft boundaries, and catch hidden archives before triggering heavy Black Duck / Synopsys Detect jobs:
+
+```yaml
+name: SCA Preflight Gate
+on: [push, pull_request]
+
+jobs:
+  sca-prescan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run SCA Preflight
+        run: |
+          git clone --depth 1 https://github.com/petjal/sca-preflight.git /tmp/sca-preflight
+          PYTHONPATH=/tmp/sca-preflight/src python3 -m sca_preflight.prescan \
+            --workspace . \
+            --ai-brief sca-preflight-brief.md \
+            --html-report sca-preflight-report.html
+      - name: Archive Preflight Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: sca-preflight-reports
+          path: |
+            sca-preflight-brief.md
+            sca-preflight-report.html
+```
+
+---
+
+## 🤝 Complementary to Black Duck / Synopsys Detect (Not a Replacement)
+
+`sca-prescan` is **not** an SCA database replacement. It is a **fast pre-flight sanity linter** designed to run *before* Black Duck Detect:
+- **Zero Scan-Queue Friction**: Pinpoints directory exclusions and skips non-shipping files so Black Duck server scan jobs don't stall for hours on huge un-excluded trees.
+- **Catches Scanner Blind Spots**: Identifies nested archives, UTF-16 manifests, and shaded `.jar` class-paths that default Detect settings silently skip.
+- **Verifiable BOM Provenance**: Produces cryptographic `L0/L1/L2` fingerprints to stamp into Black Duck Project Version Notes, giving compliance teams proof of exactly what files produced the scan.
 
 ---
 
