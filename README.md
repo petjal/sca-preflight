@@ -53,9 +53,11 @@ jobs:
 
 ---
 
-## 🤝 Complementary to Black Duck / Synopsys Detect (Not a Replacement)
+## 🤝 Complementary to Black Duck Detect (Not a Replacement)
 
 `sca-prescan` is **not** an SCA database replacement. It is a **fast pre-flight sanity linter** designed to run *before* Black Duck Detect:
+- **Catches Symlink & Path Escapes**: Pinpoints broken symlinks and cross-filesystem links pointing outside the repository tree that cause Detect or the signature scanner to choke, loop infinitely, or abort.
+- **Archive Boundary Verification**: Detect does **not** run package managers (e.g. `npm`, `maven`, `pip`, `nuget`) inside nested `.zip` or `.tar.gz` archives. Detect only runs raw signature matches on unpacked archives unless a dedicated BDBA binary container scan is licensed and triggered. `sca-prescan` flags embedded manifests hidden inside archives before scans run.
 - **Zero Scan-Queue Friction**: Pinpoints directory exclusions and skips non-shipping files so Black Duck server scan jobs don't stall for hours on huge un-excluded trees.
 - **Catches Scanner Blind Spots**: Identifies nested archives, UTF-16 manifests, and shaded `.jar` class-paths that default Detect settings silently skip.
 - **Verifiable BOM Provenance**: Produces cryptographic `L0/L1/L2` fingerprints to stamp into Black Duck Project Version Notes, giving compliance teams proof of exactly what files produced the scan.
