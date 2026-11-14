@@ -9,7 +9,7 @@
 > git clone https://github.com/petjal/sca-preflight.git && cd sca-preflight
 > PYTHONPATH=src python3 -m sca_preflight.prescan --workspace /path/to/repo --ai-brief REPORT.md
 > ```
-> *`sca-prescan` audits your workspace in <2 seconds, catches blind spots before Black Duck Synopsys Detect runs, and outputs an AI-ready Markdown & HTML5 audit brief.*
+> *`sca-prescan` audits your workspace in <2 seconds, catches blind spots before Black Duck Detect runs, and outputs an AI-ready Markdown & HTML5 audit brief.*
 
 > **Engineering Advisory & Tooling Notice**: Hi, I'm **Emil Walter "Pete" Jalajas**. Over the past 16 years (including 12 years of full-time regular W2 work as a Designated Support Engineer for SCA, BDBA, and Protex), I have worked with enterprise teams to tune large-scale monorepo scans, eliminate scanner blind spots, clean up noisy BOMs, and troubleshoot server and PostgreSQL performance bottlenecks.
 >
@@ -21,7 +21,7 @@
 
 ## ⚡ 1-Click CI Pipeline Recipe (GitHub Actions)
 
-Drop this lightweight pre-flight gate into `.github/workflows/sca-preflight.yml` to lint manifests, verify copyleft boundaries, and catch hidden archives before triggering heavy Black Duck / Synopsys Detect jobs:
+Drop this lightweight pre-flight gate into `.github/workflows/sca-preflight.yml` to lint manifests, verify copyleft boundaries, and catch hidden archives before triggering heavy Black Duck Detect jobs:
 
 ```yaml
 name: SCA Preflight Gate
