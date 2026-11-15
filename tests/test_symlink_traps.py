@@ -1,7 +1,7 @@
 """Tests for symlink escape and dangling symlink detection."""
 
-import os
 from pathlib import Path
+
 from sca_preflight.prescan import scan_workspace
 
 

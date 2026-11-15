@@ -14,6 +14,7 @@ import json
 import os
 import platform
 import re
+import shlex
 import shutil
 import ssl
 import subprocess
@@ -139,6 +140,7 @@ __all__ = [
     "detect_java_runtime",
     "generate_ai_brief_html",
     "generate_ai_brief_markdown",
+    "inspect_detect_token_hygiene",
     "main",
     "merge_existing_detect_args",
     "preflight_server_check",
@@ -779,6 +781,371 @@ def detect_java_runtime() -> dict[str, Any]:
     }
 
 
+_PLACEHOLDER_TOKEN_LITERALS = frozenset(
+    {
+        "null",
+        "none",
+        "nil",
+        "undefined",
+        "false",
+        "true",
+        "nan",
+        "redacted",
+        "<redacted>",
+        "<token>",
+        "your_token_here",
+        "changeme",
+        "todo",
+    }
+)
+
+
+def _classify_single_token_shape(raw_val: str) -> dict[str, Any]:
+    """Classify a single candidate token string without storing or echoing any secret characters."""
+    raw_len = len(raw_val)
+    trimmed = raw_val.strip()
+    trimmed_len = len(trimmed)
+    has_surrounding_ws = raw_len != trimmed_len
+    issues: list[str] = []
+
+    if raw_len == 0:
+        return {
+            "raw_length": 0,
+            "trimmed_length": 0,
+            "has_surrounding_whitespace": False,
+            "shape": "empty",
+            "valid_shape": False,
+            "issues": ["Token value is an empty string (length 0)."],
+        }
+
+    if trimmed_len == 0:
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": 0,
+            "has_surrounding_whitespace": True,
+            "shape": "whitespace_only",
+            "valid_shape": False,
+            "issues": [f"Token contains only whitespace/newlines (raw length {raw_len}, trimmed length 0)."],
+        }
+
+    if has_surrounding_ws:
+        issues.append(
+            f"Token has leading or trailing whitespace/newlines (raw length {raw_len} vs trimmed length {trimmed_len})."
+        )
+
+    lower_trimmed = trimmed.lower()
+    if lower_trimmed in _PLACEHOLDER_TOKEN_LITERALS or set(trimmed) <= {"*", "."}:
+        issues.append(f"Token matches a literal placeholder or masked string (trimmed length {trimmed_len}).")
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "literal_placeholder",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    if (
+        (len(trimmed) >= 2 and trimmed[0] == trimmed[-1] and trimmed[0] in ('"', "'"))
+    ):
+        issues.append(
+            f"Token is wrapped in literal {trimmed[0]} quotes (trimmed length {trimmed_len}); strip quotes in CI env files."
+        )
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "wrapped_in_quotes",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    if (
+        trimmed.startswith(("${", "$(", "$"))
+        or (trimmed.startswith("%") and trimmed.endswith("%") and len(trimmed) > 2)
+        or ("{{" in trimmed and "}}" in trimmed)
+    ):
+        issues.append(
+            f"Token looks like an unexpanded CI/shell variable expression (trimmed length {trimmed_len})."
+        )
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "unexpanded_ci_variable",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    if lower_trimmed.startswith(("bearer ", "token ")):
+        issues.append(
+            "Token includes an HTTP Authorization header prefix ('Bearer ' or 'token '); pass only the raw token string."
+        )
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "auth_scheme_prefix",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    if lower_trimmed.startswith(("<!doctype", "<html", "<?xml", "<error", "<body")) or (
+        trimmed.startswith("<") and ">" in trimmed
+    ):
+        issues.append(
+            f"Token looks like HTML or XML markup (trimmed length {trimmed_len}), typically from a failed secret-fetch or proxy error page."
+        )
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "html_or_xml_junk",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    if trimmed.startswith(("{", "[")):
+        issues.append(
+            f"Token starts with JSON syntax (trimmed length {trimmed_len}); pipeline likely injected a full secret JSON object or vault error response instead of the raw token field."
+        )
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "json_payload_junk",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    if "\n" in trimmed or "\r" in trimmed:
+        issues.append(
+            f"Token spans multiple lines (trimmed length {trimmed_len}); embedded newlines break HTTP Authorization headers."
+        )
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "multiline_junk",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    if any(ch.isspace() for ch in trimmed):
+        issues.append(
+            f"Token contains internal spaces/tabs (trimmed length {trimmed_len})."
+        )
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "whitespace_corrupted",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    if trimmed.startswith("eyJ") and trimmed.count(".") == 2:
+        issues.append(
+            f"Token has a 3-part JWT structure (trimmed length {trimmed_len}); Black Duck Detect --blackduck.api.token expects a Black Duck User Access Token rather than a raw OIDC/Bearer JWT."
+        )
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "jwt_wrong_token_type",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    if trimmed_len < 40:
+        issues.append(
+            f"Token appears truncated (trimmed length {trimmed_len}; standard Black Duck SCA access tokens are ~96-128 characters, typically 100)."
+        )
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "truncated_length",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    if trimmed_len > 256:
+        issues.append(
+            f"Token is unusually long (trimmed length {trimmed_len}; standard Black Duck SCA access tokens are ~96-128 characters)."
+        )
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "oversized_length",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    if not re.fullmatch(r"[A-Za-z0-9+/=_.:-]+", trimmed):
+        issues.append(
+            f"Token contains unexpected non-token punctuation or control characters (trimmed length {trimmed_len})."
+        )
+        return {
+            "raw_length": raw_len,
+            "trimmed_length": trimmed_len,
+            "has_surrounding_whitespace": has_surrounding_ws,
+            "shape": "unexpected_characters",
+            "valid_shape": False,
+            "issues": issues,
+        }
+
+    return {
+        "raw_length": raw_len,
+        "trimmed_length": trimmed_len,
+        "has_surrounding_whitespace": has_surrounding_ws,
+        "shape": "plausible_token_shape" if not has_surrounding_ws else "surrounding_whitespace",
+        "valid_shape": not has_surrounding_ws,
+        "issues": issues,
+    }
+
+
+def _extract_token_from_detect_args(existing_detect_args: str | None) -> str | None:
+    """Extract --blackduck.api.token value from a CLI argument string if present."""
+    if not existing_detect_args:
+        return None
+    try:
+        tokens = shlex.split(existing_detect_args)
+    except ValueError:
+        tokens = existing_detect_args.split()
+    found: str | None = None
+    idx = 0
+    while idx < len(tokens):
+        tok = tokens[idx]
+        if tok.startswith("--blackduck.api.token="):
+            found = tok.split("=", 1)[1]
+        elif tok == "--blackduck.api.token" and idx + 1 < len(tokens):
+            found = tokens[idx + 1]
+            idx += 1
+        idx += 1
+    return found
+
+
+def inspect_detect_token_hygiene(
+    bd_token: str | None = None,
+    existing_detect_args: str | None = None,
+    env: dict[str, str] | None = None,
+    include_env: bool = True,
+) -> dict[str, Any]:
+    """Inspect Black Duck Detect API token injection hygiene with strict zero-secret output.
+
+    Never returns, logs, or hashes any character of the underlying token value. Reports only
+    source names, raw/trimmed character lengths, multi-source conflicts, and shape diagnostics.
+    """
+    env_map = (os.environ if env is None else env) if include_env else {}
+    raw_candidates: list[tuple[str, str]] = []
+    extra_issues: list[str] = []
+
+    if bd_token is not None:
+        raw_candidates.append(("cli:--bd-token", bd_token))
+
+    cli_detect_tok = _extract_token_from_detect_args(existing_detect_args)
+    if cli_detect_tok is not None:
+        raw_candidates.append(("cli:--blackduck.api.token", cli_detect_tok))
+
+    if include_env and "SPRING_APPLICATION_JSON" in env_map:
+        saj_raw = env_map.get("SPRING_APPLICATION_JSON", "")
+        if saj_raw.strip():
+            try:
+                saj_obj = json.loads(saj_raw)
+                if isinstance(saj_obj, dict):
+                    if "blackduck.api.token" in saj_obj:
+                        v = saj_obj["blackduck.api.token"]
+                        raw_candidates.append(
+                            ("env:SPRING_APPLICATION_JSON[blackduck.api.token]", "" if v is None else str(v))
+                        )
+                    elif (
+                        isinstance(saj_obj.get("blackduck"), dict)
+                        and isinstance(saj_obj["blackduck"].get("api"), dict)
+                        and "token" in saj_obj["blackduck"]["api"]
+                    ):
+                        v = saj_obj["blackduck"]["api"]["token"]
+                        raw_candidates.append(
+                            ("env:SPRING_APPLICATION_JSON[blackduck.api.token]", "" if v is None else str(v))
+                        )
+            except ValueError:
+                extra_issues.append(
+                    "SPRING_APPLICATION_JSON is set in the environment but is not valid JSON; Spring Boot startup will fail before Detect runs."
+                )
+
+    if include_env and "BLACKDUCK_API_TOKEN" in env_map:
+        raw_candidates.append(("env:BLACKDUCK_API_TOKEN", env_map["BLACKDUCK_API_TOKEN"]))
+
+    if include_env and "DETECT_BLACKDUCK_API_TOKEN" in env_map:
+        raw_candidates.append(("env:DETECT_BLACKDUCK_API_TOKEN", env_map["DETECT_BLACKDUCK_API_TOKEN"]))
+        if "BLACKDUCK_API_TOKEN" not in env_map and cli_detect_tok is None and bd_token is None:
+            extra_issues.append(
+                "DETECT_BLACKDUCK_API_TOKEN is set while BLACKDUCK_API_TOKEN is unset; Spring Boot maps --blackduck.api.token to BLACKDUCK_API_TOKEN (without the DETECT_ prefix)."
+            )
+
+    if not raw_candidates:
+        return {
+            "status": "invalid" if extra_issues else "not_provided",
+            "token_present": False,
+            "effective_source": None,
+            "effective_raw_length": None,
+            "effective_trimmed_length": None,
+            "effective_shape": None,
+            "multi_source_conflict": False,
+            "sources_detected": [],
+            "issues": extra_issues,
+        }
+
+    sources_summary: list[dict[str, Any]] = []
+    distinct_raw_values: set[str] = set()
+    for src_name, raw_val in raw_candidates:
+        distinct_raw_values.add(raw_val)
+        classified = _classify_single_token_shape(raw_val)
+        sources_summary.append(
+            {
+                "source": src_name,
+                "raw_length": classified["raw_length"],
+                "trimmed_length": classified["trimmed_length"],
+                "has_surrounding_whitespace": classified["has_surrounding_whitespace"],
+                "shape": classified["shape"],
+                "valid_shape": classified["valid_shape"],
+            }
+        )
+
+    multi_conflict = len(distinct_raw_values) > 1
+    if multi_conflict:
+        src_desc = ", ".join(f"{s['source']} (len={s['raw_length']})" for s in sources_summary)
+        extra_issues.append(
+            f"Multiple token sources are set simultaneously with different values ({src_desc}); higher-precedence Spring Boot sources silently override lower ones."
+        )
+
+    eff_src_name, eff_raw_val = raw_candidates[0]
+    eff_cls = _classify_single_token_shape(eff_raw_val)
+    all_issues = list(eff_cls["issues"]) + extra_issues
+
+    if not eff_cls["valid_shape"] or (
+        eff_src_name == "env:DETECT_BLACKDUCK_API_TOKEN" and "BLACKDUCK_API_TOKEN" not in env_map
+    ):
+        status = "invalid"
+    elif all_issues or multi_conflict:
+        status = "warning"
+    else:
+        status = "ok"
+
+    return {
+        "status": status,
+        "token_present": True,
+        "effective_source": eff_src_name,
+        "effective_raw_length": eff_cls["raw_length"],
+        "effective_trimmed_length": eff_cls["trimmed_length"],
+        "effective_shape": eff_cls["shape"],
+        "multi_source_conflict": multi_conflict,
+        "sources_detected": sources_summary,
+        "issues": all_issues,
+    }
+
+
 def preflight_server_check(
     bd_url: str,
     api_token: str | None = None,
@@ -857,35 +1224,51 @@ def preflight_server_check(
     # 2. Token Authentication Check (if token provided)
     token_valid = False
     auth_error: str | None = None
-    if api_token:
-        auth_url = f"{base_url}/api/tokens/authenticate"
-        try:
-            auth_req = urllib.request.Request(
-                auth_url,
-                headers={
-                    "Authorization": f"token {api_token}",
-                    "Accept": "application/json",
-                    "User-Agent": "bd-ops-prescan/1.2.0",
-                },
-                method="POST",
+    token_hygiene: dict[str, Any] | None = None
+    if api_token is not None:
+        token_hygiene = inspect_detect_token_hygiene(bd_token=api_token, include_env=False)
+        if token_hygiene["effective_shape"] in (
+            "empty",
+            "whitespace_only",
+            "multiline_junk",
+            "surrounding_whitespace",
+            "html_or_xml_junk",
+            "json_payload_junk",
+        ) or "\n" in api_token or "\r" in api_token or not api_token.strip():
+            auth_error = (
+                "Skipped HTTP token check due to local token shape issue: "
+                + "; ".join(token_hygiene["issues"])
             )
-            with req_opener.open(auth_req, timeout=timeout_sec) as auth_resp:
-                if auth_resp.status in (200, 204):
-                    token_valid = True
-                else:
-                    auth_error = f"Authentication returned HTTP status {auth_resp.status}"
-        except urllib.error.HTTPError as http_err:
-            auth_error = f"Authentication rejected (HTTP {http_err.code}): {http_err.reason}"
-        except Exception as exc:  # noqa: BLE001
-            auth_error = f"Authentication request error: {exc}"
+        else:
+            auth_url = f"{base_url}/api/tokens/authenticate"
+            try:
+                auth_req = urllib.request.Request(
+                    auth_url,
+                    headers={
+                        "Authorization": f"token {api_token}",
+                        "Accept": "application/json",
+                        "User-Agent": "bd-ops-prescan/1.2.0",
+                    },
+                    method="POST",
+                )
+                with req_opener.open(auth_req, timeout=timeout_sec) as auth_resp:
+                    if auth_resp.status in (200, 204):
+                        token_valid = True
+                    else:
+                        auth_error = f"Authentication returned HTTP status {auth_resp.status}"
+            except urllib.error.HTTPError as http_err:
+                auth_error = f"Authentication rejected (HTTP {http_err.code}): {http_err.reason}"
+            except Exception as exc:  # noqa: BLE001
+                auth_error = f"Authentication request error: {exc}"
 
     return {
-        "status": "ok" if (not api_token or token_valid) else "auth_failed",
+        "status": "ok" if (api_token is None or token_valid) else "auth_failed",
         "connected": True,
         "server_version": server_version,
-        "token_checked": bool(api_token),
+        "token_checked": api_token is not None,
         "token_valid": token_valid,
         "auth_error": auth_error,
+        "token_hygiene": token_hygiene,
     }
 
 
@@ -2459,7 +2842,12 @@ def main() -> int:
     parser.add_argument(
         "--bd-token",
         default=None,
-        help="SCA API token to validate authentication prior to scan.",
+        help="SCA API token to validate authentication or offline token shape prior to scan.",
+    )
+    parser.add_argument(
+        "--check-token-hygiene",
+        action="store_true",
+        help="Run zero-secret Black Duck Detect API token length/shape/source hygiene check across CLI and CI environment variables (no network call, zero token bytes logged).",
     )
     parser.add_argument(
         "--proxy-url",
@@ -2557,6 +2945,14 @@ def main() -> int:
     except Exception as exc:  # noqa: BLE001
         sys.stderr.write(f"Error scanning workspace: {exc}\n")
         return 1
+
+    tok_check = inspect_detect_token_hygiene(
+        bd_token=args.bd_token,
+        existing_detect_args=args.existing_detect_args,
+        include_env=not args.repo_only,
+    )
+    if args.check_token_hygiene or args.bd_token is not None or tok_check["token_present"] or tok_check["issues"]:
+        report["token_hygiene"] = tok_check
 
     if args.bd_url:
         server_report = preflight_server_check(
@@ -2843,6 +3239,21 @@ def main() -> int:
                     sys.stdout.write(f"    ! {iss}\n")
 
             sys.stdout.write(f"\nSummary: {verification['summary']}\n")
+
+        if "token_hygiene" in report:
+            th = report["token_hygiene"]
+            sys.stdout.write("\nAPI Token Hygiene (Zero-Secret Shape Check):\n")
+            sys.stdout.write(f"  Status: {th['status']}\n")
+            if th.get("token_present"):
+                sys.stdout.write(f"  Effective Source: {th['effective_source']}\n")
+                sys.stdout.write(
+                    f"  Token Length: {th['effective_raw_length']} raw / {th['effective_trimmed_length']} trimmed\n"
+                )
+                sys.stdout.write(f"  Shape Verdict: {th['effective_shape']}\n")
+            else:
+                sys.stdout.write("  Token Present: False (no --bd-token, --blackduck.api.token, or BLACKDUCK_API_TOKEN set)\n")
+            for iss in th.get("issues", []):
+                sys.stdout.write(f"  ! {iss}\n")
 
         if "server_preflight" in report:
             sp = report["server_preflight"]
